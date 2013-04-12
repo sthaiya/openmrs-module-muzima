@@ -22,7 +22,8 @@ import org.openmrs.module.muzimaprocessor.api.db.ProcessorDAO;
  * It is a default implementation of  {@link ProcessorDAO}.
  */
 public class HibernateProcessorDAO implements ProcessorDAO {
-	protected final Log log = LogFactory.getLog(this.getClass());
+
+	private final Log log = LogFactory.getLog(this.getClass());
 	
 	private SessionFactory sessionFactory;
 	

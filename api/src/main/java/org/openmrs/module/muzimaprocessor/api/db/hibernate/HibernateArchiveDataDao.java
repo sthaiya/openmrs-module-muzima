@@ -15,29 +15,19 @@ package org.openmrs.module.muzimaprocessor.api.db.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
-import org.openmrs.module.muzimaprocessor.api.db.ProcessorDAO;
+import org.openmrs.module.muzimaprocessor.model.ArchiveData;
+import org.openmrs.module.muzimaprocessor.api.db.ArchiveDataDao;
 
 /**
- * It is a default implementation of  {@link ProcessorDAO}.
  */
-public class HibernateProcessorDAO implements ProcessorDAO {
+public class HibernateArchiveDataDao extends HibernateDataDao<ArchiveData> implements ArchiveDataDao {
 
-	private final Log log = LogFactory.getLog(this.getClass());
-	
-	private SessionFactory sessionFactory;
-	
-	/**
-     * @param sessionFactory the sessionFactory to set
+    private final Log log = LogFactory.getLog(HibernateArchiveDataDao.class);
+
+    /**
+     * Default constructor.
      */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-	    this.sessionFactory = sessionFactory;
-    }
-    
-	/**
-     * @return the sessionFactory
-     */
-    public SessionFactory getSessionFactory() {
-	    return sessionFactory;
+    protected HibernateArchiveDataDao() {
+        super(ArchiveData.class);
     }
 }

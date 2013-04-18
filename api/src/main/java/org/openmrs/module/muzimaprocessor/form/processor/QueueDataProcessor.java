@@ -11,29 +11,13 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzimaprocessor.api;
+package org.openmrs.module.muzimaprocessor.form.processor;
 
-import java.io.Serializable;
-import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.module.muzimaprocessor.model.QueueData;
 
 /**
- * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class Processor extends BaseOpenmrsObject implements Serializable {
+public interface QueueDataProcessor {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Integer id;
-	
-	@Override
-	public Integer getId() {
-		return id;
-	}
-	
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
+    void process(final QueueData formData);
 }

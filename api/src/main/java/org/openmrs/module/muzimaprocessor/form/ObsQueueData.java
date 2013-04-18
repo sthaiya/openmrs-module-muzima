@@ -11,16 +11,22 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzimaprocessor.api.db;
+package org.openmrs.module.muzimaprocessor.form;
 
-import org.openmrs.module.muzimaprocessor.api.ProcessorService;
+import org.openmrs.Obs;
+import org.openmrs.module.muzimaprocessor.model.QueueData;
 
 /**
- *  Database methods for {@link ProcessorService}.
  */
-public interface ProcessorDAO {
-	
-	/*
-	 * Add DAO methods here
-	 */
+public class ObsQueueData extends QueueData<Obs> {
+
+    /**
+     * Get the expected return type of the object after processing this type of object.
+     *
+     * @return the expected return type
+     */
+    @Override
+    public Class<Obs> getObjectType() {
+        return Obs.class;
+    }
 }

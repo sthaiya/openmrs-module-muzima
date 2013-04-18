@@ -11,12 +11,23 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzimaprocessor.form.definition;
-
-import org.openmrs.OpenmrsData;
+package org.openmrs.module.muzimaprocessor.model;
 
 /**
- * It is a model class. It should extend either {@link org.openmrs.BaseOpenmrsObject} or {@link org.openmrs.BaseOpenmrsMetadata}.
  */
-public interface FormData extends OpenmrsData {
+public interface Data {
+
+    /**
+     * Get the data payload of this data.
+     *
+     * @return the payload of this data.
+     */
+    String getPayload();
+
+    /**
+     * Get the data source of this data.
+     *
+     * @return the data source of this data.
+     */
+    DataSource getDataSource();
 }

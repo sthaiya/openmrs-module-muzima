@@ -16,10 +16,16 @@ package org.openmrs.module.muzimaprocessor.web.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.muzimaprocessor.api.service.DataService;
+import org.openmrs.module.muzimaprocessor.form.EncounterQueueData;
+import org.openmrs.module.muzimaprocessor.form.ObsQueueData;
+import org.openmrs.module.muzimaprocessor.model.QueueData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * The main controller.
@@ -32,5 +38,24 @@ public class  MuzimaProcessorManageController {
 	@RequestMapping(value = "/module/muzimaprocessor/manage", method = RequestMethod.GET)
 	public void manage(ModelMap model) {
 		model.addAttribute("user", Context.getAuthenticatedUser());
-	}
+
+        DataService dataService = Context.getService(DataService.class);
+
+        for (int i = 0; i < 10; i++) {
+            QueueData queueData = new EncounterQueueData();
+            dataService.saveQueueData(queueData);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            QueueData queueData = new ObsQueueData();
+            dataService.saveQueueData(queueData);
+        }
+
+        List<QueueData> queueDatas = dataService.getAllQueueData();
+        for (QueueData queueData : queueDatas) {
+            System.out.println("Form data");
+            System.out.println("Uuid: " + queueData.getUuid());
+            System.out.println("Type: " + queueData.getObjectType());
+        }
+    }
 }

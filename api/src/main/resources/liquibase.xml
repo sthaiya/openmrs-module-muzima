@@ -1,12 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
-    <!--
-        See http://www.liquibase.org/manual/home#available_database_refactorings
-        for a list of supported elements and attributes
-    -->
-    
+
+    <changeSet id="formprocessor-2013-04-18-10-46" author="nribeka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="formprocessor_data_source"/>
+            </not>
+        </preConditions>
+        <createTable tableName="formprocessor_data_source">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1024)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
+            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="formprocessor_data_source_creator"
+                                 baseTableName="formprocessor_data_source" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_data_source_changed_by"
+                                 baseTableName="formprocessor_data_source" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_data_source_retired_by"
+                                 baseTableName="formprocessor_data_source" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet id="formprocessor-2013-04-18-10-46" author="nribeka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="formprocessor_queue_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="formprocessor_queue_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="object_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_source" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
+            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="formprocessor_queue_data_creator"
+                                 baseTableName="formprocessor_queue_data" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_queue_data_changed_by"
+                                 baseTableName="formprocessor_queue_data" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_queue_data_data_source"
+                                 baseTableName="formprocessor_queue_data" baseColumnNames="data_source"
+                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="formprocessor-2013-04-18-10-47" author="nribeka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="formprocessor_archived_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="formprocessor_archived_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="object_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_source" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
+            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="formprocessor_archived_data_creator"
+                                 baseTableName="formprocessor_archived_data" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_archived_data_changed_by"
+                                 baseTableName="formprocessor_archived_data" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_archived_data_data_source"
+                                 baseTableName="formprocessor_archived_data" baseColumnNames="data_source"
+                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="formprocessor-2013-04-18-10-48" author="nribeka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="formprocessor_error_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="formprocessor_error_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="object_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_source" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="retired" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="retired_by" type="int"/>
+            <column name="date_retired" type="datetime"/>
+            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="formprocessor_error_data_creator"
+                                 baseTableName="formprocessor_error_data" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_error_data_changed_by"
+                                 baseTableName="formprocessor_error_data" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_error_data_data_source"
+                                 baseTableName="formprocessor_error_data" baseColumnNames="data_source"
+                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -11,13 +11,18 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzimaprocessor.form.definition.handler;
+package org.openmrs.module.muzimaprocessor.model;
 
-import org.openmrs.module.muzimaprocessor.form.definition.FormData;
+import org.openmrs.OpenmrsObject;
 
 /**
+ * It is a model class. It should extend either {@link org.openmrs.BaseOpenmrsObject} or {@link org.openmrs.BaseOpenmrsMetadata}.
  */
-public interface FormDataHandler {
+public abstract class QueueData<T extends OpenmrsObject> extends AuditableData {
 
-    public void handle(final FormData formData);
+    /**
+     * Get the expected return type of the object after processing this type of object.
+     * @return the expected return type
+     */
+    public abstract Class<T> getObjectType();
 }

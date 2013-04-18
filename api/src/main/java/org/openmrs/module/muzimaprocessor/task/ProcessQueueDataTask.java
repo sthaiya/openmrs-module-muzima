@@ -11,20 +11,28 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzimaprocessor.api;
+package org.openmrs.module.muzimaprocessor.task;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.scheduler.tasks.AbstractTask;
 
 /**
- * Tests {@link ${ProcessorService}}.
  */
-public class  ProcessorServiceTest extends BaseModuleContextSensitiveTest {
-	
-	@Test
-	public void shouldSetupContext() {
-		assertNotNull(Context.getService(ProcessorService.class));
-	}
+public class ProcessQueueDataTask extends AbstractTask {
+
+    private QueueDataProcessor processor;
+
+    public ProcessQueueDataTask() {
+        this.processor = new QueueDataProcessor();
+    }
+
+    /**
+     * @see org.openmrs.scheduler.Task#execute()
+     */
+    @Override
+    public void execute() {
+        Context.openSession();
+        processor.processQueueData();
+        Context.closeSession();
+    }
 }

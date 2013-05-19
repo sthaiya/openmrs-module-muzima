@@ -4,11 +4,11 @@
 
 	<parent>
 		<groupId>org.openmrs.module</groupId>
-		<artifactId>muzimaprocessor</artifactId>
+		<artifactId>muzima</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>muzimaprocessor-omod</artifactId>
+	<artifactId>muzima-omod</artifactId>
 	<packaging>jar</packaging>
 	<name>Muzima Processor Module OMOD</name>
 	<description>OMOD project for MuzimaProcessor</description>
@@ -34,6 +34,11 @@
         <dependency>
             <groupId>org.openmrs.module</groupId>
             <artifactId>uiframework-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod</artifactId>
         </dependency>
 				
 		<!-- End OpenMRS modules -->
@@ -204,5 +209,12 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <properties>
+        <MODULE_ID>${project.parent.artifactId}</MODULE_ID>
+        <MODULE_NAME>${project.parent.name}</MODULE_NAME>
+        <MODULE_VERSION>${project.parent.version}</MODULE_VERSION>
+        <MODULE_PACKAGE>${project.parent.groupId}.${project.parent.artifactId}</MODULE_PACKAGE>
+    </properties>
 
 </project>

@@ -22,36 +22,36 @@
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.module.muzimaprocessor.api.service.DataService</value>
+                <value>org.openmrs.module.muzima.api.service.DataService</value>
                 <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
                     <property name="transactionManager">
                         <ref bean="transactionManager" />
                     </property>
                     <property name="target">
-                        <bean class="org.openmrs.module.muzimaprocessor.api.service.impl.DataServiceImpl">
+                        <bean class="org.openmrs.module.muzima.api.service.impl.DataServiceImpl">
                             <property name="errorDataDao">
-                                <bean class="org.openmrs.module.muzimaprocessor.api.db.hibernate.HibernateErrorDataDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateErrorDataDao">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory" />
                                     </property>
                                 </bean>
                             </property>
                             <property name="queueDataDao">
-                                <bean class="org.openmrs.module.muzimaprocessor.api.db.hibernate.HibernateQueueDataDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateQueueDataDao">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory" />
                                     </property>
                                 </bean>
                             </property>
                             <property name="archiveDataDao">
-                                <bean class="org.openmrs.module.muzimaprocessor.api.db.hibernate.HibernateArchiveDataDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateArchiveDataDao">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory" />
                                     </property>
                                 </bean>
                             </property>
                             <property name="dataSourceDao">
-                                <bean class="org.openmrs.module.muzimaprocessor.api.db.hibernate.HibernateDataSourceDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateDataSourceDao">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory" />
                                     </property>

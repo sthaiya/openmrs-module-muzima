@@ -3,10 +3,10 @@
 <module configVersion="1.2">
 
     <!-- Module Properties -->
-    <id>muzimaprocessor</id>
+    <id>${}</id>
     <name>Muzima Processor Module</name>
     <version>1.0.0</version>
-    <package>org.openmrs.module.muzimaprocessor</package>
+    <package>org.openmrs.module.muzima</package>
     <author>Muzima Team</author>
     <description>
         Muzima module to process forms from mobile devices.
@@ -16,17 +16,21 @@
     <!-- / Module Properties -->
 
     <require_modules>
-        <require_module>org.openmrs.module.uiframework</require_module>
+        <require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
+        <require_module version="${serializationxstreamVersion}">org.openmrs.module.serialization.xstream
+        </require_module>
+        <require_module version="${reportingVersion}">org.openmrs.module.reporting</require_module>
+        <require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
     </require_modules>
 
     <!-- Module Activator -->
-    <activator>org.openmrs.module.muzimaprocessor.MuzimaProcessorActivator</activator>
+    <activator>org.openmrs.module.muzima.MuzimaActivator</activator>
 
 
     <!-- Adds link to admin page -->
     <extension>
         <point>org.openmrs.admin.list</point>
-        <class>org.openmrs.module.muzimaprocessor.extension.html.AdminList</class>
+        <class>org.openmrs.module.muzima.extension.html.AdminList</class>
     </extension>
 
     <!-- Maps hibernate file's, if present -->
@@ -35,7 +39,7 @@
     </mappingFiles>
 
     <!-- Internationalization -->
-    <!-- All message codes should start with muzimaprocessor. -->
+    <!-- All message codes should start with muzima. -->
     <messages>
         <lang>en</lang>
         <file>messages.properties</file>

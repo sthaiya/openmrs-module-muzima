@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.openmrs.module</groupId>
-	<artifactId>muzimaprocessor</artifactId>
+	<artifactId>muzima</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Muzima Processor Module</name>
@@ -22,20 +22,21 @@
 	</organization>
 
 	<scm>
-		<connection>scm:svn:https://svn.openmrs.org/openmrs-modules/muzimaprocessor/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/muzimaprocessor/trunk/</developerConnection>
-		<url>https://svn.openmrs.org/openmrs-modules/muzimaprocessor/trunk/</url>
+		<connection>scm:git:https://github.com/muzima/muzima-processor/tree/development</connection>
+		<developerConnection>scm:git:https://github.com/muzima/muzima-processor/tree/development</developerConnection>
+		<url>https://github.com/muzima/muzima-processor/tree/development</url>
 	</scm>
 
 	<modules>
 		<module>api</module>
 		<module>omod</module>
 	</modules>
-	
-	<properties>
-		<openMRSVersion>1.8.4</openMRSVersion>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+
+    <properties>
+        <openMRSVersion>1.8.4</openMRSVersion>
+        <webservicesRestVersion>2.0</webservicesRestVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<dependencyManagement>
 		<dependencies>
@@ -57,6 +58,13 @@
                 <version>2.0</version>
                 <type>jar</type>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>webservices.rest-omod</artifactId>
+                <version>${webservicesRestVersion}</version>
+                <type>jar</type>
             </dependency>
 
 			<!-- Begin OpenMRS core -->

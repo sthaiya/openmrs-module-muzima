@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
-<hibernate-mapping package="org.openmrs.module.muzimaprocessor.model">
+<hibernate-mapping package="org.openmrs.module.muzima.model">
 
     <class name="DataSource" table="formprocessor_data_source">
         <id name="id" type="java.lang.Integer" column="id">

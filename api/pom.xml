@@ -4,11 +4,11 @@
 
 	<parent>
 		<groupId>org.openmrs.module</groupId>
-		<artifactId>muzimaprocessor</artifactId>
+		<artifactId>muzima</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>muzimaprocessor-api</artifactId>
+	<artifactId>muzima-api</artifactId>
 	<packaging>jar</packaging>
 	<name>Muzima Processor Module API</name>
 	<description>API project for MuzimaProcessor</description>

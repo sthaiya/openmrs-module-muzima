@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.muzima.model;
 
-import org.openmrs.OpenmrsObject;
-
 /**
  * It is a model class. It should extend either {@link org.openmrs.BaseOpenmrsObject} or {@link org.openmrs.BaseOpenmrsMetadata}.
  */

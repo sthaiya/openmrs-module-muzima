@@ -12,11 +12,11 @@
 
         <property name="discriminator" type="java.lang.String" column="discriminator" not-null="true"/>
 
-        <property name="payload" type="java.lang.String" column="payload" not-null="true" />
+        <property name="payload" type="java.lang.String" column="payload" not-null="true"/>
         <many-to-one name="dataSource" class="DataSource" column="data_source" not-null="true"/>
 
-        <property name="message" type="java.lang.String" column="message" not-null="true" />
-        <property name="dateArchived" type="java.util.Date" column="date_archived" not-null="true" length="19" />
+        <property name="message" type="java.lang.String" column="message" not-null="true"/>
+        <property name="dateArchived" type="java.util.Date" column="date_archived" not-null="true" length="19"/>
 
         <many-to-one name="creator" class="org.openmrs.User" not-null="true">
             <column name="creator"/>

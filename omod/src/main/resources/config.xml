@@ -32,7 +32,10 @@
 
     <!-- Maps hibernate file's, if present -->
     <mappingFiles>
-        FormDataQueue.hbm.xml
+        ArchiveData.hbm.xml
+        DataSource.hbm.xml
+        ErrorData.hbm.xml
+        QueueData.hbm.xml
     </mappingFiles>
 
     <!-- Internationalization -->

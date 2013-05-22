@@ -15,13 +15,11 @@ package org.openmrs.module.muzima.task;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
-import org.openmrs.module.muzima.model.handler.QueueDataHandler;
 import org.openmrs.module.muzima.model.QueueData;
+import org.openmrs.module.muzima.model.handler.QueueDataHandler;
 import org.openmrs.util.HandlerUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  */
@@ -30,16 +28,14 @@ public class QueueDataProcessor {
     public void processQueueData() {
         DataService dataService = Context.getService(DataService.class);
         List<QueueData> queueDataList = dataService.getAllQueueData();
-
-        Map<String, QueueDataHandler> handlerMap = new HashMap<String, QueueDataHandler>();
-        List<QueueDataHandler> processor = HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
-        for (QueueDataHandler queueDataHandler : processor) {
-            handlerMap.put(queueDataHandler.getHint(), queueDataHandler);
-        }
-
+        List<QueueDataHandler> processors = HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
+        // TODO: this is a proof of concept. The handler should handle the queue data one by one.
         for (QueueData queueData : queueDataList) {
-            QueueDataHandler handler = handlerMap.get(queueData.getDiscriminator());
-            handler.process(queueData);
+            for (QueueDataHandler processor : processors) {
+                if (processor.accept(queueData)) {
+                    processor.process(queueData);
+                }
+            }
         }
     }
 }

@@ -13,16 +13,11 @@
  */
 package org.openmrs.module.muzima.model;
 
-import org.openmrs.Auditable;
 import org.openmrs.BaseOpenmrsData;
-import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.User;
-
-import java.util.Date;
 
 /**
  */
-public abstract class AuditableData extends BaseOpenmrsData implements Data, Auditable {
+public abstract class AuditableData extends BaseOpenmrsData implements Data {
 
     private Integer id;
 
@@ -32,7 +27,9 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data, Aud
 
     private DataSource dataSource;
 
-    /******* Audit information *******/
+    /**
+     * **** Audit information ******
+     */
 
     public AuditableData() {
     }
@@ -71,6 +68,7 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data, Aud
 
     /**
      * Set the data payload for this data.
+     *
      * @param payload the payload for this data
      */
     public void setPayload(final String payload) {
@@ -82,6 +80,7 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data, Aud
      *
      * @return the discriminating value to determine which handler to execute.
      */
+    @Override
     public String getDiscriminator() {
         return discriminator;
     }

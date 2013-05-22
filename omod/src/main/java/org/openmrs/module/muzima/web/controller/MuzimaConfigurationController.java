@@ -19,6 +19,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.handler.EncounterQueueDataHandler;
 import org.openmrs.module.muzima.handler.ObsQueueDataHandler;
+import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.QueueData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,25 +36,33 @@ public class MuzimaConfigurationController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    @RequestMapping(value = "/module/muzimaprocessor/manage", method = RequestMethod.GET)
+    @RequestMapping(value = "/module/muzima/configuration", method = RequestMethod.GET)
     public void manage(ModelMap model) {
         DataService dataService = Context.getService(DataService.class);
 
+        DataSource dataSource = new DataSource();
+        dataSource.setName("Example of Data Source");
+        dataService.saveDataSource(dataSource);
+
         for (int i = 0; i < 10; i++) {
             QueueData queueData = new QueueData();
+            queueData.setDataSource(dataSource);
+            queueData.setPayload("Example of obs queue data payload.");
             queueData.setDiscriminator(ObsQueueDataHandler.DISCRIMINATOR_VALUE);
             dataService.saveQueueData(queueData);
         }
 
         for (int i = 0; i < 10; i++) {
             QueueData queueData = new QueueData();
+            queueData.setDataSource(dataSource);
+            queueData.setPayload("Example of encounter queue data payload.");
             queueData.setDiscriminator(EncounterQueueDataHandler.DISCRIMINATOR_VALUE);
             dataService.saveQueueData(queueData);
         }
 
         List<QueueData> queueDatas = dataService.getAllQueueData();
         for (QueueData queueData : queueDatas) {
-            System.out.println("Form data");
+        System.out.println("Queued data:");
             System.out.println("Uuid: " + queueData.getUuid());
             System.out.println("Type: " + queueData.getDiscriminator());
         }

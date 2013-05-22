@@ -98,8 +98,12 @@ public abstract class HibernateDataDao<T extends Data> extends SingleClassHibern
     @Override
     @Transactional
     public T saveData(final T data) {
-        DataHandler handler = HandlerUtil.getPreferredHandler(DataHandler.class, data.getClass());
-        handler.saveHandler(data);
+        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+        for (DataHandler handler : handlers) {
+            if (handler.accept(data)) {
+                handler.saveHandler(data);
+            }
+        }
         saveOrUpdate(data);
         return data;
     }
@@ -113,8 +117,12 @@ public abstract class HibernateDataDao<T extends Data> extends SingleClassHibern
     @Override
     @Transactional
     public void purgeData(final T data) {
-        DataHandler handler = HandlerUtil.getPreferredHandler(DataHandler.class, data.getClass());
-        handler.deleteHandler(data);
+        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+        for (DataHandler handler : handlers) {
+            if (handler.accept(data)) {
+                handler.deleteHandler(data);
+            }
+        }
         delete(data);
     }
 }

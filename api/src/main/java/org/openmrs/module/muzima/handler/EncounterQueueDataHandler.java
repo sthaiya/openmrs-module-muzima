@@ -52,7 +52,7 @@ public class EncounterQueueDataHandler implements QueueDataHandler {
     }
 
     @Override
-    public String getHint() {
-        return DISCRIMINATOR_VALUE;
+    public boolean accept(final QueueData queueData) {
+        return StringUtils.equals(DISCRIMINATOR_VALUE, queueData.getDiscriminator());
     }
 }

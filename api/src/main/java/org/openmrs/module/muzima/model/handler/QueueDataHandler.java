@@ -18,8 +18,18 @@ import org.openmrs.module.muzima.model.QueueData;
 /**
  */
 public interface QueueDataHandler {
-
+    /**
+     * Implementation of how the queue data should be processed.
+     *
+     * @param queueData the queued data.
+     */
     void process(final QueueData queueData);
 
-    String getHint();
+    /**
+     * Flag whether the current queue data handler can handle the queue data.
+     *
+     * @param queueData the queue data.
+     * @return true when the handler can handle the queue data.
+     */
+    boolean accept(final QueueData queueData);
 }

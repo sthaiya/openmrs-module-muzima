@@ -14,7 +14,7 @@
 package org.openmrs.module.muzima;
 
 
-import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.ModuleActivator;
 
@@ -22,49 +22,49 @@ import org.openmrs.module.ModuleActivator;
  * This class contains the logic that is run every time this module is either started or stopped.
  */
 public class MuzimaActivator implements ModuleActivator {
-	
-	protected Log log = LogFactory.getLog(getClass());
-		
-	/**
-	 * @see ModuleActivator#willRefreshContext()
-	 */
-	public void willRefreshContext() {
-		log.info("Refreshing Muzima Processor Module");
-	}
-	
-	/**
-	 * @see ModuleActivator#contextRefreshed()
-	 */
-	public void contextRefreshed() {
-		log.info("Muzima Processor Module refreshed");
-	}
-	
-	/**
-	 * @see ModuleActivator#willStart()
-	 */
-	public void willStart() {
-		log.info("Starting Muzima Processor Module");
-	}
-	
-	/**
-	 * @see ModuleActivator#started()
-	 */
-	public void started() {
-		log.info("Muzima Processor Module started");
-	}
-	
-	/**
-	 * @see ModuleActivator#willStop()
-	 */
-	public void willStop() {
-		log.info("Stopping Muzima Processor Module");
-	}
-	
-	/**
-	 * @see ModuleActivator#stopped()
-	 */
-	public void stopped() {
-		log.info("Muzima Processor Module stopped");
-	}
-		
+
+    protected Log log = LogFactory.getLog(getClass());
+
+    /**
+     * @see ModuleActivator#willRefreshContext()
+     */
+    public void willRefreshContext() {
+        log.info("Refreshing Muzima Processor Module");
+    }
+
+    /**
+     * @see ModuleActivator#contextRefreshed()
+     */
+    public void contextRefreshed() {
+        log.info("Muzima Processor Module refreshed");
+    }
+
+    /**
+     * @see ModuleActivator#willStart()
+     */
+    public void willStart() {
+        log.info("Starting Muzima Processor Module");
+    }
+
+    /**
+     * @see ModuleActivator#started()
+     */
+    public void started() {
+        log.info("Muzima Processor Module started");
+    }
+
+    /**
+     * @see ModuleActivator#willStop()
+     */
+    public void willStop() {
+        log.info("Stopping Muzima Processor Module");
+    }
+
+    /**
+     * @see ModuleActivator#stopped()
+     */
+    public void stopped() {
+        log.info("Muzima Processor Module stopped");
+    }
+
 }

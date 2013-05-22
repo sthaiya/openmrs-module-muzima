@@ -13,39 +13,39 @@
  */
 package org.openmrs.module.muzima.extension.html;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * This class defines the links that will appear on the administration page under the
  * "muzima.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
-	
-	/**
-	 * @see AdministrationSectionExt#getMediaType()
-	 */
-	public Extension.MEDIA_TYPE getMediaType() {
-		return Extension.MEDIA_TYPE.html;
-	}
-	
-	/**
-	 * @see AdministrationSectionExt#getTitle()
-	 */
-	public String getTitle() {
-		return "muzima.title";
-	}
-	
-	/**
-	 * @see AdministrationSectionExt#getLinks()
-	 */
-	public Map<String, String> getLinks() {
-		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-		map.put("/module/muzima/configuration.form", "muzima.configuration");
-		return map;
-	}
-	
+
+    /**
+     * @see AdministrationSectionExt#getMediaType()
+     */
+    public Extension.MEDIA_TYPE getMediaType() {
+        return Extension.MEDIA_TYPE.html;
+    }
+
+    /**
+     * @see AdministrationSectionExt#getTitle()
+     */
+    public String getTitle() {
+        return "muzima.title";
+    }
+
+    /**
+     * @see AdministrationSectionExt#getLinks()
+     */
+    public Map<String, String> getLinks() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("/module/muzima/configuration.form", "muzima.configuration");
+        return map;
+    }
+
 }

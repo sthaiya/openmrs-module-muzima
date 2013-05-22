@@ -15,8 +15,8 @@ package org.openmrs.module.muzima.api.db.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.api.db.ErrorDataDao;
+import org.openmrs.module.muzima.model.ErrorData;
 
 /**
  */

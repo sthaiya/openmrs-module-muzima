@@ -18,7 +18,7 @@ import org.openmrs.OpenmrsObject;
 /**
  * It is a model class. It should extend either {@link org.openmrs.BaseOpenmrsObject} or {@link org.openmrs.BaseOpenmrsMetadata}.
  */
-public abstract class QueueData<T extends OpenmrsObject> extends AuditableData {
+public class QueueData extends AuditableData {
 
     public QueueData() {
     }
@@ -26,10 +26,4 @@ public abstract class QueueData<T extends OpenmrsObject> extends AuditableData {
     public QueueData(final AuditableData data) {
         super(data);
     }
-
-    /**
-     * Get the expected return type of the object after processing this type of object.
-     * @return the expected return type
-     */
-    public abstract Class<T> getObjectType();
 }

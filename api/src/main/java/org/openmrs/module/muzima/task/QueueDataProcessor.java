@@ -19,7 +19,9 @@ import org.openmrs.module.muzima.model.handler.QueueDataHandler;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.util.HandlerUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  */
@@ -28,9 +30,16 @@ public class QueueDataProcessor {
     public void processQueueData() {
         DataService dataService = Context.getService(DataService.class);
         List<QueueData> queueDataList = dataService.getAllQueueData();
+
+        Map<String, QueueDataHandler> handlerMap = new HashMap<String, QueueDataHandler>();
+        List<QueueDataHandler> processor = HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
+        for (QueueDataHandler queueDataHandler : processor) {
+            handlerMap.put(queueDataHandler.getHint(), queueDataHandler);
+        }
+
         for (QueueData queueData : queueDataList) {
-            QueueDataHandler processor = HandlerUtil.getPreferredHandler(QueueDataHandler.class, queueData.getClass());
-            processor.process(queueData);
+            QueueDataHandler handler = handlerMap.get(queueData.getDiscriminator());
+            handler.process(queueData);
         }
     }
 }

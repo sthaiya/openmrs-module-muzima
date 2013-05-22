@@ -9,7 +9,7 @@
         <id name="id" type="java.lang.Integer" column="id">
             <generator class="native"/>
         </id>
-        <discriminator column="object_type" type="java.lang.String"/>
+        <property name="discriminator" type="java.lang.String" column="discriminator" not-null="true" />
 
         <property name="payload" type="java.lang.String" column="payload" not-null="true" />
         <many-to-one name="dataSource" class="DataSource" column="data_source" not-null="true"/>
@@ -23,9 +23,6 @@
         <property name="dateChanged" type="java.util.Date" column="date_changed" length="19"/>
 
         <property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true"/>
-
-        <subclass name="org.openmrs.module.muzima.form.EncounterQueueData" discriminator-value="encounter" />
-        <subclass name="org.openmrs.module.muzima.form.ObsQueueData" discriminator-value="obs" />
     </class>
 
 </hibernate-mapping>

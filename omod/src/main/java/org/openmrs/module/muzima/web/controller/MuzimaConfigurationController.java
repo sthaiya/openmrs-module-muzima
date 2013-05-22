@@ -17,8 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
-import org.openmrs.module.muzima.form.EncounterQueueData;
-import org.openmrs.module.muzima.form.ObsQueueData;
+import org.openmrs.module.muzima.handler.EncounterQueueDataHandler;
+import org.openmrs.module.muzima.handler.ObsQueueDataHandler;
 import org.openmrs.module.muzima.model.QueueData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,17 +37,17 @@ public class MuzimaConfigurationController {
 
     @RequestMapping(value = "/module/muzimaprocessor/manage", method = RequestMethod.GET)
     public void manage(ModelMap model) {
-        model.addAttribute("user", Context.getAuthenticatedUser());
-
         DataService dataService = Context.getService(DataService.class);
 
         for (int i = 0; i < 10; i++) {
-            QueueData queueData = new EncounterQueueData();
+            QueueData queueData = new QueueData();
+            queueData.setDiscriminator(ObsQueueDataHandler.DISCRIMINATOR_VALUE);
             dataService.saveQueueData(queueData);
         }
 
         for (int i = 0; i < 10; i++) {
-            QueueData queueData = new ObsQueueData();
+            QueueData queueData = new QueueData();
+            queueData.setDiscriminator(EncounterQueueDataHandler.DISCRIMINATOR_VALUE);
             dataService.saveQueueData(queueData);
         }
 
@@ -55,7 +55,7 @@ public class MuzimaConfigurationController {
         for (QueueData queueData : queueDatas) {
             System.out.println("Form data");
             System.out.println("Uuid: " + queueData.getUuid());
-            System.out.println("Type: " + queueData.getObjectType());
+            System.out.println("Type: " + queueData.getDiscriminator());
         }
     }
 }

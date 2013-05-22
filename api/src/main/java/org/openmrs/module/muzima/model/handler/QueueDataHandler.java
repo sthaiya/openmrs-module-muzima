@@ -20,4 +20,6 @@ import org.openmrs.module.muzima.model.QueueData;
 public interface QueueDataHandler {
 
     void process(final QueueData queueData);
+
+    String getHint();
 }

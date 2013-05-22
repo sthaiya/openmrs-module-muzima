@@ -10,7 +10,7 @@
             <generator class="native"/>
         </id>
 
-        <property name="objectType" type="java.lang.String" column="object_type" not-null="true"/>
+        <property name="discriminator" type="java.lang.String" column="discriminator" not-null="true"/>
 
         <property name="payload" type="java.lang.String" column="payload" not-null="true" />
         <many-to-one name="dataSource" class="DataSource" column="data_source" not-null="true"/>

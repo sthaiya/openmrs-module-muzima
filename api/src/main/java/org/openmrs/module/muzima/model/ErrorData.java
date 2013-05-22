@@ -21,8 +21,6 @@ public class ErrorData extends AuditableData {
 
     private String message;
 
-    private String objectType;
-
     private Date dateProcessed;
 
     public ErrorData() {
@@ -38,14 +36,6 @@ public class ErrorData extends AuditableData {
 
     public void setMessage(final String message) {
         this.message = message;
-    }
-
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(final String objectType) {
-        this.objectType = objectType;
     }
 
     public Date getDateProcessed() {

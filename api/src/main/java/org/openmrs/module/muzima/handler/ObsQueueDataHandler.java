@@ -11,14 +11,14 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzima.form.handler;
+package org.openmrs.module.muzima.handler;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
-import org.openmrs.module.muzima.form.ObsQueueData;
 import org.openmrs.module.muzima.model.ArchiveData;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.model.handler.QueueDataHandler;
@@ -27,8 +27,10 @@ import java.util.Date;
 
 /**
  */
-@Handler(supports = ObsQueueData.class, order = 50)
+@Handler(supports = QueueData.class, order = 50)
 public class ObsQueueDataHandler implements QueueDataHandler {
+
+    public static final String DISCRIMINATOR_VALUE = "obs";
 
     private final Log log = LogFactory.getLog(ObsQueueDataHandler.class);
 
@@ -39,14 +41,18 @@ public class ObsQueueDataHandler implements QueueDataHandler {
         log.info("Processing encounter form data: " + queueData.getUuid());
 
         DataService dataService = Context.getService(DataService.class);
-        ObsQueueData obsQueueData = (ObsQueueData) queueData;
 
-        ArchiveData archiveData = new ArchiveData(obsQueueData);
+        ArchiveData archiveData = new ArchiveData(queueData);
         archiveData.setDateArchived(new Date());
-        archiveData.setObjectType(ObsQueueData.DISCRIMINATOR_VALUE);
+        archiveData.setDiscriminator(queueData.getDiscriminator());
         archiveData.setMessage(ObsQueueDataHandler.ARCHIVING_MESSAGE);
         dataService.saveArchiveData(archiveData);
 
         dataService.purgeQueueData(queueData);
+    }
+
+    @Override
+    public String getHint() {
+        return DISCRIMINATOR_VALUE;
     }
 }

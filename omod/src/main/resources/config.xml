@@ -3,23 +3,20 @@
 <module configVersion="1.2">
 
     <!-- Module Properties -->
-    <id>${}</id>
+    <id>${parent.artifactId}</id>
     <name>Muzima Processor Module</name>
     <version>1.0.0</version>
-    <package>org.openmrs.module.muzima</package>
+    <package>${parent.groupId}.${parent.artifactId}</package>
     <author>Muzima Team</author>
     <description>
         Muzima module to process forms from mobile devices.
     </description>
     <updateURL>https://modules.openmrs.org/modules/download/muzimaprocessor/update.rdf</updateURL>
-    <require_version>1.8.4</require_version>
+    <require_version>${openMRSVersion}</require_version>
     <!-- / Module Properties -->
 
     <require_modules>
         <require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
-        <require_module version="${serializationxstreamVersion}">org.openmrs.module.serialization.xstream
-        </require_module>
-        <require_module version="${reportingVersion}">org.openmrs.module.reporting</require_module>
         <require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
     </require_modules>
 

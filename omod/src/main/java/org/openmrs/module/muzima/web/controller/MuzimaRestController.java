@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  */
 @Controller
-@RequestMapping("/rest/" + RestConstants.VERSION_1 + "/muzima")
+@RequestMapping("/rest/" + RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE)
 public class MuzimaRestController extends MainResourceController {
 
-    private final String MUZIMA_NAMESPACE = "/muzima";
+    public static final String MUZIMA_NAMESPACE = "/muzima";
 
     /**
      * @see org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController#getNamespace()

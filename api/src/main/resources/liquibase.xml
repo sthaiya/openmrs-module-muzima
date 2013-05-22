@@ -58,7 +58,7 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="object_type" type="varchar(255)">
+            <column name="discriminator" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="data_source" type="int">
@@ -106,7 +106,7 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="object_type" type="varchar(255)">
+            <column name="discriminator" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="data_source" type="int">
@@ -154,7 +154,7 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="object_type" type="varchar(255)">
+            <column name="discriminator" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="data_source" type="int">

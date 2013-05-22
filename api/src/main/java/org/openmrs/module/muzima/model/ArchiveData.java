@@ -22,8 +22,6 @@ public class ArchiveData extends AuditableData {
 
     private String message;
 
-    private String objectType;
-
     private Date dateArchived;
 
     public ArchiveData() {
@@ -39,14 +37,6 @@ public class ArchiveData extends AuditableData {
 
     public void setMessage(final String message) {
         this.message = message;
-    }
-
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(final String objectType) {
-        this.objectType = objectType;
     }
 
     public Date getDateArchived() {

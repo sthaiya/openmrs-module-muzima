@@ -14,6 +14,7 @@
 package org.openmrs.module.muzima.model;
 
 import org.openmrs.Auditable;
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.User;
 
@@ -21,23 +22,17 @@ import java.util.Date;
 
 /**
  */
-public abstract class AuditableData extends BaseOpenmrsObject implements Data, Auditable {
+public abstract class AuditableData extends BaseOpenmrsData implements Data, Auditable {
 
     private Integer id;
 
     private String payload;
 
+    private String discriminator;
+
     private DataSource dataSource;
 
     /******* Audit information *******/
-
-    private User creator;
-
-    private Date dateCreated;
-
-    private User changedBy;
-
-    private Date dateChanged;
 
     public AuditableData() {
     }
@@ -83,6 +78,24 @@ public abstract class AuditableData extends BaseOpenmrsObject implements Data, A
     }
 
     /**
+     * Get the discriminating value to determine which handler to execute.
+     *
+     * @return the discriminating value to determine which handler to execute.
+     */
+    public String getDiscriminator() {
+        return discriminator;
+    }
+
+    /**
+     * Set the discriminating value to determine which handler to execute.
+     *
+     * @param discriminator the discriminating value to determine which handler to execute.
+     */
+    public void setDiscriminator(final String discriminator) {
+        this.discriminator = discriminator;
+    }
+
+    /**
      * Get the data source of this data.
      *
      * @return the data source of this data.
@@ -99,69 +112,5 @@ public abstract class AuditableData extends BaseOpenmrsObject implements Data, A
      */
     public void setDataSource(final DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    /**
-     * @return User - the user who created the object
-     */
-    @Override
-    public User getCreator() {
-        return creator;
-    }
-
-    /**
-     * @param creator - the user who created the object
-     */
-    @Override
-    public void setCreator(final User creator) {
-        this.creator = creator;
-    }
-
-    /**
-     * @return Date - the date the object was created
-     */
-    @Override
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    /**
-     * @param dateCreated - the date the object was created
-     */
-    @Override
-    public void setDateCreated(final Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    /**
-     * @return User - the user who last changed the object
-     */
-    @Override
-    public User getChangedBy() {
-        return changedBy;
-    }
-
-    /**
-     * @param changedBy - the user who last changed the object
-     */
-    @Override
-    public void setChangedBy(final User changedBy) {
-        this.changedBy = changedBy;
-    }
-
-    /**
-     * @return Date - the date the object was last changed
-     */
-    @Override
-    public Date getDateChanged() {
-        return dateChanged;
-    }
-
-    /**
-     * @param dateChanged - the date the object was last changed
-     */
-    @Override
-    public void setDateChanged(final Date dateChanged) {
-        this.dateChanged = dateChanged;
     }
 }

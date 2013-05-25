@@ -15,16 +15,22 @@ package org.openmrs.module.muzima.web.resource;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
+import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
+import org.openmrs.module.webservices.rest.SimpleObject;
+import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.response.ConversionException;
+import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 /**
@@ -94,7 +100,8 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      */
     @Override
     public QueueData save(final QueueData delegate) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        DataService dataService = Context.getService(DataService.class);
+        return dataService.saveQueueData(delegate);
     }
 
     /**
@@ -126,5 +133,67 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
 
     public String getDisplayString(QueueData message) {
         return message.getDiscriminator();
+    }
+
+    /**
+     * Gets a description of resource's properties which can be set on creation.
+     *
+     * @return the description
+     * @throws org.openmrs.module.webservices.rest.web.response.ResponseException
+     *
+     */
+    @Override
+    public DelegatingResourceDescription getCreatableProperties() throws ResourceDoesNotSupportOperationException {
+        DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
+        delegatingResourceDescription.addRequiredProperty("dataSource");
+        delegatingResourceDescription.addRequiredProperty("payload");
+        delegatingResourceDescription.addRequiredProperty("discriminator");
+        return delegatingResourceDescription;
+    }
+
+    /**
+     * Gets a description of resource's properties which can be edited.
+     * <p/>
+     * By default delegates to {@link #getCreatableProperties()} and removes sub-resources returned
+     * by {@link #getPropertiesToExposeAsSubResources()}.
+     *
+     * @return the description
+     * @throws org.openmrs.module.webservices.rest.web.response.ResponseException
+     *
+     */
+    @Override
+    public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
+        return new DelegatingResourceDescription();
+    }
+
+    /**
+     * It is empty, because we set that already in the create method.
+     *
+     * @param queueData the queue data object.
+     * @param dataSourceUuid the uuid of the data source.
+     */
+    @PropertySetter("dataSource")
+    public static void setDataSource(final QueueData queueData, final String dataSourceUuid) {
+    }
+
+    /**
+     * @see org.openmrs.module.webservices.rest.web.resource.api.Creatable#create(org.openmrs.module.webservices.rest.SimpleObject, org.openmrs.module.webservices.rest.web.RequestContext)
+     */
+    @Override
+    public Object create(final SimpleObject propertiesToCreate, final RequestContext context) throws ResponseException{
+        Object object = propertiesToCreate.get("dataSource");
+        if (object == null) {
+            throw new ConversionException("The data source property is missing");
+        }
+
+        DataService dataService = Context.getService(DataService.class);
+        DataSource dataSource = dataService.getDataSourceByUuid(object.toString());
+
+        QueueData queueData = new QueueData();
+        queueData.setDataSource(dataSource);
+
+        setConvertedProperties(queueData, propertiesToCreate, getCreatableProperties(), true);
+        queueData = save(queueData);
+        return ConversionUtil.convertToRepresentation(queueData, Representation.DEFAULT);
     }
 }

@@ -2,52 +2,56 @@
 
 <module configVersion="1.2">
 
-	<!-- Module Properties -->
-	<id>${project.parent.artifactId}</id>
-	<name>${project.parent.name}</name>
-	<version>${project.parent.version}</version>
-	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
-	<author>Muzima Team</author>
-	<description>
-		${project.parent.description}
-	</description>
-	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
-	<require_version>${openMRSVersion}</require_version>
-	<!-- / Module Properties -->
+    <!-- Module Properties -->
+    <id>${parent.artifactId}</id>
+    <name>Muzima Processor Module</name>
+    <version>1.0.0</version>
+    <package>${parent.groupId}.${parent.artifactId}</package>
+    <author>Muzima Team</author>
+    <description>
+        Muzima module to process forms from mobile devices.
+    </description>
+    <updateURL>https://modules.openmrs.org/modules/download/muzimaprocessor/update.rdf</updateURL>
+    <require_version>${openMRSVersion}</require_version>
+    <!-- / Module Properties -->
 
-	
-	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.MuzimaProcessorActivator</activator>
-	
-	
-	<!-- Adds link to admin page -->
-	<extension>
-		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
-	</extension>
-	
-	<!-- Maps hibernate file's, if present -->
-	<mappingFiles>
-				
-		Processor.hbm.xml
-				
-	</mappingFiles>
+    <require_modules>
+        <require_module version="${uiframeworkVersion}">org.openmrs.module.uiframework</require_module>
+        <require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
+    </require_modules>
 
-	<!-- Internationalization -->
-	<!-- All message codes should start with ${project.parent.artifactId}. -->
-	<messages>
-		<lang>en</lang>
-		<file>messages.properties</file>
-	</messages>
-	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
-	</messages>
-	<!-- /Internationalization -->
+    <!-- Module Activator -->
+    <activator>org.openmrs.module.muzima.MuzimaActivator</activator>
+
+
+    <!-- Adds link to admin page -->
+    <extension>
+        <point>org.openmrs.admin.list</point>
+        <class>org.openmrs.module.muzima.extension.html.AdminList</class>
+    </extension>
+
+    <!-- Maps hibernate file's, if present -->
+    <mappingFiles>
+        ArchiveData.hbm.xml
+        DataSource.hbm.xml
+        ErrorData.hbm.xml
+        QueueData.hbm.xml
+    </mappingFiles>
+
+    <!-- Internationalization -->
+    <!-- All message codes should start with muzima. -->
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+    <messages>
+        <lang>fr</lang>
+        <file>messages_fr.properties</file>
+    </messages>
+    <messages>
+        <lang>es</lang>
+        <file>messages_es.properties</file>
+    </messages>
+    <!-- /Internationalization -->
 
 </module>
-

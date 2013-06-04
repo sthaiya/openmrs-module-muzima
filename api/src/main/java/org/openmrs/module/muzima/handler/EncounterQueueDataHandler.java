@@ -13,42 +13,106 @@
  */
 package org.openmrs.module.muzima.handler;
 
+import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Form;
+import org.openmrs.Location;
+import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.User;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.muzima.api.service.DataService;
-import org.openmrs.module.muzima.model.ArchiveData;
+import org.openmrs.module.muzima.exception.QueueProcessorException;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.model.handler.QueueDataHandler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  */
 @Handler(supports = QueueData.class, order = 50)
 public class EncounterQueueDataHandler implements QueueDataHandler {
 
-    public static final String DISCRIMINATOR_VALUE = "encounter";
+    private static final String DISCRIMINATOR_VALUE = "encounter";
+
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final Log log = LogFactory.getLog(EncounterQueueDataHandler.class);
 
-    private static final String ARCHIVING_MESSAGE = "Encounter form queue data archived!";
-
     @Override
-    public void process(final QueueData queueData) {
+    public void process(final QueueData queueData) throws QueueProcessorException {
         log.info("Processing encounter form data: " + queueData.getUuid());
+        String payload = queueData.getPayload();
 
-        DataService dataService = Context.getService(DataService.class);
+        Encounter encounter = new Encounter();
 
-        ArchiveData archiveData = new ArchiveData(queueData);
-        archiveData.setDateArchived(new Date());
-        archiveData.setDiscriminator(queueData.getDiscriminator());
-        archiveData.setMessage(EncounterQueueDataHandler.ARCHIVING_MESSAGE);
-        dataService.saveArchiveData(archiveData);
+        String personUuid = JsonPath.read(payload, "$['person']['person.uuid']");
+        Patient patient = Context.getPatientService().getPatientByUuid(personUuid);
+        encounter.setPatient(patient);
 
-        dataService.purgeQueueData(queueData);
+        String formUuid = JsonPath.read(payload, "$['encounter']['form.uuid']");
+        Form form = Context.getFormService().getFormByUuid(formUuid);
+        encounter.setForm(form);
+
+        String encounterTypeUuid = JsonPath.read(payload, "$['encounter']['encounterType.uuid']");
+        EncounterType encounterType = Context.getEncounterService().getEncounterTypeByUuid(encounterTypeUuid);
+        encounter.setEncounterType(encounterType);
+
+        String providerUuid = JsonPath.read(payload, "$['encounter']['provider.uuid']");
+        User user = Context.getUserService().getUserByUuid(providerUuid);
+        encounter.setProvider(user);
+
+        String locationUuid = JsonPath.read(payload, "$['encounter']['location.uuid']");
+        Location location = Context.getLocationService().getLocationByUuid(locationUuid);
+        encounter.setLocation(location);
+
+        String encounterDatetime = JsonPath.read(payload, "$['encounter']['datetime']");
+        encounter.setEncounterDatetime(parseDate(encounterDatetime));
+
+        List<Object> obsObjects = JsonPath.read(payload, "$['obs']");
+        for (Object obsObject : obsObjects) {
+            Obs obs = new Obs();
+
+            String conceptUuid = JsonPath.read(obsObject, "$['uuid']");
+            Concept concept = Context.getConceptService().getConceptByUuid(conceptUuid);
+            obs.setConcept(concept);
+
+            String value = JsonPath.read(obsObject, "$['value']").toString();
+            if (concept.getDatatype().isNumeric()) {
+                obs.setValueNumeric(Double.parseDouble(value));
+            } else if (concept.getDatatype().isDate()
+                    || concept.getDatatype().isTime()
+                    || concept.getDatatype().isDateTime()) {
+                obs.setValueDatetime(parseDate(value));
+            } else if (concept.getDatatype().isCoded()) {
+                Concept valueCoded = Context.getConceptService().getConceptByUuid(value);
+                obs.setValueCoded(valueCoded);
+            } else if (concept.getDatatype().isText()) {
+                obs.setValueText(value);
+            }
+            encounter.addObs(obs);
+        }
+
+        Context.getEncounterService().saveEncounter(encounter);
+    }
+
+    private Date parseDate(final String dateValue) {
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateValue);
+        } catch (ParseException e) {
+            log.error("Unable to parse date data for encounter!", e);
+        }
+        return date;
     }
 
     @Override

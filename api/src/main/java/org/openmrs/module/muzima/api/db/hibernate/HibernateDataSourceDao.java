@@ -50,6 +50,7 @@ public class HibernateDataSourceDao extends SingleClassHibernateDAO<DataSource> 
     public DataSource getDataByUuid(final String uuid) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
+        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
         return (DataSource) criteria.uniqueResult();
     }
 
@@ -70,12 +71,14 @@ public class HibernateDataSourceDao extends SingleClassHibernateDAO<DataSource> 
         // only use this matching if we're getting non empty name string
         if (StringUtils.isNotEmpty(name)) {
             MatchMode matchMode = MatchMode.START;
-            if (exactMatchOnly)
+            if (exactMatchOnly) {
                 matchMode = MatchMode.EXACT;
+            }
             criteria.add(Restrictions.like("name", name, matchMode));
         }
-        if (!includeVoided)
+        if (!includeVoided) {
             criteria.add(Restrictions.eq("voided", false));
+        }
         return criteria.list();
     }
 

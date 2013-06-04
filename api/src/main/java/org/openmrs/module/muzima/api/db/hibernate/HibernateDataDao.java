@@ -75,6 +75,7 @@ public abstract class HibernateDataDao<T extends Data> extends SingleClassHibern
     public T getDataByUuid(final String uuid) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
         return (T) criteria.uniqueResult();
     }
 

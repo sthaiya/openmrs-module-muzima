@@ -35,7 +35,6 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data {
     }
 
     public AuditableData(final AuditableData data) {
-        setId(data.getId());
         setPayload(data.getPayload());
         setDataSource(data.getDataSource());
     }

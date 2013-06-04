@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.muzima.web.resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
@@ -30,8 +32,15 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ConversionException;
+import org.openmrs.module.webservices.rest.web.response.IllegalPropertyException;
+import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Write brief description about the class here.
@@ -66,7 +75,6 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      */
     @Override
     protected void delete(final QueueData delegate, final String reason, final RequestContext context) throws ResponseException {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -80,7 +88,6 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      */
     @Override
     public void purge(final QueueData delegate, final RequestContext context) throws ResponseException {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -177,20 +184,57 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
     }
 
     /**
+     * It is empty, because we set that already in the create method.
+     *
+     * @param queueData the queue data object.
+     * @param payloadMap the uuid of the data source.
+     */
+    @PropertySetter("payload")
+    public static void setPayload(final QueueData queueData, final Map<String, Object> payloadMap) {
+    }
+
+    /**
      * @see org.openmrs.module.webservices.rest.web.resource.api.Creatable#create(org.openmrs.module.webservices.rest.SimpleObject, org.openmrs.module.webservices.rest.web.RequestContext)
      */
     @Override
     public Object create(final SimpleObject propertiesToCreate, final RequestContext context) throws ResponseException{
-        Object object = propertiesToCreate.get("dataSource");
-        if (object == null) {
-            throw new ConversionException("The data source property is missing");
+        Object dataSourceObject = propertiesToCreate.get("dataSource");
+        if (dataSourceObject == null) {
+            throw new ConversionException("The data source property is missing!");
         }
 
         DataService dataService = Context.getService(DataService.class);
-        DataSource dataSource = dataService.getDataSourceByUuid(object.toString());
+        DataSource dataSource = dataService.getDataSourceByUuid(dataSourceObject.toString());
+        if (dataSource == null) {
+            List<DataSource> dataSources = dataService.getAllDataSource(dataSourceObject.toString(), true, false);
+            if (dataSources.size() != 1) {
+                throw new IllegalPropertyException("Unable to uniquely identify data source object.");
+            }
+            dataSource = dataSources.get(0);
+        }
+
+        Object payloadObject = propertiesToCreate.get("payload");
+        if (payloadObject == null) {
+            throw new ConversionException("The payload property is missing!");
+        }
+
+        String payload;
+        if (payloadObject instanceof Map) {
+            StringWriter stringWriter = new StringWriter();
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                objectMapper.writeValue(stringWriter, payloadObject);
+            } catch (IOException e) {
+                throw new ConversionException("Unable to convert payload property!", e);
+            }
+            payload = stringWriter.toString();
+        } else {
+            payload = payloadObject.toString();
+        }
 
         QueueData queueData = new QueueData();
         queueData.setDataSource(dataSource);
+        queueData.setPayload(payload);
 
         setConvertedProperties(queueData, propertiesToCreate, getCreatableProperties(), true);
         queueData = save(queueData);

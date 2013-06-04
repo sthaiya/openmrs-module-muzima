@@ -173,11 +173,14 @@ public interface DataService extends OpenmrsService {
     /**
      * Return all saved data source.
      *
+     * @param name           the name of the data.
+     * @param exactMatchOnly flag whether matching should be exact.
+     * @param includeVoided  flag whether voided data should be returned or not.
      * @return all saved data source including voided data source.
      * @should return empty list when no data source are saved in the database.
      * @should return all saved data source.
      */
-    List<DataSource> getAllDataSource();
+    List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeVoided);
 
     /**
      * Save data source into the database.

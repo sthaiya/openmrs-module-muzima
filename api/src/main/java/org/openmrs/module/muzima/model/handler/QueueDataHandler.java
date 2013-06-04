@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.model.handler;
 
+import org.openmrs.module.muzima.exception.QueueProcessorException;
 import org.openmrs.module.muzima.model.QueueData;
 
 /**
@@ -23,7 +24,7 @@ public interface QueueDataHandler {
      *
      * @param queueData the queued data.
      */
-    void process(final QueueData queueData);
+    void process(final QueueData queueData) throws QueueProcessorException;
 
     /**
      * Flag whether the current queue data handler can handle the queue data.

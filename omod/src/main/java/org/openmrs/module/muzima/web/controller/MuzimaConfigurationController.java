@@ -43,28 +43,5 @@ public class MuzimaConfigurationController {
         DataSource dataSource = new DataSource();
         dataSource.setName("Example of Data Source");
         dataService.saveDataSource(dataSource);
-
-        for (int i = 0; i < 10; i++) {
-            QueueData queueData = new QueueData();
-            queueData.setDataSource(dataSource);
-            queueData.setPayload("Example of obs queue data payload.");
-            queueData.setDiscriminator(ObsQueueDataHandler.DISCRIMINATOR_VALUE);
-            dataService.saveQueueData(queueData);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            QueueData queueData = new QueueData();
-            queueData.setDataSource(dataSource);
-            queueData.setPayload("Example of encounter queue data payload.");
-            queueData.setDiscriminator(EncounterQueueDataHandler.DISCRIMINATOR_VALUE);
-            dataService.saveQueueData(queueData);
-        }
-
-        List<QueueData> queueDatas = dataService.getAllQueueData();
-        for (QueueData queueData : queueDatas) {
-        System.out.println("Queued data:");
-            System.out.println("Uuid: " + queueData.getUuid());
-            System.out.println("Type: " + queueData.getDiscriminator());
-        }
     }
 }

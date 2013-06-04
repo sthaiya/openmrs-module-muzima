@@ -99,10 +99,10 @@
     <changeSet id="formprocessor-2013-04-18-10-52" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_archived_data"/>
+                <tableExists tableName="formprocessor_archive_data"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_archived_data">
+        <createTable tableName="formprocessor_archive_data">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -113,6 +113,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_archived" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="creator" type="int">
@@ -133,14 +139,14 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_archived_data_creator"
-                                 baseTableName="formprocessor_archived_data" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="formprocessor_archive_data_creator"
+                                 baseTableName="formprocessor_archive_data" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_archived_data_changed_by"
-                                 baseTableName="formprocessor_archived_data" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="formprocessor_archive_data_changed_by"
+                                 baseTableName="formprocessor_archive_data" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_archived_data_data_source"
-                                 baseTableName="formprocessor_archived_data" baseColumnNames="data_source"
+        <addForeignKeyConstraint constraintName="formprocessor_archive_data_data_source"
+                                 baseTableName="formprocessor_archive_data" baseColumnNames="data_source"
                                  referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
     </changeSet>
 
@@ -161,6 +167,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_processed" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="creator" type="int">

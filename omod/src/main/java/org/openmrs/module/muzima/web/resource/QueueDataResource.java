@@ -75,6 +75,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      */
     @Override
     protected void delete(final QueueData delegate, final String reason, final RequestContext context) throws ResponseException {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -88,6 +89,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      */
     @Override
     public void purge(final QueueData delegate, final RequestContext context) throws ResponseException {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -138,7 +140,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         return null;
     }
 
-    public String getDisplayString(QueueData message) {
+    public String getDisplayString(final QueueData message) {
         return message.getDiscriminator();
     }
 

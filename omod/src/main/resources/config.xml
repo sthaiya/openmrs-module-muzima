@@ -36,6 +36,7 @@
         DataSource.hbm.xml
         ErrorData.hbm.xml
         QueueData.hbm.xml
+        NotificationData.hbm.xml
     </mappingFiles>
 
     <!-- Internationalization -->

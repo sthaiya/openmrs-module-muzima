@@ -13,17 +13,22 @@
  */
 package org.openmrs.module.muzima.api.service.impl;
 
+import org.openmrs.Person;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.muzima.api.db.ArchiveDataDao;
 import org.openmrs.module.muzima.api.db.DataSourceDao;
 import org.openmrs.module.muzima.api.db.ErrorDataDao;
+import org.openmrs.module.muzima.api.db.NotificationDataDao;
 import org.openmrs.module.muzima.api.db.QueueDataDao;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.ArchiveData;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.NotificationData;
 import org.openmrs.module.muzima.model.QueueData;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +42,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     private ArchiveDataDao archiveDataDao;
 
     private DataSourceDao dataSourceDao;
+
+    private NotificationDataDao notificationDataDao;
 
     public QueueDataDao getQueueDataDao() {
         return queueDataDao;
@@ -68,6 +75,14 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
 
     public void setDataSourceDao(final DataSourceDao dataSourceDao) {
         this.dataSourceDao = dataSourceDao;
+    }
+
+    public NotificationDataDao getNotificationDataDao() {
+        return notificationDataDao;
+    }
+
+    public void setNotificationDataDao(final NotificationDataDao notificationDataDao) {
+        this.notificationDataDao = notificationDataDao;
     }
 
     /**
@@ -282,7 +297,6 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved data source.
      *
-     *
      * @param name           the name of the data.
      * @param exactMatchOnly flag whether matching should be exact.
      * @param includeVoided  flag whether voided data should be returned or not.
@@ -316,5 +330,105 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     @Override
     public void purgeDataSource(final DataSource dataSource) {
         getDataSourceDao().delete(dataSource);
+    }
+
+    /**
+     * Return the notification data with the given id.
+     *
+     * @param id the notification data id.
+     * @return the notification data with the matching id.
+     * @should return notification data with matching id.
+     * @should return null when no notification data with matching id.
+     */
+    @Override
+    public NotificationData getNotificationData(final Integer id) {
+        return getNotificationDataDao().getData(id);
+    }
+
+    /**
+     * Return the notification data with the given uuid.
+     *
+     * @param uuid the notification data uuid.
+     * @return the notification data with the matching uuid.
+     * @should return notification data with matching uuid.
+     * @should return null when no notification data with matching uuid.
+     */
+    @Override
+    public NotificationData getNotificationDataByUuid(final String uuid) {
+        return getNotificationDataDao().getDataByUuid(uuid);
+    }
+
+    /**
+     * Return all saved notification data.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public List<NotificationData> getAllNotificationData() {
+        return getNotificationDataDao().getAllData();
+    }
+
+    /**
+     * Return all saved notification data for a particular person.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public List<NotificationData> getAllNotificationDataFor(final Person person) {
+        return getNotificationDataDao().getNotificationFor(person);
+    }
+
+    /**
+     * Return all saved notification data from a particular person.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public List<NotificationData> getAllNotificationDataFrom(final Person person) {
+        return getNotificationDataDao().getNotificationFrom(person);
+    }
+
+    /**
+     * Save notification data into the database.
+     *
+     * @param notificationData the notification data.
+     * @return saved notification data.
+     * @should save notification data into the database.
+     */
+    @Override
+    public NotificationData saveNotificationData(final NotificationData notificationData) {
+        return getNotificationDataDao().saveOrUpdate(notificationData);
+    }
+
+    /**
+     * Delete notification data from the database.
+     *
+     * @param notificationData the notification data
+     * @should remove notification data from the database
+     */
+    @Override
+    public void purgeNotificationData(final NotificationData notificationData) {
+        getNotificationDataDao().purgeData(notificationData);
+    }
+
+    /**
+     * Void a single notification data.
+     *
+     * @param notificationData the notification data to be voided.
+     * @return the voided notification data.
+     */
+    @Override
+    public NotificationData voidNotificationData(final NotificationData notificationData, final String reason) {
+        notificationData.setVoided(Boolean.TRUE);
+        notificationData.setVoidedBy(Context.getAuthenticatedUser());
+        notificationData.setDateVoided(new Date());
+        notificationData.setVoidReason(reason);
+        return saveNotificationData(notificationData);
     }
 }

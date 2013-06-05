@@ -75,12 +75,6 @@
             </column>
             <column name="changed_by" type="int"/>
             <column name="date_changed" type="datetime"/>
-            <column name="retired" type="tinyint" defaultValueNumeric="0">
-                <constraints nullable="false"/>
-            </column>
-            <column name="retired_by" type="int"/>
-            <column name="date_retired" type="datetime"/>
-            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
@@ -129,12 +123,6 @@
             </column>
             <column name="changed_by" type="int"/>
             <column name="date_changed" type="datetime"/>
-            <column name="retired" type="tinyint" defaultValueNumeric="0">
-                <constraints nullable="false"/>
-            </column>
-            <column name="retired_by" type="int"/>
-            <column name="date_retired" type="datetime"/>
-            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
@@ -183,12 +171,6 @@
             </column>
             <column name="changed_by" type="int"/>
             <column name="date_changed" type="datetime"/>
-            <column name="retired" type="tinyint" defaultValueNumeric="0">
-                <constraints nullable="false"/>
-            </column>
-            <column name="retired_by" type="int"/>
-            <column name="date_retired" type="datetime"/>
-            <column name="retire_reason" type="varchar(255)" defaultValue="null"/>
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true"/>
             </column>
@@ -202,6 +184,63 @@
         <addForeignKeyConstraint constraintName="formprocessor_error_data_data_source"
                                  baseTableName="formprocessor_error_data" baseColumnNames="data_source"
                                  referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="formprocessor-2013-04-18-10-54" author="nribeka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="formprocessor_notification_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="formprocessor_notification_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="subject" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="for_person" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_person" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="formprocessor_notification_data_creator"
+                                 baseTableName="formprocessor_notification_data" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_notification_data_changed_by"
+                                 baseTableName="formprocessor_notification_data" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_notification_data_voided_by"
+                                 baseTableName="formprocessor_notification_data" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_notification_data_from"
+                                 baseTableName="formprocessor_notification_data" baseColumnNames="from_person"
+                                 referencedTableName="person" referencedColumnNames="person_id"/>
+        <addForeignKeyConstraint constraintName="formprocessor_notification_data_for"
+                                 baseTableName="formprocessor_notification_data" baseColumnNames="for_person"
+                                 referencedTableName="person" referencedColumnNames="person_id"/>
     </changeSet>
 
 </databaseChangeLog>

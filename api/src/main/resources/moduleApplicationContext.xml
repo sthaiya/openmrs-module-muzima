@@ -44,6 +44,13 @@
                                     </property>
                                 </bean>
                             </property>
+                            <property name="notificationDataDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateNotificationDataDao">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
                         </bean>
                     </property>
                     <property name="preInterceptors">

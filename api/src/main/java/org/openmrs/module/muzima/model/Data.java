@@ -23,18 +23,4 @@ public interface Data {
      * @return the payload of this data.
      */
     String getPayload();
-
-    /**
-     * Get the data source of this data.
-     *
-     * @return the data source of this data.
-     */
-    DataSource getDataSource();
-
-    /**
-     * Get the discriminating value to determine which handler to execute.
-     *
-     * @return the discriminating value to determine which handler to execute.
-     */
-    String getDiscriminator();
 }

@@ -1,9 +1,11 @@
 package org.openmrs.module.muzima.api.service;
 
+import org.openmrs.Person;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.muzima.model.ArchiveData;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.NotificationData;
 import org.openmrs.module.muzima.model.QueueData;
 
 import java.util.List;
@@ -198,4 +200,76 @@ public interface DataService extends OpenmrsService {
      * @should remove data source from the database
      */
     void purgeDataSource(final DataSource DataSource);
+
+    /**
+     * Return the notification data with the given id.
+     *
+     * @param id the notification data id.
+     * @return the notification data with the matching id.
+     * @should return notification data with matching id.
+     * @should return null when no notification data with matching id.
+     */
+    NotificationData getNotificationData(final Integer id);
+
+    /**
+     * Return the notification data with the given uuid.
+     *
+     * @param uuid the notification data uuid.
+     * @return the notification data with the matching uuid.
+     * @should return notification data with matching uuid.
+     * @should return null when no notification data with matching uuid.
+     */
+    NotificationData getNotificationDataByUuid(final String uuid);
+
+    /**
+     * Return all saved notification data.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    List<NotificationData> getAllNotificationData();
+
+    /**
+     * Return all saved notification data for a particular person.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    List<NotificationData> getAllNotificationDataFor(final Person person);
+
+    /**
+     * Return all saved notification data from a particular person.
+     *
+     * @return all saved notification data including voided notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    List<NotificationData> getAllNotificationDataFrom(final Person person);
+
+    /**
+     * Save notification data into the database.
+     *
+     * @param notificationData the notification data.
+     * @return saved notification data.
+     * @should save notification data into the database.
+     */
+    NotificationData saveNotificationData(final NotificationData notificationData);
+
+    /**
+     * Delete notification data from the database.
+     *
+     * @param notificationData the notification data
+     * @should remove notification data from the database
+     */
+    void purgeNotificationData(final NotificationData notificationData);
+
+    /**
+     * Void a single notification data.
+     *
+     * @param notificationData the notification data to be voided.
+     * @return the voided notification data.
+     */
+    NotificationData voidNotificationData(final NotificationData notificationData, final String reason);
 }

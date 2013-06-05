@@ -79,7 +79,6 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data {
      *
      * @return the discriminating value to determine which handler to execute.
      */
-    @Override
     public String getDiscriminator() {
         return discriminator;
     }
@@ -98,7 +97,6 @@ public abstract class AuditableData extends BaseOpenmrsData implements Data {
      *
      * @return the data source of this data.
      */
-    @Override
     public DataSource getDataSource() {
         return dataSource;
     }

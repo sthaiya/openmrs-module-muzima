@@ -1,13 +1,12 @@
 package org.openmrs.module.muzima.api.db;
 
 import org.openmrs.module.muzima.model.DataSource;
-import org.openmrs.ui.framework.db.SingleClassDAO;
 
 import java.util.List;
 
 /**
  */
-public interface DataSourceDao extends SingleClassDAO<DataSource> {
+public interface DataSourceDao extends SingleClassDao<DataSource> {
 
     /**
      * Return the data source with the given uuid.

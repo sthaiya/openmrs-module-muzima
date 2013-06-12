@@ -21,7 +21,6 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.muzima.api.db.DataDao;
 import org.openmrs.module.muzima.model.Data;
 import org.openmrs.module.muzima.model.handler.DataHandler;
-import org.openmrs.ui.framework.db.hibernate.SingleClassHibernateDAO;
 import org.openmrs.util.HandlerUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,7 @@ import java.util.List;
 
 /**
  */
-public abstract class HibernateDataDao<T extends Data> extends SingleClassHibernateDAO<T> implements DataDao<T> {
+public abstract class HibernateDataDao<T extends Data> extends HibernateSingleClassDao<T> implements DataDao<T> {
 
     private final Log log = LogFactory.getLog(HibernateDataDao.class);
 

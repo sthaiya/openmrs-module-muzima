@@ -34,7 +34,7 @@
     </modules>
 
     <properties>
-        <openMRSVersion>1.9.3</openMRSVersion>
+        <openMRSVersion>1.8.2</openMRSVersion>
         <webservicesRestVersion>2.1</webservicesRestVersion>
         <uiframeworkVersion>2.5.2</uiframeworkVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,14 +66,6 @@
                 <version>0.8.1</version>
                 <type>jar</type>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.openmrs.module</groupId>
-                <artifactId>uiframework-api</artifactId>
-                <version>${uiframeworkVersion}</version>
-                <type>jar</type>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>

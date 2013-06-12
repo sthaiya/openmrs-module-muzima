@@ -20,13 +20,12 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.muzima.api.db.DataSourceDao;
 import org.openmrs.module.muzima.model.DataSource;
-import org.openmrs.ui.framework.db.hibernate.SingleClassHibernateDAO;
 
 import java.util.List;
 
 /**
  */
-public class HibernateDataSourceDao extends SingleClassHibernateDAO<DataSource> implements DataSourceDao {
+public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> implements DataSourceDao {
 
     public HibernateDataSourceDao() {
         super(DataSource.class);

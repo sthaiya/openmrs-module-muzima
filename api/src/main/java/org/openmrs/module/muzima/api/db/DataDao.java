@@ -14,13 +14,12 @@
 package org.openmrs.module.muzima.api.db;
 
 import org.openmrs.module.muzima.model.Data;
-import org.openmrs.ui.framework.db.SingleClassDAO;
 
 import java.util.List;
 
 /**
  */
-public interface DataDao<T extends Data> extends SingleClassDAO<T> {
+public interface DataDao<T extends Data> extends SingleClassDao<T> {
 
     /**
      * Return the data with the given id.

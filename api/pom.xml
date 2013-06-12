@@ -35,11 +35,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>uiframework-api</artifactId>
-        </dependency>
-
         <!-- Begin OpenMRS core -->
 
         <dependency>

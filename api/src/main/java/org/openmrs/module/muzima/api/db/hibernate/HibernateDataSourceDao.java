@@ -76,7 +76,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
             criteria.add(Restrictions.like("name", name, matchMode));
         }
         if (!includeVoided) {
-            criteria.add(Restrictions.eq("voided", false));
+            criteria.add(Restrictions.eq("retired", false));
         }
         return criteria.list();
     }

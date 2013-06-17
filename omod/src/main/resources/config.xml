@@ -3,15 +3,15 @@
 <module configVersion="1.2">
 
     <!-- Module Properties -->
-    <id>${parent.artifactId}</id>
-    <name>Muzima Processor Module</name>
-    <version>1.0.0</version>
-    <package>${parent.groupId}.${parent.artifactId}</package>
+    <id>${project.parent.artifactId}</id>
+    <name>${project.parent.name}</name>
+    <version>${project.parent.version}</version>
+    <package>${project.parent.groupId}.${project.parent.artifactId}</package>
     <author>Muzima Team</author>
     <description>
-        Muzima module to process forms from mobile devices.
+        ${project.parent.description}
     </description>
-    <updateURL>https://modules.openmrs.org/modules/download/muzimaprocessor/update.rdf</updateURL>
+    <updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
     <require_version>${openMRSVersion}</require_version>
     <!-- / Module Properties -->
 
@@ -21,7 +21,6 @@
 
     <!-- Module Activator -->
     <activator>org.openmrs.module.muzima.MuzimaActivator</activator>
-
 
     <!-- Adds link to admin page -->
     <extension>

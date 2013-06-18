@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.openmrs.module.muzima.model">
 
-    <class name="QueueData" table="formprocessor_queue_data">
+    <class name="QueueData" table="muzima_queue_data">
         <id name="id" type="java.lang.Integer" column="id">
             <generator class="native"/>
         </id>

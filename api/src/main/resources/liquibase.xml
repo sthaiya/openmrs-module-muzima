@@ -5,13 +5,13 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-    <changeSet id="formprocessor-2013-04-18-10-50" author="nribeka">
+    <changeSet id="muzima-2013-04-18-10-50" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_data_source"/>
+                <tableExists tableName="muzima_data_source"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_data_source">
+        <createTable tableName="muzima_data_source">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -37,24 +37,24 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_data_source_creator"
-                                 baseTableName="formprocessor_data_source" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="muzima_data_source_creator"
+                                 baseTableName="muzima_data_source" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_data_source_changed_by"
-                                 baseTableName="formprocessor_data_source" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="muzima_data_source_changed_by"
+                                 baseTableName="muzima_data_source" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_data_source_retired_by"
-                                 baseTableName="formprocessor_data_source" baseColumnNames="retired_by"
+        <addForeignKeyConstraint constraintName="muzima_data_source_retired_by"
+                                 baseTableName="muzima_data_source" baseColumnNames="retired_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
     </changeSet>
 
-    <changeSet id="formprocessor-2013-04-18-10-51" author="nribeka">
+    <changeSet id="muzima-2013-04-18-10-51" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_queue_data"/>
+                <tableExists tableName="muzima_queue_data"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_queue_data">
+        <createTable tableName="muzima_queue_data">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -79,24 +79,24 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_queue_data_creator"
-                                 baseTableName="formprocessor_queue_data" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="muzima_queue_data_creator"
+                                 baseTableName="muzima_queue_data" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_queue_data_changed_by"
-                                 baseTableName="formprocessor_queue_data" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="muzima_queue_data_changed_by"
+                                 baseTableName="muzima_queue_data" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_queue_data_data_source"
-                                 baseTableName="formprocessor_queue_data" baseColumnNames="data_source"
-                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="muzima_queue_data_data_source"
+                                 baseTableName="muzima_queue_data" baseColumnNames="data_source"
+                                 referencedTableName="muzima_data_source" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="formprocessor-2013-04-18-10-52" author="nribeka">
+    <changeSet id="muzima-2013-04-18-10-52" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_archive_data"/>
+                <tableExists tableName="muzima_archive_data"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_archive_data">
+        <createTable tableName="muzima_archive_data">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -127,24 +127,24 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_archive_data_creator"
-                                 baseTableName="formprocessor_archive_data" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="muzima_archive_data_creator"
+                                 baseTableName="muzima_archive_data" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_archive_data_changed_by"
-                                 baseTableName="formprocessor_archive_data" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="muzima_archive_data_changed_by"
+                                 baseTableName="muzima_archive_data" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_archive_data_data_source"
-                                 baseTableName="formprocessor_archive_data" baseColumnNames="data_source"
-                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="muzima_archive_data_data_source"
+                                 baseTableName="muzima_archive_data" baseColumnNames="data_source"
+                                 referencedTableName="muzima_data_source" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="formprocessor-2013-04-18-10-53" author="nribeka">
+    <changeSet id="muzima-2013-04-18-10-53" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_error_data"/>
+                <tableExists tableName="muzima_error_data"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_error_data">
+        <createTable tableName="muzima_error_data">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -175,24 +175,24 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_error_data_creator"
-                                 baseTableName="formprocessor_error_data" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="muzima_error_data_creator"
+                                 baseTableName="muzima_error_data" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_error_data_changed_by"
-                                 baseTableName="formprocessor_error_data" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="muzima_error_data_changed_by"
+                                 baseTableName="muzima_error_data" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_error_data_data_source"
-                                 baseTableName="formprocessor_error_data" baseColumnNames="data_source"
-                                 referencedTableName="formprocessor_data_source" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="muzima_error_data_data_source"
+                                 baseTableName="muzima_error_data" baseColumnNames="data_source"
+                                 referencedTableName="muzima_data_source" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="formprocessor-2013-04-18-10-54" author="nribeka">
+    <changeSet id="muzima-2013-04-18-10-54" author="nribeka">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="formprocessor_notification_data"/>
+                <tableExists tableName="muzima_notification_data"/>
             </not>
         </preConditions>
-        <createTable tableName="formprocessor_notification_data">
+        <createTable tableName="muzima_notification_data">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -226,20 +226,20 @@
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="formprocessor_notification_data_creator"
-                                 baseTableName="formprocessor_notification_data" baseColumnNames="creator"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_creator"
+                                 baseTableName="muzima_notification_data" baseColumnNames="creator"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_notification_data_changed_by"
-                                 baseTableName="formprocessor_notification_data" baseColumnNames="changed_by"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_changed_by"
+                                 baseTableName="muzima_notification_data" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_notification_data_voided_by"
-                                 baseTableName="formprocessor_notification_data" baseColumnNames="voided_by"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_voided_by"
+                                 baseTableName="muzima_notification_data" baseColumnNames="voided_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_notification_data_from"
-                                 baseTableName="formprocessor_notification_data" baseColumnNames="from_person"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_from"
+                                 baseTableName="muzima_notification_data" baseColumnNames="from_person"
                                  referencedTableName="person" referencedColumnNames="person_id"/>
-        <addForeignKeyConstraint constraintName="formprocessor_notification_data_for"
-                                 baseTableName="formprocessor_notification_data" baseColumnNames="for_person"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_for"
+                                 baseTableName="muzima_notification_data" baseColumnNames="for_person"
                                  referencedTableName="person" referencedColumnNames="person_id"/>
     </changeSet>
 

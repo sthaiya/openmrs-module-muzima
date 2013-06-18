@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.openmrs.module.muzima.model">
 
     <class name="ErrorData" table="muzima_error_data">
-        <id name="id" type="java.lang.Integer" column="id">
+        <id name="id" type="java.lang.Integer" column="id" unsaved-value="0">
             <generator class="native"/>
         </id>
 

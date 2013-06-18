@@ -8,6 +8,7 @@
         <mapping resource="ArchiveData.hbm.xml"/>
         <mapping resource="ErrorData.hbm.xml"/>
         <mapping resource="QueueData.hbm.xml"/>
+        <mapping resource="NotificationData.hbm.xml"/>
         <mapping resource="DataSource.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -12,7 +12,7 @@
         <property name="configLocations">
             <list>
                 <value>classpath:hibernate.cfg.xml</value>
-                <value>classpath:muzimaprocessor-hibernate.cfg.xml</value>
+                <value>classpath:muzima-hibernate.cfg.xml</value>
             </list>
         </property>
         <property name="mappingJarLocations">

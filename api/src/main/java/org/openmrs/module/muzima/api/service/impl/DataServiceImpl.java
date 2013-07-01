@@ -378,8 +378,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public List<NotificationData> getAllNotificationDataFor(final Person person) {
-        return getNotificationDataDao().getNotificationFor(person);
+    public List<NotificationData> getAllNotificationDataByRecipient(final Person person) {
+        return getNotificationDataDao().getNotificationByRecipient(person);
     }
 
     /**
@@ -390,8 +390,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public List<NotificationData> getAllNotificationDataFrom(final Person person) {
-        return getNotificationDataDao().getNotificationFrom(person);
+    public List<NotificationData> getAllNotificationDataBySender(final Person person) {
+        return getNotificationDataDao().getNotificationBySender(person);
     }
 
     /**

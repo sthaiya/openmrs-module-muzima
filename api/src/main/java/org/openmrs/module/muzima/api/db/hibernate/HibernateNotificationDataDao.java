@@ -47,7 +47,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<NotificationData> getNotificationFor(final Person person) {
+    public List<NotificationData> getNotificationByRecipient(final Person person) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("forPerson", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
@@ -62,7 +62,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<NotificationData> getNotificationFrom(final Person person) {
+    public List<NotificationData> getNotificationBySender(final Person person) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("fromPerson", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));

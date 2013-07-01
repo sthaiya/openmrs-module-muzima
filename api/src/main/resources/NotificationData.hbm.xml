@@ -14,12 +14,12 @@
 
         <property name="payload" type="java.lang.String" column="payload" not-null="true"/>
 
-        <many-to-one name="forPerson" class="org.openmrs.Person" not-null="true">
-            <column name="for_person"/>
+        <many-to-one name="recipient" class="org.openmrs.Person" not-null="true">
+            <column name="recipient"/>
         </many-to-one>
 
-        <many-to-one name="fromPerson" class="org.openmrs.Person" not-null="true">
-            <column name="from_person"/>
+        <many-to-one name="sender" class="org.openmrs.Person" not-null="true">
+            <column name="sender"/>
         </many-to-one>
 
         <many-to-one name="creator" class="org.openmrs.User" not-null="true">

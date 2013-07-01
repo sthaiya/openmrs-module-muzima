@@ -23,9 +23,9 @@ public class NotificationData extends BaseOpenmrsData implements Data {
 
     private Integer id;
 
-    private Person forPerson;
+    private Person recipient;
 
-    private Person fromPerson;
+    private Person sender;
 
     private String subject;
 
@@ -52,17 +52,17 @@ public class NotificationData extends BaseOpenmrsData implements Data {
      *
      * @return the person who will receive this notification.
      */
-    public Person getForPerson() {
-        return forPerson;
+    public Person getRecipient() {
+        return recipient;
     }
 
     /**
      * Set the person who will receive this notification.
      *
-     * @param forPerson the person who will receive this notification.
+     * @param recipient the person who will receive this notification.
      */
-    public void setForPerson(final Person forPerson) {
-        this.forPerson = forPerson;
+    public void setRecipient(final Person recipient) {
+        this.recipient = recipient;
     }
 
     /**
@@ -70,17 +70,17 @@ public class NotificationData extends BaseOpenmrsData implements Data {
      *
      * @return the person who will send this notification.
      */
-    public Person getFromPerson() {
-        return fromPerson;
+    public Person getSender() {
+        return sender;
     }
 
     /**
      * Set the person who will send this notification.
      *
-     * @param fromPerson the person who will send this notification.
+     * @param sender the person who will send this notification.
      */
-    public void setFromPerson(final Person fromPerson) {
-        this.fromPerson = fromPerson;
+    public void setSender(final Person sender) {
+        this.sender = sender;
     }
 
     /**

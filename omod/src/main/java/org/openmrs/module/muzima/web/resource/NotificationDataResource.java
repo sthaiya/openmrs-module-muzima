@@ -142,8 +142,8 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
 
     public String getDisplayString(final NotificationData message) {
         StringBuilder builder = new StringBuilder();
-        builder.append("from: ").append(message.getFromPerson().getUuid()).append(" - ");
-        builder.append("for: ").append(message.getForPerson().getUuid()).append(" - ");
+        builder.append("from: ").append(message.getSender().getUuid()).append(" - ");
+        builder.append("for: ").append(message.getRecipient().getUuid()).append(" - ");
         builder.append("subject: ").append(message.getSubject());
         return builder.toString();
     }
@@ -171,21 +171,21 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
 
         DataService dataService = Context.getService(DataService.class);
 
-        personUuid = context.getRequest().getParameter("for");
+        personUuid = context.getRequest().getParameter("recipient");
         if (personUuid != null) {
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getAllNotificationDataFor(person);
+            List<NotificationData> notificationDataList = dataService.getAllNotificationDataByRecipient(person);
             return new NeedsPaging<NotificationData>(notificationDataList, context);
         }
 
-        personUuid = context.getRequest().getParameter("from");
+        personUuid = context.getRequest().getParameter("sender");
         if (personUuid != null) {
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getAllNotificationDataFrom(person);
+            List<NotificationData> notificationDataList = dataService.getAllNotificationDataBySender(person);
             return new NeedsPaging<NotificationData>(notificationDataList, context);
         }
         // TODO: in the future, this could be searching by category of the notification.

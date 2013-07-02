@@ -237,7 +237,7 @@ public interface DataService extends OpenmrsService {
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
-    List<NotificationData> getAllNotificationDataByRecipient(final Person person);
+    List<NotificationData> getNotificationDataByReceiver(final Person person);
 
     /**
      * Return all saved notification data from a particular person.
@@ -246,7 +246,7 @@ public interface DataService extends OpenmrsService {
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
-    List<NotificationData> getAllNotificationDataBySender(final Person person);
+    List<NotificationData> getNotificationDataBySender(final Person person);
 
     /**
      * Save notification data into the database.

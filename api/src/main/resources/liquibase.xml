@@ -202,7 +202,7 @@
             <column name="payload" type="varchar(1024)">
                 <constraints nullable="false"/>
             </column>
-            <column name="recipient" type="int">
+            <column name="receiver" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="sender" type="int">
@@ -238,8 +238,8 @@
         <addForeignKeyConstraint constraintName="muzima_notification_data_sender"
                                  baseTableName="muzima_notification_data" baseColumnNames="sender"
                                  referencedTableName="person" referencedColumnNames="person_id"/>
-        <addForeignKeyConstraint constraintName="muzima_notification_data_recipient"
-                                 baseTableName="muzima_notification_data" baseColumnNames="recipient"
+        <addForeignKeyConstraint constraintName="muzima_notification_data_receiver"
+                                 baseTableName="muzima_notification_data" baseColumnNames="receiver"
                                  referencedTableName="person" referencedColumnNames="person_id"/>
     </changeSet>
 

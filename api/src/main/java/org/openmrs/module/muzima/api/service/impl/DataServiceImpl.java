@@ -291,7 +291,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public DataSource getDataSourceByUuid(final String uuid) {
-        return getDataSourceDao().getDataByUuid(uuid);
+        return getDataSourceDao().getDataSourceByUuid(uuid);
     }
 
     /**
@@ -306,7 +306,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeVoided) {
-        return getDataSourceDao().getAllDataSource(name, exactMatchOnly, includeVoided);
+        return getDataSourceDao().getAllDataSources(name, exactMatchOnly, includeVoided);
     }
 
     /**
@@ -378,8 +378,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public List<NotificationData> getAllNotificationDataByRecipient(final Person person) {
-        return getNotificationDataDao().getNotificationByRecipient(person);
+    public List<NotificationData> getNotificationDataByReceiver(final Person person) {
+        return getNotificationDataDao().getNotificationsByReceiver(person);
     }
 
     /**
@@ -390,8 +390,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public List<NotificationData> getAllNotificationDataBySender(final Person person) {
-        return getNotificationDataDao().getNotificationBySender(person);
+    public List<NotificationData> getNotificationDataBySender(final Person person) {
+        return getNotificationDataDao().getNotificationsBySender(person);
     }
 
     /**

@@ -16,7 +16,7 @@ public interface DataSourceDao extends SingleClassDao<DataSource> {
      * @should return data with matching uuid.
      * @should return null when no data with matching uuid.
      */
-    DataSource getDataByUuid(final String uuid);
+    DataSource getDataSourceByUuid(final String uuid);
 
     /**
      * Return all saved data source with matching name.
@@ -28,5 +28,5 @@ public interface DataSourceDao extends SingleClassDao<DataSource> {
      * @should return empty list when no data are saved in the database with matching name.
      * @should return all saved data with matching name.
      */
-    List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeVoided);
+    List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeVoided);
 }

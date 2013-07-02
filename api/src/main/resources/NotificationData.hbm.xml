@@ -14,8 +14,8 @@
 
         <property name="payload" type="java.lang.String" column="payload" not-null="true"/>
 
-        <many-to-one name="recipient" class="org.openmrs.Person" not-null="true">
-            <column name="recipient"/>
+        <many-to-one name="receiver" class="org.openmrs.Person" not-null="true">
+            <column name="receiver"/>
         </many-to-one>
 
         <many-to-one name="sender" class="org.openmrs.Person" not-null="true">

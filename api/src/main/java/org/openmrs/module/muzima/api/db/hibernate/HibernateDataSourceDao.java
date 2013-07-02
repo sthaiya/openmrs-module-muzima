@@ -46,7 +46,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
      * @should return data with matching uuid.
      * @should return null when no data with matching uuid.
      */
-    public DataSource getDataByUuid(final String uuid) {
+    public DataSource getDataSourceByUuid(final String uuid) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
@@ -65,7 +65,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeVoided) {
+    public List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeVoided) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         // only use this matching if we're getting non empty name string
         if (StringUtils.isNotEmpty(name)) {

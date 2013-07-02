@@ -143,7 +143,7 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
     public String getDisplayString(final NotificationData message) {
         StringBuilder builder = new StringBuilder();
         builder.append("from: ").append(message.getSender().getUuid()).append(" - ");
-        builder.append("for: ").append(message.getRecipient().getUuid()).append(" - ");
+        builder.append("for: ").append(message.getReceiver().getUuid()).append(" - ");
         builder.append("subject: ").append(message.getSubject());
         return builder.toString();
     }
@@ -171,12 +171,12 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
 
         DataService dataService = Context.getService(DataService.class);
 
-        personUuid = context.getRequest().getParameter("recipient");
+        personUuid = context.getRequest().getParameter("receiver");
         if (personUuid != null) {
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getAllNotificationDataByRecipient(person);
+            List<NotificationData> notificationDataList = dataService.getNotificationDataByReceiver(person);
             return new NeedsPaging<NotificationData>(notificationDataList, context);
         }
 
@@ -185,7 +185,7 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getAllNotificationDataBySender(person);
+            List<NotificationData> notificationDataList = dataService.getNotificationDataBySender(person);
             return new NeedsPaging<NotificationData>(notificationDataList, context);
         }
         // TODO: in the future, this could be searching by category of the notification.

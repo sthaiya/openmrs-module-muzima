@@ -31,12 +31,8 @@ public class MuzimaConfigurationController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    @RequestMapping(value = "/module/muzima/configuration", method = RequestMethod.GET)
-    public void manage(ModelMap model) {
-        DataService dataService = Context.getService(DataService.class);
-
-        DataSource dataSource = new DataSource();
-        dataSource.setName("Example of Data Source");
-        dataService.saveDataSource(dataSource);
+    @RequestMapping(value = "/module/muzima/view", method = RequestMethod.GET)
+    public void manage() {
+        // do nothing here, the rest will be handled by angular
     }
 }

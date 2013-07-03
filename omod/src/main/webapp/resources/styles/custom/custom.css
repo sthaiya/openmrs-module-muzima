@@ -1,0 +1,12 @@
+.bootstrap-scope {
+    font-size: 0.9em;
+}
+
+.navigation-active {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navigation-active > a {
+    text-decoration: none;
+}

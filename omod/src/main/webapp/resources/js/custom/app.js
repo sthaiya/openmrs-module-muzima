@@ -28,13 +28,13 @@ muzimaconsultation.factory('$data', function ($http) {
     };
 
     var getErrors = function () {
-        return $http.get("error.list");
+        return $http.get("errors.list");
     };
     var getError = function (uuid) {
         return $http.get("error.form", {"uuid": uuid});
     };
     var reQueue = function (uuidList) {
-        return $http.post("reQueue.form", {"uuidList": uuidList});
+        return $http.post("error.form", {"uuidList": uuidList});
     };
 
     var getSources = function () {

@@ -6,7 +6,7 @@
         </a>
     </li>
     <li>
-        <a href="${pageContext.request.contextPath}/module/muzima/view.list#/datasource">
+        <a href="${pageContext.request.contextPath}/module/muzima/view.list#/source">
             <spring:message code="muzima.view.source" />
         </a>
     </li>

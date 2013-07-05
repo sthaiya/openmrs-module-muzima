@@ -208,7 +208,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         DataService dataService = Context.getService(DataService.class);
         DataSource dataSource = dataService.getDataSourceByUuid(dataSourceObject.toString());
         if (dataSource == null) {
-            List<DataSource> dataSources = dataService.getAllDataSource(dataSourceObject.toString(), true, false);
+            List<DataSource> dataSources = dataService.getAllDataSource();
             if (dataSources.size() != 1) {
                 throw new IllegalPropertyException("Unable to uniquely identify data source object.");
             }

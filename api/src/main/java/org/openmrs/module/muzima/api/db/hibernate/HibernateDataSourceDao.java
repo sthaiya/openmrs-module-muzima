@@ -67,8 +67,8 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-        criteria.setFirstResult(pageNumber * pageSize);
-        criteria.setFetchSize(pageSize);
+        criteria.setFirstResult((pageNumber - 1) * pageSize);
+        criteria.setMaxResults(pageSize);
         return criteria.list();
     }
 
@@ -82,6 +82,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
     public Integer countDataSource(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
         return (Integer) criteria.uniqueResult();
     }

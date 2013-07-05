@@ -20,26 +20,36 @@ import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Write brief description about the class here.
  */
 @Controller
-@RequestMapping(value = "/module/muzima/queues")
+@RequestMapping(value = "/module/muzima/queues.json")
 public class QueuesController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Object> getQueues() {
+    public Map<String, Object> getQueues(final @RequestParam(value = "search") String search,
+                                         final @RequestParam(value = "pageNumber") Integer pageNumber,
+                                         final @RequestParam(value = "pageSize") Integer pageSize) {
+        Map<String, Object> response = new HashMap<String, Object>();
+
         DataService dataService = Context.getService(DataService.class);
+        Integer pages = (dataService.countQueueData(search) + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
-        for (QueueData queueData : dataService.getAllQueueData()) {
+        for (QueueData queueData : dataService.getPagedQueueData(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertQueueData(queueData));
         }
-        return objects;
+        response.put("pages", pages);
+        response.put("objects", objects);
+        return response;
     }
 }

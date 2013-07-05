@@ -1,7 +1,12 @@
 function ErrorCtrl($scope, $filter, $location, $data) {
-    $data.getErrors().
+    $scope.maxSize = 5;
+    $scope.pageSize = 5;
+    $scope.currentPage = 1;
+    $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
         then(function(response) {
-            $scope.errors = response.data;
+            var serverData = response.data;
+            $scope.errors = serverData.objects;
+            $scope.noOfPages = serverData.pages;
         });
 
     $scope.selectedErrors = function () {
@@ -10,17 +15,37 @@ function ErrorCtrl($scope, $filter, $location, $data) {
 
     $scope.queue = function() {
         $location.path("/errors");
-    }
+    };
 
-    $scope.filterError = function() {
-        // use the $scope.search as the filter term
-    }
+    $scope.$watch('currentPage', function() {
+        $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.errors = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
+
+    $scope.$watch('search', function() {
+        $scope.currentPage = 1;
+        $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.errors = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
 }
 
 function QueueCtrl($scope, $filter, $location, $data) {
-    $data.getQueues().
+    $scope.maxSize = 5;
+    $scope.pageSize = 5;
+    $scope.currentPage = 1;
+    $data.getQueues($scope.search, $scope.currentPage, $scope.pageSize).
         then(function(response) {
-            $scope.queues = response.data;
+            var serverData = response.data;
+            $scope.queues = serverData.objects;
+            $scope.noOfPages = serverData.pages;
         });
 
     $scope.selectedQueues = function () {
@@ -29,11 +54,26 @@ function QueueCtrl($scope, $filter, $location, $data) {
 
     $scope.delete = function() {
         $location.path("/queues");
-    }
+    };
 
-    $scope.filterQueue = function() {
-        // use the $scope.search as the filter term
-    }
+    $scope.$watch('currentPage', function() {
+        $data.getQueues($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.queues = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
+
+    $scope.$watch('search', function() {
+        $scope.currentPage = 1;
+        $data.getQueues($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.queues = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
 }
 
 function EditSourceCtrl($scope, $location, $data) {
@@ -43,12 +83,32 @@ function CreateSourceCtrl($scope, $location, $data) {
 }
 
 function SourcesCtrl($scope, $data) {
-    $data.getSources().
+    $scope.maxSize = 5;
+    $scope.pageSize = 5;
+    $scope.currentPage = 1;
+    $data.getSources($scope.search, $scope.currentPage, $scope.pageSize).
         then(function(response) {
-            $scope.sources = response.data;
+            var serverData = response.data;
+            $scope.sources = serverData.objects;
+            $scope.noOfPages = serverData.pages;
         });
 
-    $scope.filterSource = function() {
-        // use the $scope.search as the filter term
-    }
+    $scope.$watch('currentPage', function() {
+        $data.getSources($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.sources = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
+
+    $scope.$watch('search', function() {
+        $scope.currentPage = 1;
+        $data.getSources($scope.search, $scope.currentPage, $scope.pageSize).
+            then(function(response) {
+                var serverData = response.data;
+                $scope.sources = serverData.objects;
+                $scope.noOfPages = serverData.pages;
+            });
+    }, true);
 }

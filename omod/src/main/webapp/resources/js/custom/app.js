@@ -1,6 +1,6 @@
-var muzimaconsultation = angular.module('muzima', ['ui.bootstrap']);
+var muzima = angular.module('muzima', ['ui.bootstrap']);
 
-muzimaconsultation.
+muzima.
     config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
         $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file):/);
         $routeProvider.when('/queue', {controller: QueueCtrl,
@@ -16,38 +16,50 @@ muzimaconsultation.
         $routeProvider.otherwise({redirectTo: '/sources'});
     }]);
 
-muzimaconsultation.factory('$data', function ($http) {
-    var getQueues = function () {
-        return $http.get("queues.list");
+muzima.factory('$data', function ($http) {
+    var getQueues = function (search, pageNumber, pageSize) {
+        if (search === undefined) {
+            // replace undefined search term with empty string
+            search = '';
+        }
+        return $http.get("queues.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
     };
     var getQueue = function (uuid) {
-        return $http.get("queue.form", {"uuid": uuid});
+        return $http.get("queue.json?uuid=" + uuid);
     };
     var deleteQueue = function (uuidList) {
-        return $http.post("queue.form", {"uuidList": uuidList});
+        return $http.post("queue.json", {"uuidList": uuidList});
     };
 
-    var getErrors = function () {
-        return $http.get("errors.list");
+    var getErrors = function (search, pageNumber, pageSize) {
+        if (search === undefined) {
+            // replace undefined search term with empty string
+            search = '';
+        }
+        return $http.get("errors.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
     };
     var getError = function (uuid) {
-        return $http.get("error.form", {"uuid": uuid});
+        return $http.get("error.json?uuid=" + uuid);
     };
     var reQueue = function (uuidList) {
-        return $http.post("error.form", {"uuidList": uuidList});
+        return $http.post("error.json", {"uuidList": uuidList});
     };
 
-    var getSources = function () {
-        return $http.get("sources.list");
+    var getSources = function (search, pageNumber, pageSize) {
+        if (search === undefined) {
+            // replace undefined search term with empty string
+            search = '';
+        }
+        return $http.get("sources.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
     };
     var getSource = function (uuid) {
-        return $http.get("source.form", {"uuid": uuid});
+        return $http.get("source.json?uuid=" + uuid);
     };
     var saveSource = function (name, description) {
-        return $http.post("source.form", {"name": name, "description": description});
+        return $http.post("source.json", {"name": name, "description": description});
     };
-    var deleteSource = function(uuid) {
-        return $http.post("source.form", {"uuid": uuid});
+    var deleteSource = function (uuid) {
+        return $http.post("source.json", {"uuid": uuid});
     };
     return {
         getQueues: getQueues,

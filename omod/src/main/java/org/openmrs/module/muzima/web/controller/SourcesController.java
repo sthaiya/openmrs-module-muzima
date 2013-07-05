@@ -13,34 +13,46 @@
  */
 package org.openmrs.module.muzima.web.controller;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Write brief description about the class here.
  */
 @Controller
-@RequestMapping(value = "/module/muzima/sources")
+@RequestMapping(value = "/module/muzima/sources.json")
 public class SourcesController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Object> getSources() {
+    public Map<String, Object> getSources(final @RequestParam(value = "search") String search,
+                                          final @RequestParam(value = "pageNumber") Integer pageNumber,
+                                          final @RequestParam(value = "pageSize") Integer pageSize) {
+        Map<String, Object> response = new HashMap<String, Object>();
+
         DataService dataService = Context.getService(DataService.class);
+        Integer pages = (dataService.countDataSource(search) + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
-        for (DataSource dataSource : dataService.getAllDataSource(StringUtils.EMPTY, false, false)) {
+        for (DataSource dataSource : dataService.getPagedDataSource(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertDataSource(dataSource));
         }
-        return objects;
+        response.put("pages", pages);
+        response.put("objects", objects);
+        return response;
     }
 }

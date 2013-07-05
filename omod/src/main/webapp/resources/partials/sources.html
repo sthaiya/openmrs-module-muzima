@@ -10,7 +10,7 @@
         <div class="clearfix">
             <div class="row">
                 <div class="span4 pull-right">
-                    <input type="text" ng-model="search" class="input-small search-query" />
+                    <input type="text" ng-model="search" class="search-query search-query-size" />
                 </div>
             </div>
             <div class="row">
@@ -35,6 +35,11 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div ng-show="noOfPages > 1" class="row">
+                <div class="span12 pull-left">
+                    <pagination num-pages="noOfPages" current-page="currentPage" max-size="maxSize" boundary-links="true"></pagination>
+                </div>
             </div>
         </div>
     </div>

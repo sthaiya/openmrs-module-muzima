@@ -10,7 +10,8 @@
         <div class="clearfix">
             <div class="row">
                 <div class="span4 pull-right">
-                    <input type="text" ng-model="search" class="input-small search-query" />
+                    <input type="text" class="search-query search-query-size"
+                           ng-model="search" ng-change="filterQueue()" />
                 </div>
             </div>
             <div class="row">
@@ -27,7 +28,7 @@
                     <tr ng-hide="queues.length">
                         <td colspan="4">No data in the database.</td>
                     </tr>
-                    <tr ng-repeat="queue in queues | filter:filterQueue() | orderBy:'submitted':true">
+                    <tr ng-repeat="queue in queues | orderBy:'submitted':true">
                         <td>
                             <input type="checkbox" value="{{queue.uuid}}"
                                    ng-checked="queue.checked" ng-model="queue.checked">
@@ -36,13 +37,18 @@
                         <td>{{queue.discriminator}}</td>
                         <td>{{queue.submitted}}</td>
                     </tr>
-                    <tr ng-show="queues.length">
-                        <td colspan="4">
-                            <button type="submit" ng-click="delete()" class="btn">Delete</button>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
+            </div>
+            <div ng-show="noOfPages > 1" class="row">
+                <div class="span12 pull-left">
+                    <pagination num-pages="noOfPages" current-page="currentPage" max-size="maxSize" boundary-links="true"></pagination>
+                </div>
+            </div>
+            <div ng-show="queues.length" class="row">
+                <div class="span12 pull-left">
+                    <button type="submit" ng-click="queue()" class="btn">Queue</button>
+                </div>
             </div>
         </div>
     </div>

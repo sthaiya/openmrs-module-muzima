@@ -18,12 +18,13 @@ import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,17 +32,24 @@ import java.util.Map;
  * TODO: Write brief description about the class here.
  */
 @Controller
-@RequestMapping(value = "/module/muzima/errors")
+@RequestMapping(value = "/module/muzima/errors.json")
 public class ErrorsController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Object> getErrors() {
+    public Map<String, Object> getErrors(final @RequestParam(value = "search") String search,
+                                         final @RequestParam(value = "pageNumber") Integer pageNumber,
+                                         final @RequestParam(value = "pageSize") Integer pageSize) {
+        Map<String, Object> response = new HashMap<String, Object>();
+
         DataService dataService = Context.getService(DataService.class);
+        Integer pages = (dataService.countErrorData(search) + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
-        for (ErrorData errorData : dataService.getAllErrorData()) {
+        for (ErrorData errorData : dataService.getPagedErrorData(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertErrorData(errorData));
         }
-        return objects;
+        response.put("pages", pages);
+        response.put("objects", objects);
+        return response;
     }
 }

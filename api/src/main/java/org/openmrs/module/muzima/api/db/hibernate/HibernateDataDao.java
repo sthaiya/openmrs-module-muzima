@@ -166,9 +166,8 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     public List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
-        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
-        criteria.setFirstResult(pageNumber * pageSize);
-        criteria.setFetchSize(pageSize);
+        criteria.setFirstResult((pageNumber - 1) * pageSize);
+        criteria.setMaxResults(pageSize);
         return criteria.list();
     }
 

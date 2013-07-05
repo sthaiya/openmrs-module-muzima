@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
@@ -29,14 +30,13 @@ import java.util.Map;
  * TODO: Write brief description about the class here.
  */
 @Controller
-@RequestMapping(value = "/module/muzima/queue")
+@RequestMapping(value = "/module/muzima/queue.json")
 public class QueueController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getQueue(final @RequestBody Map<String, Object> map) {
+    public Map<String, Object> getQueue(final @RequestParam(value = "uuid") String uuid) {
         DataService dataService = Context.getService(DataService.class);
-        String uuid = String.valueOf(map.get("uuid"));
         QueueData queueData = dataService.getQueueDataByUuid(uuid);
         return WebConverter.convertQueueData(queueData);
     }

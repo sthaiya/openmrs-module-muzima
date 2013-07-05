@@ -43,6 +43,7 @@ public class WebConverter {
             map.put("uuid", queueData.getUuid());
             map.put("discriminator", queueData.getDiscriminator());
             map.put("source", queueData.getDataSource().getName());
+            map.put("payload", queueData.getPayload());
             map.put("submitted", Context.getDateFormat().format(queueData.getDateCreated()));
         }
         return map;
@@ -55,6 +56,7 @@ public class WebConverter {
             map.put("discriminator", errorData.getDiscriminator());
             map.put("source", errorData.getDataSource().getName());
             map.put("message", errorData.getMessage());
+            map.put("payload", errorData.getPayload());
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
         }

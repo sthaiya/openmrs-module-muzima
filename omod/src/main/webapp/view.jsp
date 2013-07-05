@@ -11,6 +11,7 @@
 
 <openmrs:htmlInclude file="/moduleResources/muzima/js/custom/app.js"/>
 <openmrs:htmlInclude file="/moduleResources/muzima/js/custom/controller.js"/>
+<openmrs:htmlInclude file="/moduleResources/muzima/js/custom/truncate.js"/>
 
 <openmrs:htmlInclude file="/moduleResources/muzima/js/ui-bootstrap/ui-bootstrap-custom-tpls-0.4.0.js"/>
 

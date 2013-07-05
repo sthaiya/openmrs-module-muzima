@@ -114,7 +114,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved form data.
      *
-     * @return all saved form data including voided form data.
+     * @return all saved form data.
      * @should return empty list when no form data are saved in the database.
      * @should return all saved form data.
      */
@@ -199,7 +199,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved error data.
      *
-     * @return all saved error data including voided error data.
+     * @return all saved error data.
      * @should return empty list when no error data are saved in the database.
      * @should return all saved error data.
      */
@@ -284,7 +284,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved archive data.
      *
-     * @return all saved archive data including voided archive data.
+     * @return all saved archive data.
      * @should return empty list when no archive data are saved in the database.
      * @should return all saved archive data.
      */
@@ -454,7 +454,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved notification data.
      *
-     * @return all saved notification data including voided notification data.
+     * @return all saved notification data.
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
@@ -466,7 +466,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved notification data for a particular person.
      *
-     * @return all saved notification data including voided notification data.
+     * @return all saved notification data.
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
@@ -478,7 +478,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved notification data from a particular person.
      *
-     * @return all saved notification data including voided notification data.
+     * @return all saved notification data.
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */

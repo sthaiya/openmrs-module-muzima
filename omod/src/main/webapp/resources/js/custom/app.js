@@ -1,15 +1,19 @@
-var muzima = angular.module('muzima', ['ui.bootstrap']);
+var muzima = angular.module('muzima', ['ui.bootstrap', 'filters']);
 
 muzima.
     config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
         $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file):/);
-        $routeProvider.when('/queue', {controller: QueueCtrl,
+        $routeProvider.when('/queue/:uuid', {controller: QueueCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/queue.html'});
+        $routeProvider.when('/queues', {controller: QueuesCtrl,
             templateUrl: '../../moduleResources/muzima/partials/queues.html'});
-        $routeProvider.when('/error', {controller: ErrorCtrl,
+        $routeProvider.when('/error/:uuid', {controller: ErrorCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/error.html'});
+        $routeProvider.when('/errors', {controller: ErrorsCtrl,
             templateUrl: '../../moduleResources/muzima/partials/errors.html'});
-        $routeProvider.when('/source/:uuid', {controller: EditSourceCtrl,
+        $routeProvider.when('/source/:uuid', {controller: SourceCtrl,
             templateUrl: '../../moduleResources/muzima/partials/source.html'});
-        $routeProvider.when('/newSource/', {controller: CreateSourceCtrl,
+        $routeProvider.when('/createSource/', {controller: SourceCtrl,
             templateUrl: '../../moduleResources/muzima/partials/source.html'});
         $routeProvider.when('/sources', {controller: SourcesCtrl,
             templateUrl: '../../moduleResources/muzima/partials/sources.html'});
@@ -22,7 +26,7 @@ muzima.factory('$data', function ($http) {
             // replace undefined search term with empty string
             search = '';
         }
-        return $http.get("queues.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
+        return $http.get("queues.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize);
     };
     var getQueue = function (uuid) {
         return $http.get("queue.json?uuid=" + uuid);
@@ -36,7 +40,7 @@ muzima.factory('$data', function ($http) {
             // replace undefined search term with empty string
             search = '';
         }
-        return $http.get("errors.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
+        return $http.get("errors.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize);
     };
     var getError = function (uuid) {
         return $http.get("error.json?uuid=" + uuid);
@@ -50,7 +54,7 @@ muzima.factory('$data', function ($http) {
             // replace undefined search term with empty string
             search = '';
         }
-        return $http.get("sources.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" +pageSize);
+        return $http.get("sources.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize);
     };
     var getSource = function (uuid) {
         return $http.get("source.json?uuid=" + uuid);

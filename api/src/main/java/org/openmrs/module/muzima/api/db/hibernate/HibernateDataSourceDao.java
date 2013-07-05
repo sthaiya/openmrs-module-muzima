@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.muzima.api.db.hibernate;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.muzima.api.db.DataSourceDao;
 import org.openmrs.module.muzima.model.DataSource;
@@ -54,31 +54,35 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
     }
 
     /**
-     * Return all saved data with matching name.
+     * Get data source with matching search term for particular page.
      *
-     * @param name           the name of the data.
-     * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeRetired  flag whether voided data should be returned or not.
-     * @return all saved data including voided data with matching name.
-     * @should return empty list when no data are saved in the database with matching name.
-     * @should return all saved data with matching name.
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of data source for the page.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeRetired) {
+    public List<DataSource> getPagedDataSources(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
-        // only use this matching if we're getting non empty name string
-        if (StringUtils.isNotEmpty(name)) {
-            MatchMode matchMode = MatchMode.START;
-            if (exactMatchOnly) {
-                matchMode = MatchMode.EXACT;
-            }
-            criteria.add(Restrictions.like("name", name, matchMode));
-        }
-        if (!includeRetired) {
-            criteria.add(Restrictions.eq("retired", false));
-        }
+        criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("retired", Boolean.FALSE));
+        criteria.setFirstResult(pageNumber * pageSize);
+        criteria.setFetchSize(pageSize);
         return criteria.list();
     }
 
+    /**
+     * Get the total number of data source with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of data source in the database.
+     */
+    @Override
+    public Integer countDataSource(final String search) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+        criteria.setProjection(Projections.rowCount());
+        return (Integer) criteria.uniqueResult();
+    }
 }

@@ -17,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.muzima.api.db.DataDao;
 import org.openmrs.module.muzima.model.Data;
@@ -24,6 +26,7 @@ import org.openmrs.module.muzima.model.handler.DataHandler;
 import org.openmrs.util.HandlerUtil;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +61,14 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
      */
     @Override
     public T getData(final Integer id) {
-        return getById(id);
+        T data = getById(id);
+        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+        for (DataHandler handler : handlers) {
+            if (handler.accept(data)) {
+                handler.handleGet(data);
+            }
+        }
+        return data;
     }
 
     /**
@@ -75,7 +85,14 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
-        return (T) criteria.uniqueResult();
+        T data = (T) criteria.uniqueResult();
+        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+        for (DataHandler handler : handlers) {
+            if (handler.accept(data)) {
+                handler.handleGet(data);
+            }
+        }
+        return data;
     }
 
     /**
@@ -85,6 +102,16 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
      */
     @Override
     public List<T> getAllData() {
+        List<T> list = new ArrayList<T>();
+        for (T data : getAll()) {
+            List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+            for (DataHandler handler : handlers) {
+                if (handler.accept(data)) {
+                    handler.handleGet(data);
+                }
+            }
+            list.add(data);
+        }
         return getAll();
     }
 
@@ -101,7 +128,7 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
         for (DataHandler handler : handlers) {
             if (handler.accept(data)) {
-                handler.saveHandler(data);
+                handler.handleSave(data);
             }
         }
         saveOrUpdate(data);
@@ -120,9 +147,42 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
         for (DataHandler handler : handlers) {
             if (handler.accept(data)) {
-                handler.deleteHandler(data);
+                handler.handleDelete(data);
             }
         }
         delete(data);
+    }
+
+    /**
+     * Get data with matching search term for particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of data for the page.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize) {
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
+        criteria.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        criteria.setFirstResult(pageNumber * pageSize);
+        criteria.setFetchSize(pageSize);
+        return criteria.list();
+    }
+
+    /**
+     * Get the total number of data with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of data in the database.
+     */
+    @Override
+    public Integer countData(final String search) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        criteria.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+        criteria.setProjection(Projections.rowCount());
+        return (Integer) criteria.uniqueResult();
     }
 }

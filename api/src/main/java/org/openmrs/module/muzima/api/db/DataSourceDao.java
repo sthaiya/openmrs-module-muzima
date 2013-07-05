@@ -1,6 +1,7 @@
 package org.openmrs.module.muzima.api.db;
 
 import org.openmrs.module.muzima.model.DataSource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,14 +20,20 @@ public interface DataSourceDao extends SingleClassDao<DataSource> {
     DataSource getDataSourceByUuid(final String uuid);
 
     /**
-     * Return all saved data source with matching name.
+     * Get data source with matching search term for particular page.
      *
-     * @param name           the name of the data source.
-     * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeRetired  flag whether voided data should be returned or not.
-     * @return all saved data including voided data source with matching name.
-     * @should return empty list when no data are saved in the database with matching name.
-     * @should return all saved data with matching name.
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of data source for the page.
      */
-    List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeRetired);
+    List<DataSource> getPagedDataSources(final String search, final Integer pageNumber, final Integer pageSize);
+
+    /**
+     * Get the total number of data source with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of data source in the database.
+     */
+    Integer countDataSource(final String search);
 }

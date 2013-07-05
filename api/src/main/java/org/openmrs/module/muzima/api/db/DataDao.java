@@ -14,6 +14,7 @@
 package org.openmrs.module.muzima.api.db;
 
 import org.openmrs.module.muzima.model.Data;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,4 +65,22 @@ public interface DataDao<T extends Data> extends SingleClassDao<T> {
      * @should remove data from the database
      */
     void purgeData(final T data);
+
+    /**
+     * Get data with matching search term for particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of data for the page.
+     */
+    List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize);
+
+    /**
+     * Get the total number of data with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of data in the database.
+     */
+    Integer countData(final String search);
 }

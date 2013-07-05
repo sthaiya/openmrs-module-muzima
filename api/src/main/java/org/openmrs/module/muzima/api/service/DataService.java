@@ -61,6 +61,24 @@ public interface DataService extends OpenmrsService {
     void purgeQueueData(final QueueData queueData);
 
     /**
+     * Get the total number of the queue data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the queue data in the database.
+     */
+    Integer countQueueData(final String search);
+
+    /**
+     * Get queue data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all queue data with matching search term for a particular page.
+     */
+    List<QueueData> getPagedQueueData(final String search, final Integer pageNumber, final Integer pageSize);
+
+    /**
      * Return the error data with the given id.
      *
      * @param id the error data id.
@@ -105,6 +123,24 @@ public interface DataService extends OpenmrsService {
      * @should remove error data from the database
      */
     void purgeErrorData(final ErrorData ErrorData);
+
+    /**
+     * Get the total number of the error data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the error data in the database.
+     */
+    Integer countErrorData(final String search);
+
+    /**
+     * Get error data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all error data with matching search term for a particular page.
+     */
+    List<ErrorData> getPagedErrorData(final String search, final Integer pageNumber, final Integer pageSize);
 
     /**
      * Return the archive data with the given id.
@@ -153,6 +189,24 @@ public interface DataService extends OpenmrsService {
     void purgeArchiveData(final ArchiveData ArchiveData);
 
     /**
+     * Get the total number of the archive data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the archive data in the database.
+     */
+    Integer countArchiveData(final String search);
+
+    /**
+     * Get archive data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all archive data with matching search term for a particular page.
+     */
+    List<ArchiveData> getPagedArchiveData(final String search, final Integer pageNumber, final Integer pageSize);
+
+    /**
      * Return the data source with the given id.
      *
      * @param id the data source id.
@@ -175,14 +229,11 @@ public interface DataService extends OpenmrsService {
     /**
      * Return all saved data source.
      *
-     * @param name           the name of the data.
-     * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeRetired  flag whether voided data should be returned or not.
-     * @return all saved data source including voided data source.
+     * @return all saved data source.
      * @should return empty list when no data source are saved in the database.
      * @should return all saved data source.
      */
-    List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeRetired);
+    List<DataSource> getAllDataSource();
 
     /**
      * Save data source into the database.
@@ -200,6 +251,24 @@ public interface DataService extends OpenmrsService {
      * @should remove data source from the database
      */
     void purgeDataSource(final DataSource DataSource);
+
+    /**
+     * Get the total number of the data source in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the data source in the database.
+     */
+    Integer countDataSource(final String search);
+
+    /**
+     * Get data source with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all data source with matching search term for a particular page.
+     */
+    List<DataSource> getPagedDataSource(final String search, final Integer pageNumber, final Integer pageSize);
 
     /**
      * Return the notification data with the given id.
@@ -272,4 +341,22 @@ public interface DataService extends OpenmrsService {
      * @return the voided notification data.
      */
     NotificationData voidNotificationData(final NotificationData notificationData, final String reason);
+
+    /**
+     * Get the total number of the notification data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the notification data in the database.
+     */
+    Integer countNotificationData(final String search);
+
+    /**
+     * Get notification data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all notification data with matching search term for a particular page.
+     */
+    List<NotificationData> getPagedNotificationData(final String search, final Integer pageNumber, final Integer pageSize);
 }

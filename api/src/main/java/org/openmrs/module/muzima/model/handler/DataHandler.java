@@ -15,17 +15,24 @@ public interface DataHandler {
     boolean accept(final Data data);
 
     /**
+     * Handler that will be executed when a data is retrieved.
+     *
+     * @param data the data.
+     */
+    void handleGet(final Data data);
+
+    /**
      * Handler that will be executed when a data is saved.
      *
      * @param data the data.
      */
-    void saveHandler(final Data data);
+    void handleSave(final Data data);
 
     /**
      * Handler that will be executed when a data is deleted.
      *
      * @param data the data.
      */
-    void deleteHandler(final Data data);
+    void handleDelete(final Data data);
 
 }

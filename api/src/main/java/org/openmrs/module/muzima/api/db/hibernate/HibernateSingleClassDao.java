@@ -13,7 +13,9 @@
  */
 package org.openmrs.module.muzima.api.db.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.openmrs.module.muzima.api.db.SingleClassDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,18 +54,19 @@ public class HibernateSingleClassDao<T> implements SingleClassDao<T> {
         this.sessionFactory = sessionFactory;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public T getById(Integer id) {
         return (T) sessionFactory.getCurrentSession().get(mappedClass, id);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public List<T> getAll() {
-        return (List<T>) sessionFactory.getCurrentSession().createCriteria(mappedClass).list();
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        return (List<T>) criteria.list();
     }
 
     @Override

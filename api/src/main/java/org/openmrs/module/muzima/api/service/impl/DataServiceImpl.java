@@ -147,6 +147,30 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     }
 
     /**
+     * Get the total number of the queue data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the queue data in the database.
+     */
+    @Override
+    public Integer countQueueData(final String search) {
+        return queueDataDao.countData(search);
+    }
+
+    /**
+     * Get queue data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all queue data with matching search term for a particular page.
+     */
+    @Override
+    public List<QueueData> getPagedQueueData(final String search, final Integer pageNumber, final Integer pageSize) {
+        return queueDataDao.getPagedData(search, pageNumber, pageSize);
+    }
+
+    /**
      * Return the error data with the given id.
      *
      * @param id the error data id.
@@ -205,6 +229,30 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     @Override
     public void purgeErrorData(final ErrorData errorData) {
         getErrorDataDao().purgeData(errorData);
+    }
+
+    /**
+     * Get the total number of the error data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the error data in the database.
+     */
+    @Override
+    public Integer countErrorData(final String search) {
+        return errorDataDao.countData(search);
+    }
+
+    /**
+     * Get error data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all error data with matching search term for a particular page.
+     */
+    @Override
+    public List<ErrorData> getPagedErrorData(final String search, final Integer pageNumber, final Integer pageSize) {
+        return errorDataDao.getPagedData(search, pageNumber, pageSize);
     }
 
     /**
@@ -269,6 +317,30 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     }
 
     /**
+     * Get the total number of the archive data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the archive data in the database.
+     */
+    @Override
+    public Integer countArchiveData(final String search) {
+        return archiveDataDao.countData(search);
+    }
+
+    /**
+     * Get archive data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all archive data with matching search term for a particular page.
+     */
+    @Override
+    public List<ArchiveData> getPagedArchiveData(final String search, final Integer pageNumber, final Integer pageSize) {
+        return archiveDataDao.getPagedData(search, pageNumber, pageSize);
+    }
+
+    /**
      * Return the data source with the given id.
      *
      * @param id the data source id.
@@ -297,16 +369,13 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return all saved data source.
      *
-     * @param name           the name of the data.
-     * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeRetired  flag whether voided data should be returned or not.
-     * @return all saved data source including voided data source.
+     * @return all saved data source .
      * @should return empty list when no data source are saved in the database.
      * @should return all saved data source.
      */
     @Override
-    public List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeRetired) {
-        return getDataSourceDao().getAllDataSources(name, exactMatchOnly, includeRetired);
+    public List<DataSource> getAllDataSource() {
+        return getDataSourceDao().getAll();
     }
 
     /**
@@ -330,6 +399,30 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     @Override
     public void purgeDataSource(final DataSource dataSource) {
         getDataSourceDao().delete(dataSource);
+    }
+
+    /**
+     * Get the total number of the data source in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the data source in the database.
+     */
+    @Override
+    public Integer countDataSource(final String search) {
+        return dataSourceDao.countDataSource(search);
+    }
+
+    /**
+     * Get data source with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all data source with matching search term for a particular page.
+     */
+    @Override
+    public List<DataSource> getPagedDataSource(final String search, final Integer pageNumber, final Integer pageSize) {
+        return dataSourceDao.getPagedDataSources(search, pageNumber, pageSize);
     }
 
     /**
@@ -430,5 +523,29 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         notificationData.setDateVoided(new Date());
         notificationData.setVoidReason(reason);
         return saveNotificationData(notificationData);
+    }
+
+    /**
+     * Get the total number of the notification data in the database with partial matching search term on the payload.
+     *
+     * @param search the search term.
+     * @return the total number of the notification data in the database.
+     */
+    @Override
+    public Integer countNotificationData(final String search) {
+        return notificationDataDao.countData(search);
+    }
+
+    /**
+     * Get notification data with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all notification data with matching search term for a particular page.
+     */
+    @Override
+    public List<NotificationData> getPagedNotificationData(final String search, final Integer pageNumber, final Integer pageSize) {
+        return notificationDataDao.getPagedData(search, pageNumber, pageSize);
     }
 }

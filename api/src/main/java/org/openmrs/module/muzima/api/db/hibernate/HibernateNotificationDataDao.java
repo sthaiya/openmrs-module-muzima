@@ -18,10 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
-import org.openmrs.module.muzima.api.db.ErrorDataDao;
 import org.openmrs.module.muzima.api.db.NotificationDataDao;
-import org.openmrs.module.muzima.model.DataSource;
-import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.model.NotificationData;
 
 import java.util.List;

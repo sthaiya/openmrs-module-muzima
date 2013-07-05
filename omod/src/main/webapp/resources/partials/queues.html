@@ -2,7 +2,7 @@
     <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
             <li><a href="#/error">Error Data</a></li>
-            <li class="active"><a href="#/queue">Queue Data</a></li>
+            <li class="navigation-active"><a href="#/queue">Queue Data</a></li>
             <li><a href="#/sources">Data Source</a></li>
         </ul>
     </div>
@@ -24,7 +24,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="queue in queues | filter:search | orderBy:'queue.submitted'">
+                    <tr ng-hide="queues.length">
+                        <td colspan="4">No data in the database.</td>
+                    </tr>
+                    <tr ng-repeat="queue in queues | filter:filterQueue() | orderBy:'submitted':true">
                         <td>
                             <input type="checkbox" value="{{queue.uuid}}"
                                    ng-checked="queue.checked" ng-model="queue.checked">
@@ -32,6 +35,11 @@
                         <td>{{queue.source}}</td>
                         <td>{{queue.discriminator}}</td>
                         <td>{{queue.submitted}}</td>
+                    </tr>
+                    <tr ng-show="queues.length">
+                        <td colspan="4">
+                            <button type="submit" ng-click="delete()" class="btn">Delete</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

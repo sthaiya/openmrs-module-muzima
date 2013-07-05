@@ -1,7 +1,7 @@
 <div id="wide-sidebar" class="row-fluid">
     <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
-            <li class="active"><a href="#/error">Error Data</a></li>
+            <li class="navigation-active"><a href="#/error">Error Data</a></li>
             <li><a href="#/queue">Queue Data</a></li>
             <li><a href="#/sources">Data Source</a></li>
         </ul>
@@ -20,22 +20,28 @@
                         <th>#</th>
                         <th>Sender</th>
                         <th>Discriminator</th>
-                        <th>Message</th>
                         <th>Submitted On</th>
                         <th>Processed On</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="error in errors | filter:search | orderBy:'error.submitted'">
+                    <tr ng-hide="errors.length">
+                        <td colspan="5">No data in the database.</td>
+                    </tr>
+                    <tr ng-repeat="error in errors | filter:filterError() | orderBy:'submitted':true">
                         <td>
                             <input type="checkbox" value="{{error.uuid}}"
                                    ng-checked="error.checked" ng-model="error.checked">
                         </td>
                         <td>{{error.source}}</td>
                         <td>{{error.discriminator}}</td>
-                        <td>{{error.message}}</td>
-                        <td>{{queue.submitted}}</td>
-                        <td>{{queue.processed}}</td>
+                        <td>{{error.submitted}}</td>
+                        <td>{{error.processed}}</td>
+                    </tr>
+                    <tr ng-show="errors.length">
+                        <td colspan="5">
+                            <button type="submit" ng-click="delete()" class="btn">Queue</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

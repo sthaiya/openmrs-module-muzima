@@ -3,7 +3,7 @@
         <ul class="nav nav-tabs nav-stacked">
             <li><a href="#/error">Error Data</a></li>
             <li><a href="#/queue">Queue Data</a></li>
-            <li class="active"><a href="#/sources">Data Source</a></li>
+            <li class="navigation-active"><a href="#/sources">Data Source</a></li>
         </ul>
     </div>
     <div class="span8">
@@ -24,11 +24,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="source in sources | filter:search | orderBy:'source.created'">
-                        <td>
-                            <input type="checkbox" value="{{source.uuid}}"
-                                   ng-checked="source.checked" ng-model="source.checked">
-                        </td>
+                    <tr ng-hide="sources.length">
+                        <td colspan="4">No data in the database.</td>
+                    </tr>
+                    <tr ng-repeat="source in sources | filter:filterSource() | orderBy:'created':true">
+                        <td><a href="#/source/{{source.uuid}}">{{$index + 1}}</a></td>
                         <td>{{source.name}}</td>
                         <td>{{source.uuid}}</td>
                         <td>{{source.created}}</td>

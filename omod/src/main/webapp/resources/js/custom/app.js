@@ -50,11 +50,11 @@ muzimaconsultation.factory('$data', function ($http) {
         return $http.post("source.form", {"uuid": uuid});
     };
     return {
-        getQueueList: getQueues,
+        getQueues: getQueues,
         getQueue: getQueue,
         deleteQueue: deleteQueue,
 
-        getErrorList: getErrors,
+        getErrors: getErrors,
         getError: getError,
         reQueue: reQueue,
 

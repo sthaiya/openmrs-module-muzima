@@ -58,14 +58,14 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
      *
      * @param name           the name of the data.
      * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeVoided  flag whether voided data should be returned or not.
+     * @param includeRetired  flag whether voided data should be returned or not.
      * @return all saved data including voided data with matching name.
      * @should return empty list when no data are saved in the database with matching name.
      * @should return all saved data with matching name.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeVoided) {
+    public List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeRetired) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         // only use this matching if we're getting non empty name string
         if (StringUtils.isNotEmpty(name)) {
@@ -75,7 +75,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
             }
             criteria.add(Restrictions.like("name", name, matchMode));
         }
-        if (!includeVoided) {
+        if (!includeRetired) {
             criteria.add(Restrictions.eq("retired", false));
         }
         return criteria.list();

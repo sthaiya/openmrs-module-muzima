@@ -23,8 +23,8 @@ muzimaconsultation.factory('$data', function ($http) {
     var getQueue = function (uuid) {
         return $http.get("queue.form", {"uuid": uuid});
     };
-    var deleteQueue = function (uuid) {
-        return $http.post("queue.form", {"uuid": uuid});
+    var deleteQueue = function (uuidList) {
+        return $http.post("queue.form", {"uuidList": uuidList});
     };
 
     var getErrors = function () {
@@ -34,7 +34,7 @@ muzimaconsultation.factory('$data', function ($http) {
         return $http.get("error.form", {"uuid": uuid});
     };
     var reQueue = function (uuidList) {
-        return $http.post("reQueue.form", {"uuid": uuidList});
+        return $http.post("reQueue.form", {"uuidList": uuidList});
     };
 
     var getSources = function () {

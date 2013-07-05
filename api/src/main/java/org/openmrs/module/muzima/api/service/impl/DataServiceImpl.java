@@ -299,14 +299,14 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      *
      * @param name           the name of the data.
      * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeVoided  flag whether voided data should be returned or not.
+     * @param includeRetired  flag whether voided data should be returned or not.
      * @return all saved data source including voided data source.
      * @should return empty list when no data source are saved in the database.
      * @should return all saved data source.
      */
     @Override
-    public List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeVoided) {
-        return getDataSourceDao().getAllDataSources(name, exactMatchOnly, includeVoided);
+    public List<DataSource> getAllDataSource(final String name, final boolean exactMatchOnly, final boolean includeRetired) {
+        return getDataSourceDao().getAllDataSources(name, exactMatchOnly, includeRetired);
     }
 
     /**

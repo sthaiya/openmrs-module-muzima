@@ -24,14 +24,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="queue in queues | filter:search | orderBy:'queue.datetime'">
+                    <tr ng-repeat="queue in queues | filter:search | orderBy:'queue.submitted'">
                         <td>
                             <input type="checkbox" value="{{queue.uuid}}"
                                    ng-checked="queue.checked" ng-model="queue.checked">
                         </td>
-                        <td>{{queue.source.name}}</td>
+                        <td>{{queue.source}}</td>
                         <td>{{queue.discriminator}}</td>
-                        <td>{{queue.datetime}}</td>
+                        <td>{{queue.submitted}}</td>
                     </tr>
                     </tbody>
                 </table>

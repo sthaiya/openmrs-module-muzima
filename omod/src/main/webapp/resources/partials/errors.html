@@ -22,10 +22,11 @@
                         <th>Discriminator</th>
                         <th>Message</th>
                         <th>Submitted On</th>
+                        <th>Processed On</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="error in errors | filter:search | orderBy:'error.datetime'">
+                    <tr ng-repeat="error in errors | filter:search | orderBy:'error.submitted'">
                         <td>
                             <input type="checkbox" value="{{error.uuid}}"
                                    ng-checked="error.checked" ng-model="error.checked">
@@ -33,7 +34,8 @@
                         <td>{{error.source.name}}</td>
                         <td>{{error.discriminator}}</td>
                         <td>{{error.message}}</td>
-                        <td>{{error.datetime}}</td>
+                        <td>{{queue.submitted}}</td>
+                        <td>{{queue.processed}}</td>
                     </tr>
                     </tbody>
                 </table>

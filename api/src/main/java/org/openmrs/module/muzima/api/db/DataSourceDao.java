@@ -23,10 +23,10 @@ public interface DataSourceDao extends SingleClassDao<DataSource> {
      *
      * @param name           the name of the data source.
      * @param exactMatchOnly flag whether matching should be exact.
-     * @param includeVoided  flag whether voided data should be returned or not.
+     * @param includeRetired  flag whether voided data should be returned or not.
      * @return all saved data including voided data source with matching name.
      * @should return empty list when no data are saved in the database with matching name.
      * @should return all saved data with matching name.
      */
-    List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeVoided);
+    List<DataSource> getAllDataSources(final String name, final boolean exactMatchOnly, final boolean includeRetired);
 }

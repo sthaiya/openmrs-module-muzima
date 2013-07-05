@@ -1,9 +1,9 @@
 <div id="wide-sidebar" class="row-fluid">
     <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
+            <li><a href="#/sources">Data Source</a></li>
             <li class="navigation-active"><a href="#/errors">Error Data</a></li>
             <li><a href="#/queues">Queue Data</a></li>
-            <li><a href="#/sources">Data Source</a></li>
         </ul>
     </div>
     <div class="span8">
@@ -28,10 +28,10 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="4">{{error.message}}</td>
+                <td colspan="4"><pre>{{error.message}}</pre></td>
             </tr>
             <tr>
-                <td colspan="4">{{error.payload}}</td>
+                <td colspan="4"><pre>{{error.payload}}</pre></td>
             </tr>
             <tr>
                 <td colspan="4">

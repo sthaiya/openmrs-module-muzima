@@ -11,7 +11,7 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
     };
 
     $scope.cancel = function () {
-        $location.path('/consults/true');
+        $location.path('/errors');
     };
 }
 
@@ -64,14 +64,14 @@ function QueueCtrl($scope, $routeParams, $location, $data) {
     // get the current notification
     $data.getQueue($scope.uuid).
         then(function (response) {
-            $scope.error = response.data;
+            $scope.queue = response.data;
         });
 
     $scope.delete = function () {
     };
 
     $scope.cancel = function () {
-        $location.path('/consults/true');
+        $location.path('/queues');
     };
 }
 

@@ -43,6 +43,6 @@ public class ErrorController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void deleteError(final @RequestBody Map<String, Object> map) {
+    public void queueError(final @RequestBody Map<String, Object> map) {
     }
 }

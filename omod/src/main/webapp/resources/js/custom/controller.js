@@ -144,7 +144,50 @@ function QueuesCtrl($scope, $location, $data) {
     }, true);
 }
 
-function SourceCtrl($scope, $location, $data) {
+function SourceCtrl($scope, $routeParams, $location, $data) {
+    // initialize the source object
+    $scope.source = {};
+    // initialize the view to be read only
+    $scope.mode = "view";
+    $scope.uuid = $routeParams.uuid;
+    if ($scope.uuid === undefined) {
+        $scope.mode = "edit";
+    } else {
+        $data.getSource($scope.uuid).
+            then(function(response) {
+                $scope.source = response.data;
+            });
+    }
+
+    $scope.edit = function() {
+        $scope.mode = "edit";
+    };
+
+    $scope.cancel = function() {
+        if ($scope.mode == "edit") {
+            if ($scope.uuid === undefined) {
+                $location.path("/sources");
+            } else {
+                $scope.mode = "view"
+            }
+        } else {
+            $location.path("/sources");
+        }
+    };
+
+    $scope.save = function(source) {
+        $data.saveSource(source.uuid, source.name, source.description).
+            then(function() {
+                $location.path("/sources");
+            })
+    };
+
+    $scope.delete = function() {
+        $data.deleteSource($scope.uuid).
+            then(function() {
+                $location.path("/sources");
+            })
+    };
 }
 
 function SourcesCtrl($scope, $data) {

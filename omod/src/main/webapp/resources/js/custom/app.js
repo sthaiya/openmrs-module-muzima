@@ -59,8 +59,8 @@ muzima.factory('$data', function ($http) {
     var getSource = function (uuid) {
         return $http.get("source.json?uuid=" + uuid);
     };
-    var saveSource = function (name, description) {
-        return $http.post("source.json", {"name": name, "description": description});
+    var saveSource = function (uuid, name, description) {
+        return $http.post("source.json", {"uuid": uuid, "name": name, "description": description});
     };
     var deleteSource = function (uuid) {
         return $http.post("source.json", {"uuid": uuid});

@@ -4,12 +4,16 @@ muzimaconsultation.
     config(['$routeProvider', '$compileProvider', function ($routeProvider, $compileProvider) {
         $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file):/);
         $routeProvider.when('/queue', {controller: QueueCtrl,
-            templateUrl: '../../moduleResources/muzimaconsultation/partials/queue.html'});
+            templateUrl: '../../moduleResources/muzima/partials/queues.html'});
         $routeProvider.when('/error', {controller: ErrorCtrl,
-            templateUrl: '../../moduleResources/muzimaconsultation/partials/error.html'});
-        $routeProvider.when('/source', {controller: SourceCtrl,
-            templateUrl: '../../moduleResources/muzimaconsultation/partials/source.html'});
-        $routeProvider.otherwise({redirectTo: '/source'});
+            templateUrl: '../../moduleResources/muzima/partials/errors.html'});
+        $routeProvider.when('/source/:uuid', {controller: EditSourceCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/source.html'});
+        $routeProvider.when('/newSource/', {controller: CreateSourceCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/source.html'});
+        $routeProvider.when('/sources', {controller: SourcesCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/sources.html'});
+        $routeProvider.otherwise({redirectTo: '/sources'});
     }]);
 
 muzimaconsultation.factory('$data', function ($http) {

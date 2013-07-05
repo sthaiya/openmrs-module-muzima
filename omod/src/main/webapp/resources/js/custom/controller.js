@@ -8,6 +8,11 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
         });
 
     $scope.queue = function () {
+        var uuidList = [$scope.uuid];
+        $data.reQueue(uuidList).
+            then(function() {
+                $location.path("/errors");
+            })
     };
 
     $scope.cancel = function () {
@@ -15,7 +20,10 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
     };
 }
 
-function ErrorsCtrl($scope, $filter, $location, $data) {
+function ErrorsCtrl($scope, $location, $data) {
+    // initialize selected error data for re-queueing
+    $scope.selected = {};
+    // initialize the paging structure
     $scope.maxSize = 5;
     $scope.pageSize = 5;
     $scope.currentPage = 1;
@@ -26,12 +34,17 @@ function ErrorsCtrl($scope, $filter, $location, $data) {
             $scope.noOfPages = serverData.pages;
         });
 
-    $scope.selectedErrors = function () {
-        return $filter('filter')($scope.errors, {checked: true});
-    };
-
     $scope.queue = function () {
-        $location.path("/errors");
+        var uuidList = [];
+        angular.forEach($scope.selected, function(value, key) {
+            if (value) {
+                uuidList.push(key);
+            }
+        });
+        $data.reQueue(uuidList).
+            then(function() {
+                $location.path("/errors");
+            })
     };
 
     $scope.$watch('currentPage', function (newValue, oldValue) {
@@ -68,6 +81,11 @@ function QueueCtrl($scope, $routeParams, $location, $data) {
         });
 
     $scope.delete = function () {
+        var uuidList = [$scope.uuid];
+        $data.deleteQueue(uuidList).
+            then(function() {
+                $location.path("/queues");
+            })
     };
 
     $scope.cancel = function () {
@@ -75,7 +93,10 @@ function QueueCtrl($scope, $routeParams, $location, $data) {
     };
 }
 
-function QueuesCtrl($scope, $filter, $location, $data) {
+function QueuesCtrl($scope, $location, $data) {
+    // initialize selected error data for re-queueing
+    $scope.selected = {};
+    // initialize the paging structure
     $scope.maxSize = 5;
     $scope.pageSize = 5;
     $scope.currentPage = 1;
@@ -86,12 +107,17 @@ function QueuesCtrl($scope, $filter, $location, $data) {
             $scope.noOfPages = serverData.pages;
         });
 
-    $scope.selectedQueues = function () {
-        return $filter('filter')($scope.queues, {checked: true});
-    };
-
     $scope.delete = function () {
-        $location.path("/queues");
+        var uuidList = [];
+        angular.forEach($scope.selected, function(value, key) {
+            if (value) {
+                uuidList.push(key);
+            }
+        });
+        $data.deleteQueue(uuidList).
+            then(function() {
+                $location.path("/queues");
+            })
     };
 
     $scope.$watch('currentPage', function (newValue, oldValue) {
@@ -122,6 +148,7 @@ function SourceCtrl($scope, $location, $data) {
 }
 
 function SourcesCtrl($scope, $data) {
+    // initialize the paging structure
     $scope.maxSize = 5;
     $scope.pageSize = 5;
     $scope.currentPage = 1;

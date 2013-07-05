@@ -2,8 +2,8 @@
     <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
             <li><a href="#/sources">Data Source</a></li>
-            <li class="navigation-active"><a href="#/errors">Error Data</a></li>
             <li><a href="#/queues">Queue Data</a></li>
+            <li class="navigation-active"><a href="#/errors">Error Data</a></li>
         </ul>
     </div>
     <div class="span8">
@@ -18,11 +18,12 @@
                     <thead>
                     <tr>
                         <th>&nbsp;</th>
-                        <th>&nbsp;</th>
+                        <th>#</th>
                         <th>Sender</th>
                         <th>Kind</th>
-                        <th>Error Message</th>
                         <th>Processed On</th>
+                        <th>Error Message</th>
+                        <th>Form Data</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,13 +33,14 @@
                     <tr ng-repeat="error in errors | orderBy:'submitted':true">
                         <td>
                             <input type="checkbox" value="{{error.uuid}}"
-                                   ng-checked="error.checked" ng-model="error.checked">
+                                   ng-checked="selected[error.uuid]" ng-model="selected[error.uuid]">
                         </td>
                         <td><a href="#/error/{{error.uuid}}"><i class=icon-edit></i></a></td>
                         <td>{{error.source}}</td>
                         <td>{{error.discriminator}}</td>
-                        <td>{{error.message | truncate:30 }}</td>
                         <td>{{error.processed}}</td>
+                        <td><pre>{{error.message | truncate:30 }}</pre></td>
+                        <td><pre>{{error.payload | truncate:30 }}</pre></td>
                     </tr>
                     </tbody>
                 </table>

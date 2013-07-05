@@ -2,8 +2,8 @@
     <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
             <li><a href="#/sources">Data Source</a></li>
-            <li><a href="#/errors">Error Data</a></li>
             <li class="navigation-active"><a href="#/queues">Queue Data</a></li>
+            <li><a href="#/errors">Error Data</a></li>
         </ul>
     </div>
     <div class="span8">
@@ -19,10 +19,11 @@
                     <thead>
                     <tr>
                         <th>&nbsp;</th>
-                        <th>&nbsp;</th>
+                        <th>#</th>
                         <th>Sender</th>
                         <th>Kind</th>
                         <th>Submitted On</th>
+                        <th>Form Data</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,12 +33,13 @@
                     <tr ng-repeat="queue in queues | orderBy:'submitted':true">
                         <td>
                             <input type="checkbox" value="{{queue.uuid}}"
-                                   ng-checked="queue.checked" ng-model="queue.checked">
+                                   ng-checked="selected[queue.uuid]" ng-model="selected[queue.uuid]">
                         </td>
                         <td><a href="#/queue/{{queue.uuid}}"><i class=icon-edit></i></a></td>
                         <td>{{queue.source}}</td>
                         <td>{{queue.discriminator}}</td>
                         <td>{{queue.submitted}}</td>
+                        <td><pre>{{queue.payload | truncate:45 }}</pre></td>
                     </tr>
                     </tbody>
                 </table>
@@ -49,7 +51,7 @@
             </div>
             <div ng-show="queues.length" class="row">
                 <div class="span12 pull-left">
-                    <button type="submit" ng-click="queue()" class="btn">Queue</button>
+                    <button type="submit" ng-click="delete()" class="btn">Delete</button>
                 </div>
             </div>
         </div>

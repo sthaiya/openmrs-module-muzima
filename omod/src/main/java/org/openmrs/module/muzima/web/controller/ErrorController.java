@@ -43,6 +43,8 @@ public class ErrorController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void queueError(final @RequestBody Map<String, Object> map) {
+    public void reQueue(final @RequestBody Map<String, Object> map) {
+        Object object = map.get("uuidList");
+        System.out.println("Objects to be queued: " + object);
     }
 }

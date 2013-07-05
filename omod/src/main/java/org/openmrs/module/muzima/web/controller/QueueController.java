@@ -43,5 +43,7 @@ public class QueueController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void deleteQueue(final @RequestBody Map<String, Object> map) {
+        Object object = map.get("uuidList");
+        System.out.println("Objects to be deleted: " + object);
     }
 }

@@ -44,5 +44,11 @@ public class SourceController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void deleteSource(final @RequestBody Map<String, Object> map) {
+        Object uuidObject = map.get("uuid");
+        System.out.println("Uuid Object: " + uuidObject);
+        Object nameObject = map.get("name");
+        System.out.println("Name Object: " + nameObject);
+        Object descriptionObject = map.get("description");
+        System.out.println("Description Object: " + descriptionObject);
     }
 }

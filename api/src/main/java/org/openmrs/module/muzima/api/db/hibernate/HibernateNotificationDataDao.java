@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
@@ -65,6 +66,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
 
@@ -114,6 +116,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
 

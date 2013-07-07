@@ -20,6 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
@@ -179,6 +180,7 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
 

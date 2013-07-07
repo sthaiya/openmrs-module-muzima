@@ -18,6 +18,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.muzima.api.db.DataSourceDao;
@@ -80,6 +81,7 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
 

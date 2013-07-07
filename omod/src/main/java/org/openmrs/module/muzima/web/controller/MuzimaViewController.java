@@ -32,7 +32,7 @@ public class MuzimaViewController {
     protected final Log log = LogFactory.getLog(getClass());
 
     @RequestMapping(value = "/module/muzima/view.list", method = RequestMethod.GET)
-    public void manage() {
+    public void view() {
         // do nothing here, the rest will be handled by angular
     }
 }

@@ -13,13 +13,16 @@
  */
 package org.openmrs.module.muzima.api.db.hibernate;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Person;
 import org.openmrs.module.muzima.api.db.DataDao;
 import org.openmrs.module.muzima.model.Data;
 import org.openmrs.module.muzima.model.handler.DataHandler;
@@ -164,9 +167,18 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @SuppressWarnings("unchecked")
     public List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
-        criteria.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
-        criteria.setFirstResult((pageNumber - 1) * pageSize);
-        criteria.setMaxResults(pageSize);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("discriminator", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        if (pageNumber != null) {
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+        }
+        if (pageSize != null) {
+            criteria.setMaxResults(pageSize);
+        }
         return criteria.list();
     }
 
@@ -179,7 +191,12 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @Override
     public Integer countData(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
-        criteria.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("discriminator", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.setProjection(Projections.rowCount());
         return (Integer) criteria.uniqueResult();
     }

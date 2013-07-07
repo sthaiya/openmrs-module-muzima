@@ -13,8 +13,10 @@
  */
 package org.openmrs.module.muzima.api.db.hibernate;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -65,10 +67,19 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
     @SuppressWarnings("unchecked")
     public List<DataSource> getPagedDataSources(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
-        criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
-        criteria.setFirstResult((pageNumber - 1) * pageSize);
-        criteria.setMaxResults(pageSize);
+        if (pageNumber != null) {
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+        }
+        if (pageSize != null) {
+            criteria.setMaxResults(pageSize);
+        }
         return criteria.list();
     }
 
@@ -81,7 +92,12 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
     @Override
     public Integer countDataSource(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
-        criteria.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
         return (Integer) criteria.uniqueResult();

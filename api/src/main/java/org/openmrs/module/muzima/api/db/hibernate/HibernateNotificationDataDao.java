@@ -13,9 +13,13 @@
  */
 package org.openmrs.module.muzima.api.db.hibernate;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
 import org.openmrs.module.muzima.api.db.NotificationDataDao;
@@ -44,11 +48,45 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<NotificationData> getNotificationsByReceiver(final Person person) {
+    public List<NotificationData> getNotificationsByReceiver(final Person person, final String search,
+                                                             final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.add(Restrictions.eq("receiver", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (pageNumber != null) {
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+        }
+        if (pageSize != null) {
+            criteria.setMaxResults(pageSize);
+        }
         return criteria.list();
+    }
+
+    /**
+     * Get the total number of notification data with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of notification data in the database.
+     */
+    @Override
+    public Integer countNotificationsByReceiver(final Person person, final String search) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        criteria.add(Restrictions.eq("receiver", person));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        criteria.setProjection(Projections.rowCount());
+        return (Integer) criteria.uniqueResult();
     }
 
     /**
@@ -59,10 +97,44 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<NotificationData> getNotificationsBySender(final Person person) {
+    public List<NotificationData> getNotificationsBySender(final Person person, final String search,
+                                                           final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.add(Restrictions.eq("sender", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (pageNumber != null) {
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+        }
+        if (pageSize != null) {
+            criteria.setMaxResults(pageSize);
+        }
         return criteria.list();
+    }
+
+    /**
+     * Get the total number of notification data with matching search term.
+     *
+     * @param search the search term.
+     * @return total number of notification data in the database.
+     */
+    @Override
+    public Integer countNotificationsBySender(final Person person, final String search) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        criteria.add(Restrictions.eq("sender", person));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        criteria.setProjection(Projections.rowCount());
+        return (Integer) criteria.uniqueResult();
     }
 }

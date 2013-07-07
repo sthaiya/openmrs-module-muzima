@@ -300,6 +300,54 @@ public interface DataService extends OpenmrsService {
     List<NotificationData> getAllNotificationData();
 
     /**
+     * Return all paged notification data for a particular person with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    List<NotificationData> getNotificationDataByReceiver(final Person person, final String search,
+                                                         final Integer pageNumber, final Integer pageSize);
+
+    /**
+     * Return paged notification data from a particular person with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    List<NotificationData> getNotificationDataBySender(final Person person, final String search,
+                                                       final Integer pageNumber, final Integer pageSize);
+
+    /**
+     * Return count for the paged notification data for a particular person with matching search term for a particular page.
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    Integer countNotificationDataByReceiver(final Person person, final String search);
+
+    /**
+     * Return count for the paged notification data from a particular person with matching search term for a particular page.
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    Integer countNotificationDataBySender(final Person person, final String search);
+
+    /**
      * Return all saved notification data for a particular person.
      *
      * @return all saved notification data.
@@ -341,22 +389,4 @@ public interface DataService extends OpenmrsService {
      * @return the voided notification data.
      */
     NotificationData voidNotificationData(final NotificationData notificationData, final String reason);
-
-    /**
-     * Get the total number of the notification data in the database with partial matching search term on the payload.
-     *
-     * @param search the search term.
-     * @return the total number of the notification data in the database.
-     */
-    Integer countNotificationData(final String search);
-
-    /**
-     * Get notification data with matching search term for a particular page.
-     *
-     * @param search     the search term.
-     * @param pageNumber the page number.
-     * @param pageSize   the size of the page.
-     * @return list of all notification data with matching search term for a particular page.
-     */
-    List<NotificationData> getPagedNotificationData(final String search, final Integer pageNumber, final Integer pageSize);
 }

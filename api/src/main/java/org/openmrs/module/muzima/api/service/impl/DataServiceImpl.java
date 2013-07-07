@@ -464,6 +464,66 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     }
 
     /**
+     * Return paged notification data for a particular person with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public List<NotificationData> getNotificationDataByReceiver(final Person person, final String search,
+                                                                final Integer pageNumber, final Integer pageSize) {
+        return getNotificationDataDao().getNotificationsByReceiver(person, search, pageNumber, pageSize);
+    }
+
+    /**
+     * Return paged notification data from a particular person with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public List<NotificationData> getNotificationDataBySender(final Person person, final String search,
+                                                              final Integer pageNumber, final Integer pageSize) {
+        return getNotificationDataDao().getNotificationsBySender(person, search, pageNumber, pageSize);
+    }
+
+    /**
+     * Return count for the paged notification data for a particular person with matching search term for a particular page.
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public Integer countNotificationDataByReceiver(final Person person, final String search) {
+        return getNotificationDataDao().countNotificationsByReceiver(person, search);
+    }
+
+    /**
+     * Return count for the paged notification data from a particular person with matching search term for a particular page.
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public Integer countNotificationDataBySender(final Person person, final String search) {
+        return getNotificationDataDao().countNotificationsBySender(person, search);
+    }
+
+    /**
      * Return all saved notification data for a particular person.
      *
      * @return all saved notification data.
@@ -472,7 +532,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public List<NotificationData> getNotificationDataByReceiver(final Person person) {
-        return getNotificationDataDao().getNotificationsByReceiver(person);
+        return getNotificationDataDao().getNotificationsByReceiver(person, null, null, null);
     }
 
     /**
@@ -484,7 +544,7 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public List<NotificationData> getNotificationDataBySender(final Person person) {
-        return getNotificationDataDao().getNotificationsBySender(person);
+        return getNotificationDataDao().getNotificationsBySender(person, null, null, null);
     }
 
     /**
@@ -523,29 +583,5 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         notificationData.setDateVoided(new Date());
         notificationData.setVoidReason(reason);
         return saveNotificationData(notificationData);
-    }
-
-    /**
-     * Get the total number of the notification data in the database with partial matching search term on the payload.
-     *
-     * @param search the search term.
-     * @return the total number of the notification data in the database.
-     */
-    @Override
-    public Integer countNotificationData(final String search) {
-        return notificationDataDao.countData(search);
-    }
-
-    /**
-     * Get notification data with matching search term for a particular page.
-     *
-     * @param search     the search term.
-     * @param pageNumber the page number.
-     * @param pageSize   the size of the page.
-     * @return list of all notification data with matching search term for a particular page.
-     */
-    @Override
-    public List<NotificationData> getPagedNotificationData(final String search, final Integer pageNumber, final Integer pageSize) {
-        return notificationDataDao.getPagedData(search, pageNumber, pageSize);
     }
 }

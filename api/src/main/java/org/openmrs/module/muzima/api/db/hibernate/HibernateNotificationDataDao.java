@@ -53,8 +53,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.eq("receiver", person));
@@ -79,8 +79,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.eq("receiver", person));
@@ -102,8 +102,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.eq("sender", person));
@@ -128,8 +128,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("description", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.eq("sender", person));

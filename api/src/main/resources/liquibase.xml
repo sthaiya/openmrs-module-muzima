@@ -64,7 +64,7 @@
             <column name="data_source" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="varchar(1024)">
+            <column name="payload" type="mediumtext">
                 <constraints nullable="false"/>
             </column>
             <column name="creator" type="int">
@@ -106,7 +106,7 @@
             <column name="data_source" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="varchar(1024)">
+            <column name="payload" type="mediumtext">
                 <constraints nullable="false"/>
             </column>
             <column name="message" type="varchar(1024)">
@@ -154,7 +154,7 @@
             <column name="data_source" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="varchar(1024)">
+            <column name="payload" type="mediumtext">
                 <constraints nullable="false"/>
             </column>
             <column name="message" type="varchar(1024)">

@@ -37,16 +37,17 @@ public class QueueDataProcessor {
     private static Boolean isRunning = false;
 
     public void processQueueData() {
-        if (isRunning) {
-            log.warn("Queue data processor aborting (another processor already running)!");
-            return;
+        if (!isRunning) {
+            log.info("Starting up queue data processor ...");
+            processAllQueueData();
+        } else {
+            log.info("Queue data processor aborting (another processor already running)!");
         }
-        isRunning = true;
-        processAllQueueData();
     }
 
     private void processAllQueueData() {
         try {
+            isRunning = true;
             DataService dataService = Context.getService(DataService.class);
             List<QueueData> queueDataList = dataService.getAllQueueData();
             Iterator<QueueData> queueDataIterator = queueDataList.iterator();
@@ -56,7 +57,7 @@ public class QueueDataProcessor {
                     QueueDataHandler queueDataHandler = findHandler(queueData);
                     queueDataHandler.process(queueData);
                     // archive them after we're done processing the queue data.
-                    createArchiveData(queueData, "Queue data processed succesfully!");
+                    createArchiveData(queueData, "Queue data processed successfully!");
                 } catch (Exception e) {
                     log.error("Unable to process queue data due to: " + e.getMessage(), e);
                     createErrorData(queueData, "Unable to process queue data due to: " + e.getMessage());
@@ -82,24 +83,16 @@ public class QueueDataProcessor {
     }
 
     private void createArchiveData(final QueueData queueData, final String message) {
-        DataService dataService = Context.getService(DataService.class);
-        ArchiveData archiveData = new ArchiveData();
-        archiveData.setDateArchived(new Date());
-        archiveData.setDataSource(queueData.getDataSource());
-        archiveData.setPayload(queueData.getPayload());
-        archiveData.setDiscriminator(queueData.getDiscriminator());
+        ArchiveData archiveData = new ArchiveData(queueData);
         archiveData.setMessage(message);
-        dataService.saveArchiveData(archiveData);
+        archiveData.setDateArchived(new Date());
+        Context.getService(DataService.class).saveArchiveData(archiveData);
     }
 
     private void createErrorData(final QueueData queueData, final String message) {
-        DataService dataService = Context.getService(DataService.class);
-        ErrorData errorData = new ErrorData();
-        errorData.setDateProcessed(new Date());
-        errorData.setDataSource(queueData.getDataSource());
-        errorData.setPayload(queueData.getPayload());
-        errorData.setDiscriminator(queueData.getDiscriminator());
+        ErrorData errorData = new ErrorData(queueData);
         errorData.setMessage(message);
-        dataService.saveErrorData(errorData);
+        errorData.setDateProcessed(new Date());
+        Context.getService(DataService.class).saveErrorData(errorData);
     }
 }

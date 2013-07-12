@@ -15,6 +15,7 @@ package org.openmrs.module.muzima.web.controller;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
+import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,11 @@ public class QueueController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void deleteQueue(final @RequestBody Map<String, Object> map) {
-        Object object = map.get("uuidList");
-        System.out.println("Objects to be deleted: " + object);
+        String[] uuidList = (String[]) map.get("uuidList");
+        DataService dataService = Context.getService(DataService.class);
+        for (String uuid : uuidList) {
+            QueueData queueData = dataService.getQueueDataByUuid(uuid);
+            dataService.purgeQueueData(queueData);
+        }
     }
 }

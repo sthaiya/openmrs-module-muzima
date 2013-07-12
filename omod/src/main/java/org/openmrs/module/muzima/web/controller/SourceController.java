@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.web.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
@@ -44,11 +45,26 @@ public class SourceController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void deleteSource(final @RequestBody Map<String, Object> map) {
-        Object uuidObject = map.get("uuid");
-        System.out.println("Uuid Object: " + uuidObject);
-        Object nameObject = map.get("name");
-        System.out.println("Name Object: " + nameObject);
-        Object descriptionObject = map.get("description");
-        System.out.println("Description Object: " + descriptionObject);
+        String uuid = (String) map.get("uuid");
+        String name = (String) map.get("name");
+        String description = (String) map.get("description");
+        DataService dataService = Context.getService(DataService.class);
+        if (StringUtils.isNotBlank(uuid)) {
+            DataSource dataSource = dataService.getDataSourceByUuid(uuid);
+            if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(description)) {
+                dataSource.setName(name);
+                dataSource.setDescription(description);
+                dataService.saveDataSource(dataSource);
+            } else {
+                dataSource.setRetired(true);
+                dataSource.setRetireReason("Deleting a data source object!");
+                dataService.saveDataSource(dataSource);
+            }
+        } else {
+            DataSource dataSource = new DataSource();
+            dataSource.setName(name);
+            dataSource.setDescription(description);
+            dataService.saveDataSource(dataSource);
+        }
     }
 }

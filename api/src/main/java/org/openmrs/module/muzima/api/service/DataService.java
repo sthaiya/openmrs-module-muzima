@@ -63,10 +63,11 @@ public interface DataService extends OpenmrsService {
     /**
      * Get the total number of the queue data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the queue data in the database.
      */
-    Integer countQueueData(final String search);
+    Number countQueueData(final String search);
 
     /**
      * Get queue data with matching search term for a particular page.
@@ -127,10 +128,11 @@ public interface DataService extends OpenmrsService {
     /**
      * Get the total number of the error data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the error data in the database.
      */
-    Integer countErrorData(final String search);
+    Number countErrorData(final String search);
 
     /**
      * Get error data with matching search term for a particular page.
@@ -191,10 +193,11 @@ public interface DataService extends OpenmrsService {
     /**
      * Get the total number of the archive data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the archive data in the database.
      */
-    Integer countArchiveData(final String search);
+    Number countArchiveData(final String search);
 
     /**
      * Get archive data with matching search term for a particular page.
@@ -255,10 +258,11 @@ public interface DataService extends OpenmrsService {
     /**
      * Get the total number of the data source in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the data source in the database.
      */
-    Integer countDataSource(final String search);
+    Number countDataSource(final String search);
 
     /**
      * Get data source with matching search term for a particular page.
@@ -328,16 +332,6 @@ public interface DataService extends OpenmrsService {
     /**
      * Return count for the paged notification data for a particular person with matching search term for a particular page.
      *
-     * @param person the person.
-     * @param search the search term.
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    Integer countNotificationDataByReceiver(final Person person, final String search);
-
-    /**
-     * Return count for the paged notification data from a particular person with matching search term for a particular page.
      *
      * @param person the person.
      * @param search the search term.
@@ -345,7 +339,19 @@ public interface DataService extends OpenmrsService {
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
-    Integer countNotificationDataBySender(final Person person, final String search);
+    Number countNotificationDataByReceiver(final Person person, final String search);
+
+    /**
+     * Return count for the paged notification data from a particular person with matching search term for a particular page.
+     *
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    Number countNotificationDataBySender(final Person person, final String search);
 
     /**
      * Return all saved notification data for a particular person.

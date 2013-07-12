@@ -43,7 +43,7 @@ public class QueuesController {
         Map<String, Object> response = new HashMap<String, Object>();
 
         DataService dataService = Context.getService(DataService.class);
-        Integer pages = (dataService.countQueueData(search) + pageSize - 1) / pageSize;
+        int pages = (dataService.countQueueData(search).intValue() + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
         for (QueueData queueData : dataService.getPagedQueueData(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertQueueData(queueData));

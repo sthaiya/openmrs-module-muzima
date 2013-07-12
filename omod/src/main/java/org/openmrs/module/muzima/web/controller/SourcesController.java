@@ -46,7 +46,7 @@ public class SourcesController {
         Map<String, Object> response = new HashMap<String, Object>();
 
         DataService dataService = Context.getService(DataService.class);
-        Integer pages = (dataService.countDataSource(search) + pageSize - 1) / pageSize;
+        int pages = (dataService.countDataSource(search).intValue() + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
         for (DataSource dataSource : dataService.getPagedDataSource(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertDataSource(dataSource));

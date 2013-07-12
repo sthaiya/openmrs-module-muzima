@@ -79,8 +79,9 @@ public interface DataDao<T extends Data> extends SingleClassDao<T> {
     /**
      * Get the total number of data with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of data in the database.
      */
-    Integer countData(final String search);
+    Number countData(final String search);
 }

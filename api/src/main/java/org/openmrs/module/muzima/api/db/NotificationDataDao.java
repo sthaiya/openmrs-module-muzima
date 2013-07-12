@@ -41,7 +41,7 @@ public interface NotificationDataDao extends DataDao<NotificationData> {
     List<NotificationData> getNotificationsBySender(final Person person, final String search,
                                                     final Integer pageNumber, final Integer pageSize);
 
-    Integer countNotificationsByReceiver(Person person, String search);
+    Number countNotificationsByReceiver(Person person, String search);
 
-    Integer countNotificationsBySender(Person person, String search);
+    Number countNotificationsBySender(Person person, String search);
 }

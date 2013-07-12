@@ -149,11 +149,12 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Get the total number of the queue data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the queue data in the database.
      */
     @Override
-    public Integer countQueueData(final String search) {
+    public Number countQueueData(final String search) {
         return queueDataDao.countData(search);
     }
 
@@ -234,11 +235,12 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Get the total number of the error data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the error data in the database.
      */
     @Override
-    public Integer countErrorData(final String search) {
+    public Number countErrorData(final String search) {
         return errorDataDao.countData(search);
     }
 
@@ -319,11 +321,12 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Get the total number of the archive data in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the archive data in the database.
      */
     @Override
-    public Integer countArchiveData(final String search) {
+    public Number countArchiveData(final String search) {
         return archiveDataDao.countData(search);
     }
 
@@ -404,11 +407,12 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Get the total number of the data source in the database with partial matching search term on the payload.
      *
+     *
      * @param search the search term.
      * @return the total number of the data source in the database.
      */
     @Override
-    public Integer countDataSource(final String search) {
+    public Number countDataSource(final String search) {
         return dataSourceDao.countDataSource(search);
     }
 
@@ -498,19 +502,6 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     /**
      * Return count for the paged notification data for a particular person with matching search term for a particular page.
      *
-     * @param person the person.
-     * @param search the search term.
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    @Override
-    public Integer countNotificationDataByReceiver(final Person person, final String search) {
-        return getNotificationDataDao().countNotificationsByReceiver(person, search);
-    }
-
-    /**
-     * Return count for the paged notification data from a particular person with matching search term for a particular page.
      *
      * @param person the person.
      * @param search the search term.
@@ -519,7 +510,22 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public Integer countNotificationDataBySender(final Person person, final String search) {
+    public Number countNotificationDataByReceiver(final Person person, final String search) {
+        return getNotificationDataDao().countNotificationsByReceiver(person, search);
+    }
+
+    /**
+     * Return count for the paged notification data from a particular person with matching search term for a particular page.
+     *
+     *
+     * @param person the person.
+     * @param search the search term.
+     * @return all saved notification data.
+     * @should return empty list when no notification data are saved in the database.
+     * @should return all saved notification data.
+     */
+    @Override
+    public Number countNotificationDataBySender(final Person person, final String search) {
         return getNotificationDataDao().countNotificationsBySender(person, search);
     }
 

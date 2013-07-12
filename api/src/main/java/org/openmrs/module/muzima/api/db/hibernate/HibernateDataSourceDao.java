@@ -88,11 +88,12 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
     /**
      * Get the total number of data source with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of data source in the database.
      */
     @Override
-    public Integer countDataSource(final String search) {
+    public Number countDataSource(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -102,6 +103,6 @@ public class HibernateDataSourceDao extends HibernateSingleClassDao<DataSource> 
         }
         criteria.add(Restrictions.eq("retired", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
-        return (Integer) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 }

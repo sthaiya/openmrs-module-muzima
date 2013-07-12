@@ -43,7 +43,7 @@ public class ErrorsController {
         Map<String, Object> response = new HashMap<String, Object>();
 
         DataService dataService = Context.getService(DataService.class);
-        Integer pages = (dataService.countErrorData(search) + pageSize - 1) / pageSize;
+        int pages = (dataService.countErrorData(search).intValue() + pageSize - 1) / pageSize;
         List<Object> objects = new ArrayList<Object>();
         for (ErrorData errorData : dataService.getPagedErrorData(search, pageNumber, pageSize)) {
             objects.add(WebConverter.convertErrorData(errorData));

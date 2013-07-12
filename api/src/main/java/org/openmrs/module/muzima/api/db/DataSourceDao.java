@@ -32,8 +32,9 @@ public interface DataSourceDao extends SingleClassDao<DataSource> {
     /**
      * Get the total number of data source with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of data source in the database.
      */
-    Integer countDataSource(final String search);
+    Number countDataSource(final String search);
 }

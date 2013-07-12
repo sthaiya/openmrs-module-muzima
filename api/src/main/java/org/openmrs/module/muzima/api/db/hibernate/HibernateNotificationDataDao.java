@@ -73,11 +73,12 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
     /**
      * Get the total number of notification data with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of notification data in the database.
      */
     @Override
-    public Integer countNotificationsByReceiver(final Person person, final String search) {
+    public Number countNotificationsByReceiver(final Person person, final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -88,7 +89,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         criteria.add(Restrictions.eq("receiver", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
-        return (Integer) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 
     /**
@@ -123,11 +124,12 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
     /**
      * Get the total number of notification data with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of notification data in the database.
      */
     @Override
-    public Integer countNotificationsBySender(final Person person, final String search) {
+    public Number countNotificationsBySender(final Person person, final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -138,6 +140,6 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         criteria.add(Restrictions.eq("sender", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
-        return (Integer) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 }

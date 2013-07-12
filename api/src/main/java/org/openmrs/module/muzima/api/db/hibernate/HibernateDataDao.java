@@ -23,7 +23,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.Person;
 import org.openmrs.module.muzima.api.db.DataDao;
 import org.openmrs.module.muzima.model.Data;
 import org.openmrs.module.muzima.model.handler.DataHandler;
@@ -187,11 +186,12 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     /**
      * Get the total number of data with matching search term.
      *
+     *
      * @param search the search term.
      * @return total number of data in the database.
      */
     @Override
-    public Integer countData(final String search) {
+    public Number countData(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -200,6 +200,6 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
             criteria.add(disjunction);
         }
         criteria.setProjection(Projections.rowCount());
-        return (Integer) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 }

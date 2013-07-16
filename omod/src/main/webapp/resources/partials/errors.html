@@ -22,6 +22,7 @@
                         <th>Sender</th>
                         <th>Kind</th>
                         <th>Submitted On</th>
+                        <th>Processed On</th>
                         <th>Error Message</th>
                         <th>Form Data</th>
                     </tr>
@@ -39,6 +40,7 @@
                         <td>{{error.source}}</td>
                         <td>{{error.discriminator}}</td>
                         <td>{{error.submitted}}</td>
+                        <td>{{error.processed}}</td>
                         <td><pre>{{error.message | truncate:30 }}</pre></td>
                         <td><pre>{{error.payload | truncate:30 }}</pre></td>
                     </tr>

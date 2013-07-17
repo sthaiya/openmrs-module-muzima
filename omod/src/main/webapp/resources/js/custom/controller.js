@@ -41,7 +41,7 @@ function ErrorsCtrl($scope, $location, $data) {
                 uuidList.push(key);
             }
         });
-        $data.reQueue(uuidList).
+        $data.reQueueErrors(uuidList).
             then(function() {
                 $location.path("/errors");
             })

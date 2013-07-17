@@ -41,16 +41,4 @@ public class ErrorController {
         ErrorData errorData = dataService.getErrorDataByUuid(uuid);
         return WebConverter.convertErrorData(errorData);
     }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public void reQueue(final @RequestBody Map<String, Object> map) {
-        String[] uuidList = (String[]) map.get("uuidList");
-        DataService dataService = Context.getService(DataService.class);
-        for (String uuid : uuidList) {
-            ErrorData errorData = dataService.getErrorDataByUuid(uuid);
-            QueueData queueData = new QueueData(errorData);
-            dataService.saveQueueData(queueData);
-            dataService.purgeErrorData(errorData);
-        }
-    }
 }

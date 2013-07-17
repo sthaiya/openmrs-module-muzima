@@ -41,14 +41,4 @@ public class QueueController {
         QueueData queueData = dataService.getQueueDataByUuid(uuid);
         return WebConverter.convertQueueData(queueData);
     }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public void deleteQueue(final @RequestBody Map<String, Object> map) {
-        String[] uuidList = (String[]) map.get("uuidList");
-        DataService dataService = Context.getService(DataService.class);
-        for (String uuid : uuidList) {
-            QueueData queueData = dataService.getQueueDataByUuid(uuid);
-            dataService.purgeQueueData(queueData);
-        }
-    }
 }

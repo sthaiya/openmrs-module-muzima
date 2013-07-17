@@ -16,8 +16,10 @@ package org.openmrs.module.muzima.web.controller;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,5 +53,17 @@ public class ErrorsController {
         response.put("pages", pages);
         response.put("objects", objects);
         return response;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void reQueue(final @RequestBody Map<String, Object> map) {
+        String[] uuidList = (String[]) map.get("uuidList");
+        DataService dataService = Context.getService(DataService.class);
+        for (String uuid : uuidList) {
+            ErrorData errorData = dataService.getErrorDataByUuid(uuid);
+            QueueData queueData = new QueueData(errorData);
+            dataService.saveQueueData(queueData);
+            dataService.purgeErrorData(errorData);
+        }
     }
 }

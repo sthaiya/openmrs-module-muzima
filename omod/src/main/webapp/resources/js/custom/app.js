@@ -28,11 +28,11 @@ muzima.factory('$data', function ($http) {
         }
         return $http.get("queues.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize);
     };
+    var deleteQueues = function (uuidList) {
+        return $http.post("queues.json", {"uuidList": uuidList});
+    };
     var getQueue = function (uuid) {
         return $http.get("queue.json?uuid=" + uuid);
-    };
-    var deleteQueue = function (uuidList) {
-        return $http.post("queue.json", {"uuidList": uuidList});
     };
 
     var getErrors = function (search, pageNumber, pageSize) {
@@ -42,11 +42,11 @@ muzima.factory('$data', function ($http) {
         }
         return $http.get("errors.json?search=" + search + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize);
     };
+    var reQueueErrors = function (uuidList) {
+        return $http.post("errors.json", {"uuidList": uuidList});
+    };
     var getError = function (uuid) {
         return $http.get("error.json?uuid=" + uuid);
-    };
-    var reQueue = function (uuidList) {
-        return $http.post("error.json", {"uuidList": uuidList});
     };
 
     var getSources = function (search, pageNumber, pageSize) {
@@ -68,11 +68,11 @@ muzima.factory('$data', function ($http) {
     return {
         getQueues: getQueues,
         getQueue: getQueue,
-        deleteQueue: deleteQueue,
+        deleteQueue: deleteQueues,
 
         getErrors: getErrors,
         getError: getError,
-        reQueue: reQueue,
+        reQueueErrors: reQueueErrors,
 
         getSources: getSources,
         getSource: getSource,

@@ -18,6 +18,7 @@ import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,5 +52,15 @@ public class QueuesController {
         response.put("pages", pages);
         response.put("objects", objects);
         return response;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void deleteQueue(final @RequestBody Map<String, Object> map) {
+        String[] uuidList = (String[]) map.get("uuidList");
+        DataService dataService = Context.getService(DataService.class);
+        for (String uuid : uuidList) {
+            QueueData queueData = dataService.getQueueDataByUuid(uuid);
+            dataService.purgeQueueData(queueData);
+        }
     }
 }

@@ -25,14 +25,6 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <type>jar</type>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path-assert</artifactId>
-            <type>jar</type>
-            <scope>test</scope>
         </dependency>
 
         <!-- Begin OpenMRS core -->

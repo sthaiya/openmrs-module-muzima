@@ -91,16 +91,14 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
         T data = (T) criteria.uniqueResult();
-        if(data !=null){
+        if(data != null){
             List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
             for (DataHandler handler : handlers) {
                 if (handler.accept(data)) {
                     handler.handleGet(data);
                 }
             }
-
         }
-
         return data;
     }
 
@@ -113,7 +111,7 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     public List<T> getAllData() {
         List<T> list = new ArrayList<T>();
         for (T data : getAll()) {
-            if(data !=null){
+            if(data != null){
                 List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
                 for (DataHandler handler : handlers) {
                     if (handler.accept(data)) {
@@ -123,7 +121,7 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
                 list.add(data);
             }
         }
-        return getAll();
+        return list;
     }
 
     /**
@@ -143,7 +141,6 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
             }
             saveOrUpdate(data);
         }
-
         return data;
     }
 
@@ -162,7 +159,6 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
                 handler.handleDelete(data);
             }
         }
-
         delete(data);
     }
 

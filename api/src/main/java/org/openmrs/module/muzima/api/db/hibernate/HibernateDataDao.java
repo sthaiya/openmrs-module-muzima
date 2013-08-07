@@ -65,12 +65,15 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @Override
     public T getData(final Integer id) {
         T data = getById(id);
-        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
-        for (DataHandler handler : handlers) {
-            if (handler.accept(data)) {
-                handler.handleGet(data);
+        if(data != null) {
+            List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+            for (DataHandler handler : handlers) {
+                if (handler.accept(data)) {
+                    handler.handleGet(data);
+                }
             }
         }
+
         return data;
     }
 
@@ -88,12 +91,16 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         criteria.add(Restrictions.eq("uuid", uuid));
         T data = (T) criteria.uniqueResult();
-        List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
-        for (DataHandler handler : handlers) {
-            if (handler.accept(data)) {
-                handler.handleGet(data);
+        if(data !=null){
+            List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+            for (DataHandler handler : handlers) {
+                if (handler.accept(data)) {
+                    handler.handleGet(data);
+                }
             }
+
         }
+
         return data;
     }
 
@@ -106,13 +113,15 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     public List<T> getAllData() {
         List<T> list = new ArrayList<T>();
         for (T data : getAll()) {
-            List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
-            for (DataHandler handler : handlers) {
-                if (handler.accept(data)) {
-                    handler.handleGet(data);
+            if(data !=null){
+                List<DataHandler> handlers = HandlerUtil.getHandlersForType(DataHandler.class, data.getClass());
+                for (DataHandler handler : handlers) {
+                    if (handler.accept(data)) {
+                        handler.handleGet(data);
+                    }
                 }
+                list.add(data);
             }
-            list.add(data);
         }
         return getAll();
     }
@@ -132,8 +141,9 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
             if (handler.accept(data)) {
                 handler.handleSave(data);
             }
+            saveOrUpdate(data);
         }
-        saveOrUpdate(data);
+
         return data;
     }
 
@@ -152,6 +162,7 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
                 handler.handleDelete(data);
             }
         }
+
         delete(data);
     }
 

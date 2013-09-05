@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.muzima.web.resource;
+package org.openmrs.module.muzima.web.resource.muzima;
 
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
@@ -40,7 +40,8 @@ import java.util.List;
 /**
  * TODO: Write brief description about the class here.
  */
-@Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/notificationData", supportedClass = NotificationData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
+@Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/notificationData",
+        supportedClass = NotificationData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
 public class NotificationDataResource extends DataDelegatingCrudResource<NotificationData> {
 
     /**

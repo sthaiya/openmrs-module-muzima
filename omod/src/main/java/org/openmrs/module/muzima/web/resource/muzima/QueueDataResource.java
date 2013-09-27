@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.web.resource.muzima;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.api.context.Context;
@@ -45,7 +46,8 @@ import java.util.Map;
 /**
  * TODO: Write brief description about the class here.
  */
-@Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/queueData", supportedClass = QueueData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
+@Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/queuedata",
+        supportedClass = QueueData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
 public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
 
     /**
@@ -209,8 +211,8 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         DataSource dataSource = dataService.getDataSourceByUuid(dataSourceObject.toString());
         if (dataSource == null) {
             List<DataSource> dataSources = dataService.getAllDataSource();
-            if (dataSources.size() != 1) {
-                throw new IllegalPropertyException("Unable to uniquely identify data source object.");
+            if (CollectionUtils.isEmpty(dataSources)) {
+                throw new IllegalPropertyException("Unable to find ahy data source object.");
             }
             dataSource = dataSources.get(0);
         }

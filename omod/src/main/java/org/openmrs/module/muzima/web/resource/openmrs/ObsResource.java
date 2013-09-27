@@ -43,7 +43,7 @@ import java.util.Map;
 public class ObsResource extends ObsResource1_8 {
 
     public ObsResource() {
-        allowedMissingProperties.add("valueCoded.name.name");
+        allowedMissingProperties.add("valueCoded");
     }
 
     /**

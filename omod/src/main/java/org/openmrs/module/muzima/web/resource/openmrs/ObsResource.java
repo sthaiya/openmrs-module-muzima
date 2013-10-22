@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.web.resource.openmrs;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Person;
@@ -58,28 +59,29 @@ public class ObsResource extends ObsResource1_8 {
     protected PageableResult doSearch(final RequestContext context) {
         RestService service = Context.getService(RestService.class);
 
-        HttpServletRequest request = context.getRequest();
-        Map parameterMap = request.getParameterMap();
-
         List<Person> persons = new ArrayList<Person>();
-        Object personUuidObjects = parameterMap.get("person");
-        if (personUuidObjects instanceof String[]) {
-            String[] personUuids = (String[]) personUuidObjects;
+        String personParameter = context.getRequest().getParameter("person");
+        if (personParameter != null) {
+            String[] personUuids = StringUtils.split(personParameter, ",");
             PersonResource1_8 personResource = (PersonResource1_8) service.getResourceBySupportedClass(Person.class);
             for (String personUuid : personUuids) {
                 Person person = personResource.getByUniqueId(personUuid);
-                persons.add(person);
+                if (person != null) {
+                    persons.add(person);
+                }
             }
         }
 
         List<Concept> concepts = new ArrayList<Concept>();
-        Object conceptUuidObjects = parameterMap.get("concept");
-        if (conceptUuidObjects instanceof String[]) {
-            String[] conceptUuids = (String[]) conceptUuidObjects;
+        String conceptParameter = context.getRequest().getParameter("concept");
+        if (conceptParameter != null) {
+            String[] conceptUuids = StringUtils.split(conceptParameter, ",");
             ConceptResource1_8 conceptResource = (ConceptResource1_8) service.getResourceBySupportedClass(Concept.class);
             for (String conceptUuid : conceptUuids) {
                 Concept concept = conceptResource.getByUniqueId(conceptUuid);
-                concepts.add(concept);
+                if (concept != null) {
+                    concepts.add(concept);
+                }
             }
         }
 

@@ -212,7 +212,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         if (dataSource == null) {
             List<DataSource> dataSources = dataService.getAllDataSource();
             if (CollectionUtils.isEmpty(dataSources)) {
-                throw new IllegalPropertyException("Unable to find ahy data source object.");
+                throw new IllegalPropertyException("Unable to find any data source object.");
             }
             dataSource = dataSources.get(0);
         }

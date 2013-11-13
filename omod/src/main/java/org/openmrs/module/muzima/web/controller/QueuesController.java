@@ -54,9 +54,10 @@ public class QueuesController {
         return response;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.POST)
     public void deleteQueue(final @RequestBody Map<String, Object> map) {
-        String[] uuidList = (String[]) map.get("uuidList");
+        List<String> uuidList = (List<String>) map.get("uuidList");
         DataService dataService = Context.getService(DataService.class);
         for (String uuid : uuidList) {
             QueueData queueData = dataService.getQueueDataByUuid(uuid);

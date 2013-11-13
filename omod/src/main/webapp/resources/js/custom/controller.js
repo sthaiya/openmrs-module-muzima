@@ -9,8 +9,9 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
 
     $scope.queue = function () {
         var uuidList = [$scope.uuid];
-        $data.reQueue(uuidList).
-            then(function() {
+        alert("uuidList: " + uuidList);
+        $data.reQueueErrors(uuidList).
+            then(function () {
                 $location.path("/errors");
             })
     };
@@ -36,14 +37,19 @@ function ErrorsCtrl($scope, $location, $data) {
 
     $scope.queue = function () {
         var uuidList = [];
-        angular.forEach($scope.selected, function(value, key) {
+        angular.forEach($scope.selected, function (value, key) {
             if (value) {
                 uuidList.push(key);
             }
         });
         $data.reQueueErrors(uuidList).
-            then(function() {
-                $location.path("/errors");
+            then(function () {
+                $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
+                    then(function (response) {
+                        var serverData = response.data;
+                        $scope.errors = serverData.objects;
+                        $scope.noOfPages = serverData.pages;
+                    });
             })
     };
 
@@ -83,7 +89,7 @@ function QueueCtrl($scope, $routeParams, $location, $data) {
     $scope.delete = function () {
         var uuidList = [$scope.uuid];
         $data.deleteQueue(uuidList).
-            then(function() {
+            then(function () {
                 $location.path("/queues");
             })
     };
@@ -109,14 +115,19 @@ function QueuesCtrl($scope, $location, $data) {
 
     $scope.delete = function () {
         var uuidList = [];
-        angular.forEach($scope.selected, function(value, key) {
+        angular.forEach($scope.selected, function (value, key) {
             if (value) {
                 uuidList.push(key);
             }
         });
         $data.deleteQueue(uuidList).
-            then(function() {
-                $location.path("/queues");
+            then(function () {
+                $data.getQueues($scope.search, $scope.currentPage, $scope.pageSize).
+                    then(function (response) {
+                        var serverData = response.data;
+                        $scope.queues = serverData.objects;
+                        $scope.noOfPages = serverData.pages;
+                    });
             })
     };
 
@@ -154,16 +165,16 @@ function SourceCtrl($scope, $routeParams, $location, $data) {
         $scope.mode = "edit";
     } else {
         $data.getSource($scope.uuid).
-            then(function(response) {
+            then(function (response) {
                 $scope.source = response.data;
             });
     }
 
-    $scope.edit = function() {
+    $scope.edit = function () {
         $scope.mode = "edit";
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         if ($scope.mode == "edit") {
             if ($scope.uuid === undefined) {
                 $location.path("/sources");
@@ -175,16 +186,16 @@ function SourceCtrl($scope, $routeParams, $location, $data) {
         }
     };
 
-    $scope.save = function(source) {
+    $scope.save = function (source) {
         $data.saveSource(source.uuid, source.name, source.description).
-            then(function() {
+            then(function () {
                 $location.path("/sources");
             })
     };
 
-    $scope.delete = function() {
+    $scope.delete = function () {
         $data.deleteSource($scope.uuid).
-            then(function() {
+            then(function () {
                 $location.path("/sources");
             })
     };

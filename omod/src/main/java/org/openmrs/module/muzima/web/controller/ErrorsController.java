@@ -55,9 +55,10 @@ public class ErrorsController {
         return response;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.POST)
     public void reQueue(final @RequestBody Map<String, Object> map) {
-        String[] uuidList = (String[]) map.get("uuidList");
+        List<String> uuidList = (List<String>) map.get("uuidList");
         DataService dataService = Context.getService(DataService.class);
         for (String uuid : uuidList) {
             ErrorData errorData = dataService.getErrorDataByUuid(uuid);

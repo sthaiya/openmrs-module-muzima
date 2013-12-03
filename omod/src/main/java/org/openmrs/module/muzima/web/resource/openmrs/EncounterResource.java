@@ -52,7 +52,7 @@ public class EncounterResource extends EncounterResource1_8 {
         if (patientParameter != null) {
             CoreService coreService = Context.getService(CoreService.class);
             String[] patientUuids = StringUtils.split(patientParameter, ",");
-            long encounterCount = coreService.countEncounters(Arrays.asList(patientUuids));
+            int encounterCount = coreService.countEncounters(Arrays.asList(patientUuids)).intValue();
             List<Encounter> encounters = coreService.getEncounters(Arrays.asList(patientUuids), context.getStartIndex(), context.getLimit());
             boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
             return new AlreadyPaged<Encounter>(context, encounters, hasMore);

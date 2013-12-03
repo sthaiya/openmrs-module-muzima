@@ -69,7 +69,7 @@ public class ObsResource extends ObsResource1_8 {
             String[] conceptUuids = StringUtils.split(conceptParameter, ",");
 
             CoreService coreService = Context.getService(CoreService.class);
-            long obsCount = coreService.countObservations(Arrays.asList(personUuids), Arrays.asList(conceptUuids));
+            int obsCount = coreService.countObservations(Arrays.asList(personUuids), Arrays.asList(conceptUuids)).intValue();
             List<Obs> observations = coreService.getObservations(
                     Arrays.asList(personUuids), Arrays.asList(conceptUuids),
                     context.getStartIndex(), context.getLimit());

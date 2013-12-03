@@ -44,7 +44,7 @@ public class CoreServiceImpl extends BaseOpenmrsService implements CoreService {
     }
 
     @Override
-    public Long countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException {
+    public Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException {
         return getCoreDao().countObservations(patientUuids, conceptUuids);
     }
 
@@ -55,7 +55,7 @@ public class CoreServiceImpl extends BaseOpenmrsService implements CoreService {
     }
 
     @Override
-    public Long countEncounters(final List<String> patientUuids) throws APIException {
+    public Number countEncounters(final List<String> patientUuids) throws APIException {
         return getCoreDao().countEncounters(patientUuids);
     }
 }

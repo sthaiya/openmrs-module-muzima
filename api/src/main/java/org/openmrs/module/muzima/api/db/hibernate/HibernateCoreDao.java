@@ -74,7 +74,7 @@ public class HibernateCoreDao implements CoreDao {
      * @see CoreDao#countObservations(java.util.List, java.util.List)
      */
     @Override
-    public Long countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws DAOException {
+    public Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws DAOException {
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Obs.class);
 
@@ -87,7 +87,7 @@ public class HibernateCoreDao implements CoreDao {
         criteria.add(Restrictions.eq("voided", false));
 
         criteria.setProjection(Projections.rowCount());
-        return (Long) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 
     /**
@@ -118,7 +118,7 @@ public class HibernateCoreDao implements CoreDao {
      * @see CoreDao#countEncounters(java.util.List)
      */
     @Override
-    public Long countEncounters(final List<String> patientUuids) throws DAOException {
+    public Number countEncounters(final List<String> patientUuids) throws DAOException {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Encounter.class);
 
         criteria.createAlias("patient", "patient");
@@ -127,6 +127,6 @@ public class HibernateCoreDao implements CoreDao {
         criteria.add(Restrictions.eq("voided", false));
 
         criteria.setProjection(Projections.rowCount());
-        return (Long) criteria.uniqueResult();
+        return (Number) criteria.uniqueResult();
     }
 }

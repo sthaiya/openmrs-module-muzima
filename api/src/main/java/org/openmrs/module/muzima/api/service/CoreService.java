@@ -28,10 +28,10 @@ public interface CoreService extends OpenmrsService {
     List<Obs> getObservations(final List<String> patientUuids, final List<String> conceptUuids,
                               final int startIndex, final int size) throws APIException;
 
-    Long countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException;
+    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException;
 
     List<Encounter> getEncounters(final List<String> patientUuids,
                                   final int startIndex, final int size) throws APIException;
 
-    Long countEncounters(final List<String> patientUuids) throws APIException;
+    Number countEncounters(final List<String> patientUuids) throws APIException;
 }

@@ -30,12 +30,12 @@ public interface CoreDao {
                               final int startIndex, final int size) throws DAOException;
 
     @Transactional(readOnly = true)
-    Long countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws DAOException;
+    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws DAOException;
 
     @Transactional(readOnly = true)
     List<Encounter> getEncounters(final List<String> patientUuids, final int startIndex, final int size) throws DAOException;
 
     @Transactional(readOnly = true)
-    Long countEncounters(final List<String> patientUuids) throws DAOException;
+    Number countEncounters(final List<String> patientUuids) throws DAOException;
 
 }

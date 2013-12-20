@@ -14,7 +14,6 @@
 package org.openmrs.module.muzima.web.resource.muzima;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
@@ -34,7 +33,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudR
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.IllegalPropertyException;
-import org.openmrs.module.webservices.rest.web.response.ObjectNotFoundException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
@@ -181,20 +179,20 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
      * It is empty, because we set that already in the create method.
      *
      * @param queueData the queue data object.
-     * @param dataSourceUuid the uuid of the data source.
+     * @param dataSource the uuid of the data source.
      */
     @PropertySetter("dataSource")
-    public static void setDataSource(final QueueData queueData, final String dataSourceUuid) {
+    public static void setDataSource(final QueueData queueData, final String dataSource) {
     }
 
     /**
      * It is empty, because we set that already in the create method.
      *
      * @param queueData the queue data object.
-     * @param payloadMap the uuid of the data source.
+     * @param payload the payload.
      */
     @PropertySetter("payload")
-    public static void setPayload(final QueueData queueData, final Map<String, Object> payloadMap) {
+    public static void setPayload(final QueueData queueData, final Object payload) {
     }
 
     /**

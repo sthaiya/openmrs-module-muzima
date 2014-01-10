@@ -50,36 +50,30 @@ public class QueueDataProcessor {
             isRunning = true;
             DataService dataService = Context.getService(DataService.class);
             List<QueueData> queueDataList = dataService.getAllQueueData();
-            Iterator<QueueData> queueDataIterator = queueDataList.iterator();
-            while (queueDataIterator.hasNext()) {
-                QueueData queueData = queueDataIterator.next();
-                try {
-                    QueueDataHandler queueDataHandler = findHandler(queueData);
-                    queueDataHandler.process(queueData);
-                    // archive them after we're done processing the queue data.
-                    createArchiveData(queueData, "Queue data processed successfully!");
-                } catch (Exception e) {
-                    log.error("Unable to process queue data due to: " + e.getMessage(), e);
-                    createErrorData(queueData, "Unable to process queue data due to: " + e.getMessage());
+            List<QueueDataHandler> queueDataHandlers =
+                    HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
+            for (QueueDataHandler queueDataHandler : queueDataHandlers) {
+                Iterator<QueueData> queueDataIterator = queueDataList.iterator();
+                while (queueDataIterator.hasNext()) {
+                    QueueData queueData = queueDataIterator.next();
+                    try {
+                        if (queueDataHandler.accept(queueData)) {
+                            queueDataHandler.process(queueData);
+                            queueDataIterator.remove();
+                            // archive them after we're done processing the queue data.
+                            createArchiveData(queueData, "Queue data processed successfully!");
+                            dataService.purgeQueueData(queueData);
+                        }
+                    } catch (Exception e) {
+                        log.error("Unable to process queue data due to: " + e.getMessage(), e);
+                        createErrorData(queueData, "Unable to process queue data due to: " + e.getMessage());
+                        dataService.purgeQueueData(queueData);
+                    }
                 }
-                dataService.purgeQueueData(queueData);
             }
         } finally {
             isRunning = false;
         }
-    }
-
-    private QueueDataHandler findHandler(final QueueData queueData) {
-        QueueDataHandler queueDataHandler = null;
-        List<QueueDataHandler> queueDataHandlers =
-                HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
-        for (int i = 0; i < queueDataHandlers.size(); i++) {
-            queueDataHandler = queueDataHandlers.get(i);
-            if (queueDataHandler.accept(queueData)) {
-                return queueDataHandler;
-            }
-        }
-        return queueDataHandler;
     }
 
     private void createArchiveData(final QueueData queueData, final String message) {

@@ -29,6 +29,10 @@ public class NotificationData extends BaseOpenmrsData implements Data {
 
     private String subject;
 
+    private String status;
+
+    private String source;
+
     private String payload;
 
     /**
@@ -99,6 +103,42 @@ public class NotificationData extends BaseOpenmrsData implements Data {
      */
     public void setSubject(final String subject) {
         this.subject = subject;
+    }
+
+    /**
+     * Get the source of the notification.
+     *
+     * @return the source of the notification.
+     */
+    public String getSource() {
+        return source;
+    }
+
+    /**
+     * Set the source of the notification information.
+     *
+     * @param source the source of the notification information.
+     */
+    public void setSource(final String source) {
+        this.source = source;
+    }
+
+    /**
+     * Get the status of the notification.
+     *
+     * @return the status of the notification.
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * Set the status of the notification.
+     *
+     * @param status the status of the notification.
+     */
+    public void setStatus(final String status) {
+        this.status = status;
     }
 
     /**

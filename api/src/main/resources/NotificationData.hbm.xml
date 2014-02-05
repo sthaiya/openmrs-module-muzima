@@ -12,6 +12,10 @@
 
         <property name="subject" type="java.lang.String" column="subject" not-null="true"/>
 
+        <property name="status" type="java.lang.String" column="status" not-null="true"/>
+
+        <property name="source" type="java.lang.String" column="source" not-null="true"/>
+
         <property name="payload" type="java.lang.String" column="payload" not-null="true"/>
 
         <many-to-one name="receiver" class="org.openmrs.Person" not-null="true">

@@ -131,6 +131,8 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
             description.addProperty("uuid");
             description.addProperty("display", findMethod("getDisplayString"));
             description.addProperty("subject");
+            description.addProperty("status");
+            description.addProperty("source");
             description.addProperty("payload");
             description.addProperty("receiver", Representation.DEFAULT);
             description.addProperty("sender", Representation.DEFAULT);

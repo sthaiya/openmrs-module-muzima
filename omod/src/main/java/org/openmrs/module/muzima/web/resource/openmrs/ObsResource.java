@@ -14,31 +14,23 @@
 package org.openmrs.module.muzima.web.resource.openmrs;
 
 import org.apache.commons.lang.StringUtils;
-import org.openmrs.Concept;
-import org.openmrs.Encounter;
 import org.openmrs.Obs;
-import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.CoreService;
-import org.openmrs.module.muzima.common.ObsServiceUtils;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
+import org.openmrs.module.muzima.web.resource.utils.ResourceUtils;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.api.RestService;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
-import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.ConceptResource1_8;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.ObsResource1_8;
-import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PersonResource1_8;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO: Write brief description about the class here.
@@ -62,21 +54,25 @@ public class ObsResource extends ObsResource1_8 {
      */
     @Override
     protected PageableResult doSearch(final RequestContext context) {
-        String personParameter = context.getRequest().getParameter("person");
-        String conceptParameter = context.getRequest().getParameter("concept");
+        HttpServletRequest request = context.getRequest();
+        String personParameter = request.getParameter("person");
+        String conceptParameter = request.getParameter("concept");
+        String syncDateParameter = request.getParameter("syncDate");
         if (personParameter != null && conceptParameter != null) {
             String[] personUuids = StringUtils.split(personParameter, ",");
             String[] conceptUuids = StringUtils.split(conceptParameter, ",");
+            Date syncDate = ResourceUtils.parseDate(syncDateParameter);
 
             CoreService coreService = Context.getService(CoreService.class);
-            int obsCount = coreService.countObservations(Arrays.asList(personUuids), Arrays.asList(conceptUuids)).intValue();
-            List<Obs> observations = coreService.getObservations(
-                    Arrays.asList(personUuids), Arrays.asList(conceptUuids),
+            int obsCount = coreService.countObservations(Arrays.asList(personUuids),
+                    Arrays.asList(conceptUuids), syncDate).intValue();
+            List<Obs> observations = coreService.getObservations(Arrays.asList(personUuids),
+                    Arrays.asList(conceptUuids), syncDate,
                     context.getStartIndex(), context.getLimit());
             boolean hasMore = obsCount > context.getStartIndex() + observations.size();
             return new AlreadyPaged<Obs>(context, observations, hasMore);
         }
-
         return new EmptySearchResult();
     }
+
 }

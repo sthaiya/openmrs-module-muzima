@@ -20,6 +20,7 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.CoreService;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
+import org.openmrs.module.muzima.web.resource.utils.ResourceUtils;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -31,8 +32,10 @@ import org.openmrs.module.webservices.rest.web.resource.impl.ServiceSearcher;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.EncounterResource1_8;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PatientResource1_8;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,12 +51,16 @@ public class EncounterResource extends EncounterResource1_8 {
      */
     @Override
     protected PageableResult doSearch(RequestContext context) {
-        String patientParameter = context.getRequest().getParameter("patient");
+        HttpServletRequest request = context.getRequest();
+        String patientParameter = request.getParameter("patient");
+        String syncDateParameter = request.getParameter("syncDate");
         if (patientParameter != null) {
             CoreService coreService = Context.getService(CoreService.class);
             String[] patientUuids = StringUtils.split(patientParameter, ",");
-            int encounterCount = coreService.countEncounters(Arrays.asList(patientUuids)).intValue();
-            List<Encounter> encounters = coreService.getEncounters(Arrays.asList(patientUuids), context.getStartIndex(), context.getLimit());
+            Date syncDate = ResourceUtils.parseDate(syncDateParameter);
+            int encounterCount = coreService.countEncounters(Arrays.asList(patientUuids), syncDate).intValue();
+            List<Encounter> encounters = coreService.getEncounters(Arrays.asList(patientUuids), syncDate,
+                    context.getStartIndex(), context.getLimit());
             boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
             return new AlreadyPaged<Encounter>(context, encounters, hasMore);
         }

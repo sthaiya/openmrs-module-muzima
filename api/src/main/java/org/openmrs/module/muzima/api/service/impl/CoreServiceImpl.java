@@ -13,13 +13,16 @@
  */
 package org.openmrs.module.muzima.api.service.impl;
 
+import org.openmrs.Cohort;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.muzima.api.db.CoreDao;
 import org.openmrs.module.muzima.api.service.CoreService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,23 +42,45 @@ public class CoreServiceImpl extends BaseOpenmrsService implements CoreService {
 
     @Override
     public List<Obs> getObservations(final List<String> patientUuids, final List<String> conceptUuids,
-                                     final int startIndex, final int size) throws APIException {
-        return getCoreDao().getObservations(patientUuids, conceptUuids, startIndex, size);
+                                     final Date syncDate, final int startIndex, final int size) throws APIException {
+        return getCoreDao().getObservations(patientUuids, conceptUuids, syncDate, startIndex, size);
     }
 
     @Override
-    public Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException {
-        return getCoreDao().countObservations(patientUuids, conceptUuids);
+    public Number countObservations(final List<String> patientUuids, final List<String> conceptUuids,
+                                    final Date syncDate) throws APIException {
+        return getCoreDao().countObservations(patientUuids, conceptUuids, syncDate);
     }
 
     @Override
-    public List<Encounter> getEncounters(final List<String> patientUuids, final int startIndex, final int size)
-            throws APIException {
-        return getCoreDao().getEncounters(patientUuids, startIndex, size);
+    public List<Encounter> getEncounters(final List<String> patientUuids, final Date syncDate,
+                                         final int startIndex, final int size) throws APIException {
+        return getCoreDao().getEncounters(patientUuids, syncDate, startIndex, size);
     }
 
     @Override
-    public Number countEncounters(final List<String> patientUuids) throws APIException {
-        return getCoreDao().countEncounters(patientUuids);
+    public Number countEncounters(final List<String> patientUuids, final Date syncDate) throws APIException {
+        return getCoreDao().countEncounters(patientUuids, syncDate);
+    }
+
+    @Override
+    public List<Cohort> getCohorts(final String name, final Date syncDate,
+                                   final int startIndex, final int size) throws APIException {
+        return getCoreDao().getCohorts(name, syncDate, startIndex, size);
+    }
+
+    @Override
+    public Number countCohorts(final String name, final Date syncDate) throws APIException {
+        return getCoreDao().countCohorts(name, syncDate);
+    }
+
+    @Override
+    public List<Patient> getPatients(final String cohortUuid, final Date syncDate, final int startIndex, final int size) throws APIException {
+        return getCoreDao().getPatients(cohortUuid, syncDate, startIndex, size);
+    }
+
+    @Override
+    public Number countPatients(final String cohortUuid, final Date syncDate) throws APIException {
+        return getCoreDao().countPatients(cohortUuid, syncDate);
     }
 }

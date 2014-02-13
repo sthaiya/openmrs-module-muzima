@@ -13,11 +13,14 @@
  */
 package org.openmrs.module.muzima.api.db;
 
+import org.openmrs.Cohort;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
 import org.openmrs.api.db.DAOException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,15 +30,30 @@ public interface CoreDao {
 
     @Transactional(readOnly = true)
     List<Obs> getObservations(final List<String> patientUuids, final List<String> conceptUuids,
+                              final Date syncDate, final int startIndex, final int size) throws DAOException;
+
+    @Transactional(readOnly = true)
+    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids,
+                             final Date syncDate) throws DAOException;
+
+    @Transactional(readOnly = true)
+    List<Encounter> getEncounters(final List<String> patientUuids, final Date syncDate,
+                                  final int startIndex, final int size) throws DAOException;
+
+    @Transactional(readOnly = true)
+    Number countEncounters(final List<String> patientUuids, final Date syncDate) throws DAOException;
+
+    @Transactional(readOnly = true)
+    List<Cohort> getCohorts(final String name, final Date syncDate,
+                            int startIndex, int size) throws DAOException;
+
+    @Transactional(readOnly = true)
+    Number countCohorts(final String name, final Date syncDate) throws DAOException;
+
+    @Transactional(readOnly = true)
+    List<Patient> getPatients(final String cohortUuid, final Date syncDate,
                               final int startIndex, final int size) throws DAOException;
 
     @Transactional(readOnly = true)
-    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws DAOException;
-
-    @Transactional(readOnly = true)
-    List<Encounter> getEncounters(final List<String> patientUuids, final int startIndex, final int size) throws DAOException;
-
-    @Transactional(readOnly = true)
-    Number countEncounters(final List<String> patientUuids) throws DAOException;
-
+    Number countPatients(final String cohortUuid, final Date syncDate) throws DAOException;
 }

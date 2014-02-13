@@ -13,11 +13,14 @@
  */
 package org.openmrs.module.muzima.api.service;
 
+import org.openmrs.Cohort;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,13 +28,24 @@ import java.util.List;
  */
 public interface CoreService extends OpenmrsService {
 
-    List<Obs> getObservations(final List<String> patientUuids, final List<String> conceptUuids,
+    List<Obs> getObservations(final List<String> patientUuids, final List<String> conceptUuids, final Date syncDate,
                               final int startIndex, final int size) throws APIException;
 
-    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids) throws APIException;
+    Number countObservations(final List<String> patientUuids, final List<String> conceptUuids,
+                             final Date syncDate) throws APIException;
 
-    List<Encounter> getEncounters(final List<String> patientUuids,
+    List<Encounter> getEncounters(final List<String> patientUuids, final Date syncDate,
                                   final int startIndex, final int size) throws APIException;
 
-    Number countEncounters(final List<String> patientUuids) throws APIException;
+    Number countEncounters(final List<String> patientUuids, final Date syncDate) throws APIException;
+
+    List<Cohort> getCohorts(final String name, final Date syncDate,
+                            final int startIndex, final int size) throws APIException;
+
+    Number countCohorts(final String name, final Date syncDate) throws APIException;
+
+    List<Patient> getPatients(final String cohortUuid, final Date syncDate,
+                              final int startIndex, final int size) throws APIException;
+
+    Number countPatients(final String cohortUuid, final Date syncDate) throws APIException;
 }

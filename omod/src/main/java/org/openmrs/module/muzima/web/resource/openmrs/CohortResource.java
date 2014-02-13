@@ -13,13 +13,23 @@
  */
 package org.openmrs.module.muzima.web.resource.openmrs;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Cohort;
+import org.openmrs.Obs;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.muzima.api.service.CoreService;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
+import org.openmrs.module.muzima.web.resource.utils.ResourceUtils;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.CohortResource1_8;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 
 /**
  * TODO: Write brief description about the class here.
@@ -33,6 +43,24 @@ public class CohortResource extends CohortResource1_8 {
      */
     @Override
     protected NeedsPaging<Cohort> doSearch(final RequestContext context) {
+        HttpServletRequest request = context.getRequest();
+        String nameParameter = request.getParameter("q");
+        String syncDateParameter = request.getParameter("syncDate");
+        if (nameParameter != null) {
+            Date syncDate = ResourceUtils.parseDate(syncDateParameter);
+            CoreService coreService = Context.getService(CoreService.class);
+            final int cohortCount = coreService.countCohorts(nameParameter, syncDate).intValue();
+            final List<Cohort> cohorts = coreService.getCohorts(nameParameter, syncDate, context.getStartIndex(), context.getLimit());
+            return new NeedsPaging<Cohort>(cohorts, context) {
+                /**
+                 * @see org.openmrs.module.webservices.rest.web.resource.impl.BasePageableResult#hasMoreResults()
+                 */
+                @Override
+                public boolean hasMoreResults() {
+                    return cohortCount > context.getStartIndex() + cohorts.size();
+                }
+            };
+        }
         return super.doSearch(context);
     }
 }

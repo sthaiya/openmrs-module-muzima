@@ -68,9 +68,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -96,9 +102,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -122,9 +134,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -147,9 +165,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -168,9 +192,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -188,9 +218,15 @@ public class HibernateCoreDao implements CoreDao {
         if (syncDate != null) {
             criteria.add(Restrictions.or(
                     Restrictions.or(
-                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
-                            Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate))),
-                    Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate))));
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.ge("dateCreated", syncDate)),
+                                    Restrictions.and(Restrictions.isNull("dateChanged"), Restrictions.isNull("dateVoided"))),
+                            Restrictions.and(
+                                    Restrictions.and(Restrictions.isNotNull("dateChanged"), Restrictions.ge("dateChanged", syncDate)),
+                                    Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNull("dateVoided")))),
+                    Restrictions.and(
+                            Restrictions.and(Restrictions.isNotNull("dateVoided"), Restrictions.ge("dateVoided", syncDate)),
+                            Restrictions.and(Restrictions.isNotNull("dateCreated"), Restrictions.isNotNull("dateChanged")))));
         }
         criteria.add(Restrictions.eq("voided", false));
 
@@ -209,12 +245,12 @@ public class HibernateCoreDao implements CoreDao {
                 " and c.voided = false and p.voided = false ";
         if (syncDate != null) {
             hqlQuery = hqlQuery +
-                    " and ( m.date_created is not null and m.date_created >= :syncDate " +
-                    "       and m.date_changed is not null and m.date_changed >= :syncDate " +
-                    "       and m.date_voided is not null and m.date_voided >= :syncDate ) " +
-                    " and ( p.date_created is not null and p.date_created >= :syncDate " +
-                    "       and p.date_changed is not null and p.date_changed >= :syncDate " +
-                    "       and p.date_voided is not null and p.date_voided >= :syncDate) ";
+                    " and ( (c.date_created is not null and c.date_changed is null and c.date_voided is null and c.date_created >= :syncDate) or " +
+                    "       (c.date_created is not null and c.date_changed is not null and c.date_voided is null and c.date_changed >= :syncDate) or " +
+                    "       (c.date_created is not null and c.date_changed is not null and c.date_voided is not null and c.date_voided >= :syncDate) ) " +
+                    " and ( (p.date_created is not null and p.date_changed is null and p.date_voided is null and p.date_created >= :syncDate) or " +
+                    "       (p.date_created is not null and p.date_changed is not null and p.date_voided is null and p.date_changed >= :syncDate) or " +
+                    "       (p.date_created is not null and p.date_changed is not null and p.date_voided is not null and p.date_voided >= :syncDate) ";
         }
         SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(hqlQuery);
         query.setParameter("uuid", cohortUuid);
@@ -240,12 +276,12 @@ public class HibernateCoreDao implements CoreDao {
                 " and c.voided = false and p.voided = false ";
         if (syncDate != null) {
             hqlQuery = hqlQuery +
-                    " and ( m.date_created is not null and m.date_created >= :syncDate " +
-                    "       and m.date_changed is not null and m.date_changed >= :syncDate " +
-                    "       and m.date_voided is not null and m.date_voided >= :syncDate ) " +
-                    " and ( p.date_created is not null and p.date_created >= :syncDate " +
-                    "       and p.date_changed is not null and p.date_changed >= :syncDate " +
-                    "       and p.date_voided is not null and p.date_voided >= :syncDate) ";
+                    " and ( (c.date_created is not null and c.date_changed is null and c.date_voided is null and c.date_created >= :syncDate) or " +
+                    "       (c.date_created is not null and c.date_changed is not null and c.date_voided is null and c.date_changed >= :syncDate) or " +
+                    "       (c.date_created is not null and c.date_changed is not null and c.date_voided is not null and c.date_voided >= :syncDate) ) " +
+                    " and ( (p.date_created is not null and p.date_changed is null and p.date_voided is null and p.date_created >= :syncDate) or " +
+                    "       (p.date_created is not null and p.date_changed is not null and p.date_voided is null and p.date_changed >= :syncDate) or " +
+                    "       (p.date_created is not null and p.date_changed is not null and p.date_voided is not null and p.date_voided >= :syncDate) ";
         }
         SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(hqlQuery);
         query.addScalar("total");

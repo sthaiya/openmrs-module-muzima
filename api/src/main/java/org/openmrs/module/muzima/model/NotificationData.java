@@ -15,6 +15,9 @@ package org.openmrs.module.muzima.model;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Person;
+import org.openmrs.Role;
+
+import java.util.Set;
 
 /**
  * TODO: Write brief description about the class here.
@@ -34,6 +37,8 @@ public class NotificationData extends BaseOpenmrsData implements Data {
     private String source;
 
     private String payload;
+
+    private Role role;
 
     /**
      * @return id - The unique Identifier for the object
@@ -156,5 +161,23 @@ public class NotificationData extends BaseOpenmrsData implements Data {
      */
     public void setPayload(final String payload) {
         this.payload = payload;
+    }
+
+    /**
+     * Get the role to which this notification is assigned.
+     *
+     * @return the role
+     */
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * Set the role to which this notification is assigned.
+     *
+     * @param role the role
+     */
+    public void setRole(final Role role) {
+        this.role = role;
     }
 }

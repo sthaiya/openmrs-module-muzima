@@ -14,6 +14,7 @@
 package org.openmrs.module.muzima.api.service.impl;
 
 import org.openmrs.Person;
+import org.openmrs.Role;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.muzima.api.db.ArchiveDataDao;
@@ -529,28 +530,13 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         return getNotificationDataDao().countNotificationsBySender(person, search);
     }
 
-    /**
-     * Return all saved notification data for a particular person.
-     *
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    @Override
-    public List<NotificationData> getNotificationDataByReceiver(final Person person) {
-        return getNotificationDataDao().getNotificationsByReceiver(person, null, null, null);
+    public List<NotificationData> getNotificationDataByRole(final Role role, final String search,
+                                                            final Integer pageNumber, final Integer pageSize) {
+        return getNotificationDataDao().getNotificationsByRole(role, search, pageNumber, pageSize);
     }
 
-    /**
-     * Return all saved notification data from a particular person.
-     *
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    @Override
-    public List<NotificationData> getNotificationDataBySender(final Person person) {
-        return getNotificationDataDao().getNotificationsBySender(person, null, null, null);
+    public Number countNotificationDataByRole(final Role role, final String search) {
+        return getNotificationDataDao().countNotificationsByRole(role, search);
     }
 
     /**

@@ -23,6 +23,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
+import org.openmrs.Role;
 import org.openmrs.module.muzima.api.db.NotificationDataDao;
 import org.openmrs.module.muzima.model.NotificationData;
 
@@ -138,6 +139,43 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.eq("sender", person));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        criteria.setProjection(Projections.rowCount());
+        return (Number) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<NotificationData> getNotificationsByRole(final Role role, final String search,
+                                                         final Integer pageNumber, final Integer pageSize) {
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        criteria.add(Restrictions.eq("role", role));
+        criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (pageNumber != null) {
+            criteria.setFirstResult((pageNumber - 1) * pageSize);
+        }
+        if (pageSize != null) {
+            criteria.setMaxResults(pageSize);
+        }
+        criteria.addOrder(Order.desc("dateCreated"));
+        return criteria.list();
+    }
+
+    @Override
+    public Number countNotificationsByRole(final Role role, final String search) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        if (StringUtils.isNotEmpty(search)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("subject", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        criteria.add(Restrictions.eq("role", role));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
         criteria.setProjection(Projections.rowCount());
         return (Number) criteria.uniqueResult();

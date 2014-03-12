@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.web.resource.muzima;
 
+import org.openmrs.Encounter;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
@@ -27,6 +28,7 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
+import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
@@ -35,6 +37,7 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -173,14 +176,17 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
         String personUuid;
 
         DataService dataService = Context.getService(DataService.class);
-
+        String searchString = context.getRequest().getParameter("q");
         personUuid = context.getRequest().getParameter("receiver");
         if (personUuid != null) {
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getNotificationDataByReceiver(person);
-            return new NeedsPaging<NotificationData>(notificationDataList, context);
+            int encounterCount = dataService.countNotificationDataByReceiver(person, searchString).intValue();
+            List<NotificationData> encounters =
+                    dataService.getNotificationDataByReceiver(person, searchString, context.getStartIndex(), context.getLimit());
+            boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
+            return new AlreadyPaged<NotificationData>(context, encounters, hasMore);
         }
 
         personUuid = context.getRequest().getParameter("sender");
@@ -188,8 +194,11 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            List<NotificationData> notificationDataList = dataService.getNotificationDataBySender(person);
-            return new NeedsPaging<NotificationData>(notificationDataList, context);
+            int encounterCount = dataService.countNotificationDataBySender(person, searchString).intValue();
+            List<NotificationData> encounters =
+                    dataService.getNotificationDataBySender(person, searchString, context.getStartIndex(), context.getLimit());
+            boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
+            return new AlreadyPaged<NotificationData>(context, encounters, hasMore);
         }
         // TODO: in the future, this could be searching by category of the notification.
         return new NeedsPaging<NotificationData>(dataService.getAllNotificationData(), context);

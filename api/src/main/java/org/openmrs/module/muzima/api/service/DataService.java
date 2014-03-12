@@ -1,6 +1,7 @@
 package org.openmrs.module.muzima.api.service;
 
 import org.openmrs.Person;
+import org.openmrs.Role;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.muzima.model.ArchiveData;
 import org.openmrs.module.muzima.model.DataSource;
@@ -352,24 +353,6 @@ public interface DataService extends OpenmrsService {
      * @should return all saved notification data.
      */
     Number countNotificationDataBySender(final Person person, final String search);
-
-    /**
-     * Return all saved notification data for a particular person.
-     *
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    List<NotificationData> getNotificationDataByReceiver(final Person person);
-
-    /**
-     * Return all saved notification data from a particular person.
-     *
-     * @return all saved notification data.
-     * @should return empty list when no notification data are saved in the database.
-     * @should return all saved notification data.
-     */
-    List<NotificationData> getNotificationDataBySender(final Person person);
 
     /**
      * Save notification data into the database.

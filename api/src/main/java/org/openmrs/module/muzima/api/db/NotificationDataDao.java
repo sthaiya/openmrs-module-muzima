@@ -14,6 +14,7 @@
 package org.openmrs.module.muzima.api.db;
 
 import org.openmrs.Person;
+import org.openmrs.Role;
 import org.openmrs.module.muzima.model.NotificationData;
 
 import java.util.List;
@@ -41,7 +42,11 @@ public interface NotificationDataDao extends DataDao<NotificationData> {
     List<NotificationData> getNotificationsBySender(final Person person, final String search,
                                                     final Integer pageNumber, final Integer pageSize);
 
-    Number countNotificationsByReceiver(Person person, String search);
+    Number countNotificationsByReceiver(final Person person, final String search);
 
-    Number countNotificationsBySender(Person person, String search);
+    Number countNotificationsBySender(final Person person, final String search);
+
+    List<NotificationData> getNotificationsByRole(Role role, String search, Integer pageNumber, Integer pageSize);
+
+    Number countNotificationsByRole(final Role role, final String search);
 }

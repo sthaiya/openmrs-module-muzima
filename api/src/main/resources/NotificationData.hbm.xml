@@ -18,6 +18,10 @@
 
         <property name="payload" type="java.lang.String" column="payload" not-null="true"/>
 
+        <many-to-one name="role" class="org.openmrs.Role" not-null="true">
+            <column name="role" />
+        </many-to-one>
+
         <many-to-one name="receiver" class="org.openmrs.Person" not-null="true">
             <column name="receiver"/>
         </many-to-one>

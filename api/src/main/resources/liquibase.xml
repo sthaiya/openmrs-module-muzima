@@ -264,4 +264,20 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="nribeka" author="muzima-2014-03-11-22-21-00">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="muzima_notification_data" columnName="role"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="muzima_notification_data">
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="muzima_notification_data_role"
+                                 baseTableName="muzima_notification_data" baseColumnNames="role_id"
+                                 referencedTableName="role" referencedColumnNames="role_id"/>
+    </changeSet>
+
 </databaseChangeLog>

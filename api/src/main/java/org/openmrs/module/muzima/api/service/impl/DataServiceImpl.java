@@ -530,11 +530,13 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         return getNotificationDataDao().countNotificationsBySender(person, search);
     }
 
+    @Override
     public List<NotificationData> getNotificationDataByRole(final Role role, final String search,
                                                             final Integer pageNumber, final Integer pageSize) {
         return getNotificationDataDao().getNotificationsByRole(role, search, pageNumber, pageSize);
     }
 
+    @Override
     public Number countNotificationDataByRole(final Role role, final String search) {
         return getNotificationDataDao().countNotificationsByRole(role, search);
     }

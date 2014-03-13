@@ -354,6 +354,11 @@ public interface DataService extends OpenmrsService {
      */
     Number countNotificationDataBySender(final Person person, final String search);
 
+    List<NotificationData> getNotificationDataByRole(final Role role, final String search,
+                                                     final Integer pageNumber, final Integer pageSize);
+
+    Number countNotificationDataByRole(final Role role, final String search);
+
     /**
      * Save notification data into the database.
      *

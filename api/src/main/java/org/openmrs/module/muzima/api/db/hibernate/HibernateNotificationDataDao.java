@@ -51,7 +51,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
     @Override
     @SuppressWarnings("unchecked")
     public List<NotificationData> getNotificationsByReceiver(final Person person, final String search,
-                                                             final Integer pageNumber, final Integer pageSize) {
+                                                             final Integer pageNumber, final Integer pageSize,
+                                                             final String status) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -67,6 +68,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
@@ -79,7 +82,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      * @return total number of notification data in the database.
      */
     @Override
-    public Number countNotificationsByReceiver(final Person person, final String search) {
+    public Number countNotificationsByReceiver(final Person person, final String search, final String status) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -89,6 +92,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         }
         criteria.add(Restrictions.eq("receiver", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.setProjection(Projections.rowCount());
         return (Number) criteria.uniqueResult();
     }
@@ -102,7 +107,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
     @Override
     @SuppressWarnings("unchecked")
     public List<NotificationData> getNotificationsBySender(final Person person, final String search,
-                                                           final Integer pageNumber, final Integer pageSize) {
+                                                           final Integer pageNumber, final Integer pageSize,
+                                                           final String status) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -118,6 +124,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
@@ -130,7 +138,7 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
      * @return total number of notification data in the database.
      */
     @Override
-    public Number countNotificationsBySender(final Person person, final String search) {
+    public Number countNotificationsBySender(final Person person, final String search, final String status) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -140,13 +148,16 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         }
         criteria.add(Restrictions.eq("sender", person));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.setProjection(Projections.rowCount());
         return (Number) criteria.uniqueResult();
     }
 
     @Override
     public List<NotificationData> getNotificationsByRole(final Role role, final String search,
-                                                         final Integer pageNumber, final Integer pageSize) {
+                                                         final Integer pageNumber, final Integer pageSize,
+                                                         final String status) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -162,12 +173,14 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         if (pageSize != null) {
             criteria.setMaxResults(pageSize);
         }
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.addOrder(Order.desc("dateCreated"));
         return criteria.list();
     }
 
     @Override
-    public Number countNotificationsByRole(final Role role, final String search) {
+    public Number countNotificationsByRole(final Role role, final String search, final String status) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -177,6 +190,8 @@ public class HibernateNotificationDataDao extends HibernateDataDao<NotificationD
         }
         criteria.add(Restrictions.eq("role", role));
         criteria.add(Restrictions.eq("voided", Boolean.FALSE));
+        if (StringUtils.isNotEmpty(status))
+            criteria.add(Restrictions.eq("status", status));
         criteria.setProjection(Projections.rowCount());
         return (Number) criteria.uniqueResult();
     }

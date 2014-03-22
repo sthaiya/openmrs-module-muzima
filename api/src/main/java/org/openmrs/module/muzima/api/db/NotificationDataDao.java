@@ -31,7 +31,8 @@ public interface NotificationDataDao extends DataDao<NotificationData> {
      * @return the list of all notification for that particular person.
      */
     List<NotificationData> getNotificationsByReceiver(final Person person, final String search,
-                                                      final Integer pageNumber, final Integer pageSize);
+                                                      final Integer pageNumber, final Integer pageSize,
+                                                      final String status);
 
     /**
      * Get all notification from this particular person.
@@ -40,13 +41,14 @@ public interface NotificationDataDao extends DataDao<NotificationData> {
      * @return the list of all notification from that particular person.
      */
     List<NotificationData> getNotificationsBySender(final Person person, final String search,
-                                                    final Integer pageNumber, final Integer pageSize);
+                                                    final Integer pageNumber, final Integer pageSize,
+                                                    final String status);
 
-    Number countNotificationsByReceiver(final Person person, final String search);
+    Number countNotificationsByReceiver(final Person person, final String search, final String status);
 
-    Number countNotificationsBySender(final Person person, final String search);
+    Number countNotificationsBySender(final Person person, final String search, final String status);
 
-    List<NotificationData> getNotificationsByRole(Role role, String search, Integer pageNumber, Integer pageSize);
+    List<NotificationData> getNotificationsByRole(Role role, String search, Integer pageNumber, Integer pageSizeInteger, final String status);
 
-    Number countNotificationsByRole(final Role role, final String search);
+    Number countNotificationsByRole(final Role role, final String search, final String status);
 }

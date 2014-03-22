@@ -315,7 +315,8 @@ public interface DataService extends OpenmrsService {
      * @should return all saved notification data.
      */
     List<NotificationData> getNotificationDataByReceiver(final Person person, final String search,
-                                                         final Integer pageNumber, final Integer pageSize);
+                                                         final Integer pageNumber, final Integer pageSize,
+                                                         final String status);
 
     /**
      * Return paged notification data from a particular person with matching search term for a particular page.
@@ -328,7 +329,8 @@ public interface DataService extends OpenmrsService {
      * @should return all saved notification data.
      */
     List<NotificationData> getNotificationDataBySender(final Person person, final String search,
-                                                       final Integer pageNumber, final Integer pageSize);
+                                                       final Integer pageNumber, final Integer pageSize,
+                                                       final String status);
 
     /**
      * Return count for the paged notification data for a particular person with matching search term for a particular page.
@@ -340,7 +342,7 @@ public interface DataService extends OpenmrsService {
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
-    Number countNotificationDataByReceiver(final Person person, final String search);
+    Number countNotificationDataByReceiver(final Person person, final String search, final String status);
 
     /**
      * Return count for the paged notification data from a particular person with matching search term for a particular page.
@@ -352,12 +354,13 @@ public interface DataService extends OpenmrsService {
      * @should return empty list when no notification data are saved in the database.
      * @should return all saved notification data.
      */
-    Number countNotificationDataBySender(final Person person, final String search);
+    Number countNotificationDataBySender(final Person person, final String search, final String status);
 
     List<NotificationData> getNotificationDataByRole(final Role role, final String search,
-                                                     final Integer pageNumber, final Integer pageSize);
+                                                     final Integer pageNumber, final Integer pageSize,
+                                                     final String status);
 
-    Number countNotificationDataByRole(final Role role, final String search);
+    Number countNotificationDataByRole(final Role role, final String search, final String status);
 
     /**
      * Save notification data into the database.

@@ -182,9 +182,9 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            int encounterCount = dataService.countNotificationDataByReceiver(person, searchString).intValue();
+            int encounterCount = dataService.countNotificationDataByReceiver(person, searchString, "unread").intValue();
             List<NotificationData> encounters =
-                    dataService.getNotificationDataByReceiver(person, searchString, context.getStartIndex(), context.getLimit());
+                    dataService.getNotificationDataByReceiver(person, searchString, context.getStartIndex(), context.getLimit(), "unread");
             boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
             return new AlreadyPaged<NotificationData>(context, encounters, hasMore);
         }
@@ -194,9 +194,9 @@ public class NotificationDataResource extends DataDelegatingCrudResource<Notific
             Person person = Context.getPersonService().getPersonByUuid(personUuid);
             if (person == null)
                 return new EmptySearchResult();
-            int encounterCount = dataService.countNotificationDataBySender(person, searchString).intValue();
+            int encounterCount = dataService.countNotificationDataBySender(person, searchString, "unread").intValue();
             List<NotificationData> encounters =
-                    dataService.getNotificationDataBySender(person, searchString, context.getStartIndex(), context.getLimit());
+                    dataService.getNotificationDataBySender(person, searchString, context.getStartIndex(), context.getLimit(), "unread");
             boolean hasMore = encounterCount > context.getStartIndex() + encounters.size();
             return new AlreadyPaged<NotificationData>(context, encounters, hasMore);
         }

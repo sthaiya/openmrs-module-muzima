@@ -480,8 +480,9 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public List<NotificationData> getNotificationDataByReceiver(final Person person, final String search,
-                                                                final Integer pageNumber, final Integer pageSize) {
-        return getNotificationDataDao().getNotificationsByReceiver(person, search, pageNumber, pageSize);
+                                                                final Integer pageNumber, final Integer pageSize,
+                                                                final String status) {
+        return getNotificationDataDao().getNotificationsByReceiver(person, search, pageNumber, pageSize, status);
     }
 
     /**
@@ -496,8 +497,9 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      */
     @Override
     public List<NotificationData> getNotificationDataBySender(final Person person, final String search,
-                                                              final Integer pageNumber, final Integer pageSize) {
-        return getNotificationDataDao().getNotificationsBySender(person, search, pageNumber, pageSize);
+                                                              final Integer pageNumber, final Integer pageSize,
+                                                              final String status) {
+        return getNotificationDataDao().getNotificationsBySender(person, search, pageNumber, pageSize, status);
     }
 
     /**
@@ -511,8 +513,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public Number countNotificationDataByReceiver(final Person person, final String search) {
-        return getNotificationDataDao().countNotificationsByReceiver(person, search);
+    public Number countNotificationDataByReceiver(final Person person, final String search, final String status) {
+        return getNotificationDataDao().countNotificationsByReceiver(person, search, status);
     }
 
     /**
@@ -526,19 +528,20 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
      * @should return all saved notification data.
      */
     @Override
-    public Number countNotificationDataBySender(final Person person, final String search) {
-        return getNotificationDataDao().countNotificationsBySender(person, search);
+    public Number countNotificationDataBySender(final Person person, final String search, final String status) {
+        return getNotificationDataDao().countNotificationsBySender(person, search, status);
     }
 
     @Override
     public List<NotificationData> getNotificationDataByRole(final Role role, final String search,
-                                                            final Integer pageNumber, final Integer pageSize) {
-        return getNotificationDataDao().getNotificationsByRole(role, search, pageNumber, pageSize);
+                                                            final Integer pageNumber, final Integer pageSize,
+                                                            final String status) {
+        return getNotificationDataDao().getNotificationsByRole(role, search, pageNumber, pageSize, status);
     }
 
     @Override
-    public Number countNotificationDataByRole(final Role role, final String search) {
-        return getNotificationDataDao().countNotificationsByRole(role, search);
+    public Number countNotificationDataByRole(final Role role, final String search, final String status) {
+        return getNotificationDataDao().countNotificationsByRole(role, search, status);
     }
 
     /**

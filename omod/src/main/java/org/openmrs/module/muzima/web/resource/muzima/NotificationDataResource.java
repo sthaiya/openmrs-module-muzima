@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.muzima.web.resource.muzima;
 
-import org.openmrs.Encounter;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
@@ -37,7 +36,6 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

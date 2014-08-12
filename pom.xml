@@ -5,11 +5,11 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>muzima</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Muzima Processor Module</name>
-    <description>Muzima module to process forms from mobile devices.</description>
-    <url>https://wiki.openmrs.org/display/docs/Muzima+Processor+Module+Module</url>
+    <description>Muzima module to process forms from muzima mobile application.</description>
+    <url>https://github.com/muzima/documentation/wiki/Form-Processing-Mechanism</url>
 
     <developers>
         <developer>
@@ -23,9 +23,9 @@
     </organization>
 
     <scm>
-        <connection>scm:git:https://github.com/muzima/muzima-processor/tree/development</connection>
-        <developerConnection>scm:git:https://github.com/muzima/muzima-processor/tree/development</developerConnection>
-        <url>https://github.com/muzima/muzima-processor/tree/development</url>
+        <connection>scm:git:https://github.com/muzima/openmrs-module-muzima</connection>
+        <developerConnection>scm:git:https://github.com/muzima/openmrs-module-muzima</developerConnection>
+        <url>https://github.com/muzima/openmrs-module-muzima</url>
     </scm>
 
     <modules>

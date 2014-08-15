@@ -62,4 +62,25 @@ public class WebConverter {
         }
         return map;
     }
+
+
+
+    public static Map<String, Object> convertEditRegistrationData(final ErrorData errorData) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (errorData != null) {
+            map.put("uuid", errorData.getUuid());
+            map.put("discriminator", errorData.getDiscriminator());
+            map.put("source", errorData.getDataSource().getName());
+            map.put("message", errorData.getMessage());
+            XmlJsonUtil.createPatientValuesFromPayload(map, errorData.getPayload());
+            map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
+            map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
+
+
+            System.out.println("data" + map.toString());
+
+        }
+        return map;
+    }
+
 }

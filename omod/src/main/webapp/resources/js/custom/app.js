@@ -17,6 +17,8 @@ muzima.
             templateUrl: '../../moduleResources/muzima/partials/source.html'});
         $routeProvider.when('/sources', {controller: SourcesCtrl,
             templateUrl: '../../moduleResources/muzima/partials/sources.html'});
+        $routeProvider.when('/edit/:uuid', {controller: EditCtrl,
+            templateUrl: '../../moduleResources/muzima/partials/edit.html'});
         $routeProvider.otherwise({redirectTo: '/sources'});
     }]);
 
@@ -65,6 +67,12 @@ muzima.factory('$data', function ($http) {
     var deleteSource = function (uuid) {
         return $http.post("source.json", {"uuid": uuid});
     };
+    var getEdit = function (uuid) {
+        return $http.get("edit.json?uuid=" + uuid);
+    };
+    var editErrors = function (formData) {
+        return $http.post("edit.json",{"formData": formData});
+    };
     return {
         getQueues: getQueues,
         getQueue: getQueue,
@@ -77,7 +85,10 @@ muzima.factory('$data', function ($http) {
         getSources: getSources,
         getSource: getSource,
         saveSource: saveSource,
-        deleteSource: deleteSource
+        deleteSource: deleteSource,
+
+        getEdit: getEdit,
+        editErrors: editErrors
     }
 });
 

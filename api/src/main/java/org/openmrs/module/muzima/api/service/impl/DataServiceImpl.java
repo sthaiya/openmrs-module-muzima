@@ -17,17 +17,9 @@ import org.openmrs.Person;
 import org.openmrs.Role;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.muzima.api.db.ArchiveDataDao;
-import org.openmrs.module.muzima.api.db.DataSourceDao;
-import org.openmrs.module.muzima.api.db.ErrorDataDao;
-import org.openmrs.module.muzima.api.db.NotificationDataDao;
-import org.openmrs.module.muzima.api.db.QueueDataDao;
+import org.openmrs.module.muzima.api.db.*;
 import org.openmrs.module.muzima.api.service.DataService;
-import org.openmrs.module.muzima.model.ArchiveData;
-import org.openmrs.module.muzima.model.DataSource;
-import org.openmrs.module.muzima.model.ErrorData;
-import org.openmrs.module.muzima.model.NotificationData;
-import org.openmrs.module.muzima.model.QueueData;
+import org.openmrs.module.muzima.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +37,8 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     private DataSourceDao dataSourceDao;
 
     private NotificationDataDao notificationDataDao;
+
+    private ErrorMessageDao errorMessageDao;
 
     public QueueDataDao getQueueDataDao() {
         return queueDataDao;
@@ -86,6 +80,13 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         this.notificationDataDao = notificationDataDao;
     }
 
+    public ErrorMessageDao getErrorMessageDao() {
+        return errorMessageDao;
+    }
+
+    public void setErrorMessageDao(final ErrorMessageDao errorMessageDao) {
+        this.errorMessageDao = errorMessageDao;
+    }
     /**
      * Return the data with the given id.
      *
@@ -581,4 +582,41 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         notificationData.setVoidReason(reason);
         return saveNotificationData(notificationData);
     }
+
+    @Override
+    public ErrorMessage getErrorMessage(Integer id) {
+        return getErrorMessageDao().getById(id);
+    }
+
+    @Override
+    public ErrorMessage getErrorMessageByUuid(String uuid) {
+        return getErrorMessageDao().getDataByUuid(uuid);
+    }
+
+    @Override
+    public List<ErrorMessage> getAllErrorMessage() {
+        return getErrorMessageDao().getAll();
+    }
+
+    @Override
+    public ErrorMessage saveErrorMessage(ErrorMessage errormessage) {
+        return getErrorMessageDao().saveData(errormessage);
+    }
+
+    @Override
+    public void purgeErrorMessage(ErrorMessage errormessage) {
+        getErrorMessageDao().purgeData(errormessage);
+    }
+
+    @Override
+    public Number countErrorMessage(String search) {
+        return getErrorMessageDao().countData(search);
+    }
+
+    @Override
+    public List<ErrorMessage> getPagedErrorMessage(String search, Integer pageNumber, Integer pageSize) {
+        return null;
+    }
+
+
 }

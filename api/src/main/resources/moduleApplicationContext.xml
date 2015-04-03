@@ -51,6 +51,13 @@
                                     </property>
                                 </bean>
                             </property>
+                            <property name="errorMessageDao">
+                                <bean class="org.openmrs.module.muzima.api.db.hibernate.HibernateErrorMessageDao">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
                         </bean>
                     </property>
                     <property name="preInterceptors">

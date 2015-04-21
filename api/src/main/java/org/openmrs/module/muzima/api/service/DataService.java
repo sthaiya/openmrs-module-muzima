@@ -3,11 +3,7 @@ package org.openmrs.module.muzima.api.service;
 import org.openmrs.Person;
 import org.openmrs.Role;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.muzima.model.ArchiveData;
-import org.openmrs.module.muzima.model.DataSource;
-import org.openmrs.module.muzima.model.ErrorData;
-import org.openmrs.module.muzima.model.NotificationData;
-import org.openmrs.module.muzima.model.QueueData;
+import org.openmrs.module.muzima.model.*;
 
 import java.util.List;
 
@@ -386,4 +382,71 @@ public interface DataService extends OpenmrsService {
      * @return the voided notification data.
      */
     NotificationData voidNotificationData(final NotificationData notificationData, final String reason);
+
+
+    /**
+     * Return the error message with the given id.
+     *
+     * @param id the error message id.
+     * @return the error message with the matching id.
+     * @should return error message with matching id.
+     * @should return null when no error message with matching id.
+     */
+    ErrorMessage getErrorMessage(final Integer id);
+
+    /**
+     * Return the error message with the given uuid.
+     *
+     * @param uuid the error message uuid.
+     * @return the error message with the matching uuid.
+     * @should return error message with matching uuid.
+     * @should return null when no error message with matching uuid.
+     */
+    ErrorMessage getErrorMessageByUuid(final String uuid);
+
+    /**
+     * Return all saved error message.
+     *
+     * @return all saved error message.
+     * @should return empty list when no error message are saved in the messagebase.
+     * @should return all saved error message.
+     */
+    List<ErrorMessage> getAllErrorMessage();
+
+    /**
+     * Save error message into the messagebase.
+     *
+     * @param Errormessage the error message.
+     * @return saved error message.
+     * @should save error message into the messagebase.
+     */
+    ErrorMessage saveErrorMessage(final ErrorMessage Errormessage);
+
+    /**
+     * Delete error message from the messagebase.
+     *
+     * @param Errormessage the error message
+     * @should remove error message from the messagebase
+     */
+    void purgeErrorMessage(final ErrorMessage Errormessage);
+
+    /**
+     * Get the total number of the error message in the messagebase with partial matching search term on the payload.
+     *
+     *
+     * @param search the search term.
+     * @return the total number of the error message in the messagebase.
+     */
+    Number countErrorMessage(final String search);
+
+    /**
+     * Get error message with matching search term for a particular page.
+     *
+     * @param search     the search term.
+     * @param pageNumber the page number.
+     * @param pageSize   the size of the page.
+     * @return list of all error message with matching search term for a particular page.
+     */
+    List<ErrorMessage> getPagedErrorMessage(final String search, final Integer pageNumber, final Integer pageSize);
+
 }

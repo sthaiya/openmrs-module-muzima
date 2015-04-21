@@ -32,6 +32,7 @@
     <mappingFiles>
         ArchiveData.hbm.xml
         DataSource.hbm.xml
+        MuzimaErrorMessage.hbm.xml
         ErrorData.hbm.xml
         QueueData.hbm.xml
         NotificationData.hbm.xml

@@ -20,13 +20,12 @@ import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.exception.QueueProcessorException;
 import org.openmrs.module.muzima.model.ArchiveData;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.model.handler.QueueDataHandler;
 import org.openmrs.util.HandlerUtil;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  */
@@ -66,7 +65,7 @@ public class QueueDataProcessor {
                         }
                     } catch (Exception e) {
                         log.error("Unable to process queue data due to: " + e.getMessage(), e);
-                        createErrorData(queueData, "Unable to process queue data due to: " + e.getMessage());
+                        createErrorData(queueData, (QueueProcessorException)e);
                         dataService.purgeQueueData(queueData);
                     }
                 }
@@ -83,10 +82,17 @@ public class QueueDataProcessor {
         Context.getService(DataService.class).saveArchiveData(archiveData);
     }
 
-    private void createErrorData(final QueueData queueData, final String message) {
+    private void createErrorData(final QueueData queueData, QueueProcessorException exception) {
         ErrorData errorData = new ErrorData(queueData);
-        errorData.setMessage(message);
         errorData.setDateProcessed(new Date());
+        Set errorMessage = new HashSet();
+        for(Exception e : exception.getAllException()){
+            ErrorMessage error = new ErrorMessage();
+            error.setMessage(e.getMessage());
+            errorMessage.add(error);
+        }
+        errorData.setMessage("Unable to process queue data");
+        errorData.setErrorMessages(errorMessage);
         Context.getService(DataService.class).saveErrorData(errorData);
     }
 }

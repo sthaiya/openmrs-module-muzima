@@ -1,6 +1,9 @@
 function ErrorCtrl($scope, $routeParams, $location, $data) {
     // page parameter
     $scope.uuid = $routeParams.uuid;
+    $scope.ul_li_Data = '';
+    $scope.ul_li_xml_Data = '';
+    $scope.string_xml_Data = '';
     // get the current notification
     $data.getError($scope.uuid).
         then(function (response) {
@@ -9,7 +12,114 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
                 document.getElementById('editData').style.display = 'none';
             } else
                 document.getElementById('editData').style.display = 'inline';
+        }).then(function(){
+
+            if($scope.error.discriminator =='xml-registration'){
+                var jsonFormData = $scope.error.payload;
+                $scope.to_ul_from_xml(jsonFormData,'treeul');
+                $scope.xml_to_string(jsonFormData);
+            }else{
+                var jsonFormData = JSON.parse($scope.error.payload);
+                $scope.to_ul(jsonFormData,'treeul');
+                $scope.json_to_string(jsonFormData);
+            }
+            $scope.ul_li_Data = '';
+            console.log($scope.error.Errors);
+            var jsonFormDataError = JSON.parse('{"Errors":'+$scope.error.Errors+'}');
+            console.log(jsonFormDataError);
+            $scope.to_ul(jsonFormDataError,'treeError');
+            $scope.setEvent();
+            $scope.setControls();
         });
+
+    $scope.to_ul_from_xml = function(xml, htmlElement){
+
+       $(xml).contents().each(function (i, node)
+       {
+           if( $(this).children().length>0){
+
+              $scope.ul_li_xml_Data =  $scope.ul_li_xml_Data + "<li><span><i class = 'icon-minus-sign'></i>"+ this.tagName ;
+              $scope.ul_li_xml_Data =  $scope.ul_li_xml_Data + "<ul>";
+              $scope.to_ul_from_xml($(this));
+              $scope.ul_li_xml_Data =  $scope.ul_li_xml_Data + "</ul>";
+           }
+           else{
+                $scope.ul_li_xml_Data =  $scope.ul_li_xml_Data + "<li><span>"+ this.tagName ;
+                $scope.ul_li_xml_Data =  $scope.ul_li_xml_Data + " : <b>"+ this.innerText+"</b></span></li>";
+           }
+       });
+       $('#'+htmlElement).empty();
+       $('#'+htmlElement).append($scope.ul_li_xml_Data);
+     };
+
+    $scope.to_ul = function(branches, htmlElement) {
+         $.each(branches, function(key,value) {
+              if(":"+value ==':[object Object]'){
+                $scope.ul_li_Data = $scope.ul_li_Data + "<li><span><i class = 'icon-minus-sign'></i>&nbsp;"+ key ;
+                $scope.ul_li_Data = $scope.ul_li_Data + "<ul>";
+                $scope.to_ul(value, htmlElement);
+                $scope.ul_li_Data = $scope.ul_li_Data + "</ul>";
+              }
+              else{
+                $scope.ul_li_Data = $scope.ul_li_Data + "<li><span>"+ key ;
+                $scope.ul_li_Data = $scope.ul_li_Data + " : <b>"+ value+"</b></span></li>";
+                // console.log(key + ":"+ value);
+              }
+            });
+         $('#'+htmlElement).empty();
+         $('#'+htmlElement).append($scope.ul_li_Data);
+      };
+
+    $scope.json_to_string = function(branches) {
+      	var strData =  JSON.stringify(branches)
+    	strData = strData.replace(/\:{/g, ':\n\t\t{\n\t\t\t');
+    	strData = strData.replace(/\","/g, '",\n\t\t\t"');
+    	strData = strData.replace(/\},/g, '\n\t\t},\n');
+    	$('#editJson').val(strData);
+      };
+
+    $scope.xml_to_string = function(branches) {
+        strData = branches;
+        strData = strData.replace(/\></g, '>\n<');
+        $('#editJson').val(strData);
+     };
+
+    $scope.setControls = function(){
+      	$('#editJsonSection').hide();
+      	$( "#btnUpdate" ).prop( "disabled", true );
+      }
+
+    $scope.setEvent = function(){
+      $('.icon-plus-sign, .icon-minus-sign').click(function(){
+
+        $(this).parent().parent().find( "ul" ).toggle();
+        if($(this).hasClass('icon-plus-sign')){
+
+            $(this).removeClass( "icon-plus-sign" ).addClass( "icon-minus-sign" );
+
+          }else if($(this).hasClass('icon-minus-sign')){
+
+             $(this).removeClass( "icon-minus-sign" ).addClass( "icon-plus-sign" );
+          }
+      });
+
+      $('.icon-plus-sign, .icon-minus-sign').hover(function(){
+            $(this).css('cursor','hand');
+       });
+
+      $('#btnCancel').click(function(){
+        $('#editJsonSection').hide();
+        $( "#btnQueue" ).prop( "disabled", false );
+        $( "#btnCancelQueue" ).prop( "disabled", false );
+      });
+
+      $('.icon-edit').click(function(){
+        $('#editJsonSection').show();
+        $( "#btnQueue" ).prop( "disabled", true );
+        $( "#btnCancelQueue" ).prop( "disabled", true );
+      });
+
+    };
 
     $scope.queue = function () {
         var uuidList = [$scope.uuid];

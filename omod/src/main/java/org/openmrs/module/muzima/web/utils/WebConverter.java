@@ -13,9 +13,11 @@
  */
 package org.openmrs.module.muzima.web.utils;
 
+import net.minidev.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
 
 import java.util.HashMap;
@@ -59,6 +61,14 @@ public class WebConverter {
             map.put("payload", errorData.getPayload());
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
+
+            Map<String, Object> errorMap = new HashMap<String, Object>();
+            for(Object e : errorData.getErrorMessages()){
+                ErrorMessage errorMessage = (ErrorMessage)e;
+                errorMap.put(errorMessage.getId().toString(), errorMessage.getMessage());
+            }
+
+            map.put("Errors", JSONObject.toJSONString(errorMap));
         }
         return map;
     }

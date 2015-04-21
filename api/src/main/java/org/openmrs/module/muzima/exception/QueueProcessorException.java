@@ -13,6 +13,9 @@
  */
 package org.openmrs.module.muzima.exception;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TODO: Write brief description about the class here.
  */
@@ -65,4 +68,21 @@ public class QueueProcessorException extends RuntimeException {
         super(message, cause);
     }
 
+
+    public QueueProcessorException(){
+
+    }
+    private List<Exception> exceptions = new ArrayList<Exception>();
+
+    public void addException(Exception exception) {
+        exceptions.add(exception);
+    }
+
+    public List<Exception>getAllException(){
+        return exceptions;
+    }
+
+    public boolean anyExceptions() {
+        return exceptions.size()>0;
+    }
 }

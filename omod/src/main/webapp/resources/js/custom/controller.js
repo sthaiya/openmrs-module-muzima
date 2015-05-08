@@ -117,9 +117,51 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
         $('#editJsonSection').show();
         $( "#btnQueue" ).prop( "disabled", true );
         $( "#btnCancelQueue" ).prop( "disabled", true );
+        if($scope.error.discriminator =='xml-registration'){
+            var jsonFormData = $scope.error.payload;
+            $scope.xml_to_string(jsonFormData);
+        }else{
+            var jsonFormData = JSON.parse($scope.error.payload);
+            $scope.json_to_string(jsonFormData);
+        }
       });
 
-    };
+      }
+
+      $('#btnValidate').click(function(){
+            var jsonDataToValidate = $('#editJson').val();
+            console.log(jsonDataToValidate);
+            $data.validateData($scope.uuid,jsonDataToValidate).
+            then(function (result) {
+                $scope.ul_li_Data = '';
+                $scope.to_ul(result.data,'treeError');
+                //IF THERE ARE NO VALIDATION ERRORS THEN ENABLE UPDATE BUTTON
+                if(Object.keys(result.data.Errors).length == 0){
+                    $( "#btnUpdate" ).prop( "disabled", false );
+                }
+
+            });
+      });
+
+      $('#btnUpdate').click(function(){
+                 //SAVE THE EDITED DATA
+                  var formDataToSave = $('#editJson').val();
+                  console.log(formDataToSave);
+                  $data.saveEditedFormData($scope.uuid,formDataToSave).
+                  then(function () {
+                      $( "#btnQueue" ).prop( "disabled", false );
+                      $( "#btnCancelQueue" ).prop( "disabled", false );
+                      console.log("Saved edited form successfully!");
+                  });
+      });
+
+      $('#btnQueue').click(function(){
+                       var uuidList = [$scope.uuid];
+                               $data.reQueueErrors(uuidList).
+                                   then(function () {
+                                       $location.path("/queues");
+                                   })
+                           });
 
     $scope.queue = function () {
         var uuidList = [$scope.uuid];

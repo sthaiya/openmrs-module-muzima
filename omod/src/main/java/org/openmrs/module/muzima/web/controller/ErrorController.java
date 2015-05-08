@@ -16,6 +16,7 @@ package org.openmrs.module.muzima.web.controller;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.ErrorData;
+import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO: Write brief description about the class here.
@@ -40,5 +45,18 @@ public class ErrorController {
         DataService dataService = Context.getService(DataService.class);
         ErrorData errorData = dataService.getErrorDataByUuid(uuid);
         return WebConverter.convertErrorData(errorData);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
+                                   final @RequestParam(value = "formData") String formData){
+
+        DataService dataService = Context.getService(DataService.class);
+        ErrorData errorDataEdited = dataService.getErrorDataByUuid(uuid);
+        errorDataEdited.setPayload(formData);
+        List<ErrorMessage> errorMessages = dataService.validateData(uuid, formData);
+        errorDataEdited.setErrorMessages(new HashSet(errorMessages));
+        dataService.saveErrorData(errorDataEdited);
+        System.out.println("Saved edited form data");
     }
 }

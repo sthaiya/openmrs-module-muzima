@@ -73,6 +73,13 @@ muzima.factory('$data', function ($http) {
     var editErrors = function (formData) {
         return $http.post("edit.json",{"formData": formData});
     };
+    var validateData = function (uuid, formData) {
+            return $http.post("validate.json?uuid="+uuid+"&formData="+formData);
+    };
+    var saveEditedFormData = function (uuid, formData) {
+            return $http.post("error.json?uuid="+uuid+"&formData="+formData);
+    };
+
     return {
         getQueues: getQueues,
         getQueue: getQueue,
@@ -86,9 +93,11 @@ muzima.factory('$data', function ($http) {
         getSource: getSource,
         saveSource: saveSource,
         deleteSource: deleteSource,
+        saveEditedFormData : saveEditedFormData,
 
         getEdit: getEdit,
-        editErrors: editErrors
+        editErrors: editErrors,
+        validateData: validateData
     }
 });
 

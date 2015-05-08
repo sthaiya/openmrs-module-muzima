@@ -33,4 +33,13 @@ public interface QueueDataHandler {
      * @return true when the handler can handle the queue data.
      */
     boolean accept(final QueueData queueData);
+
+    /**
+     * Validating the the payload before processing the data
+     *
+     * @param queueData the queue data.
+     * @return true when payload can be process
+     */
+    boolean validate(final QueueData queueData);
+
 }

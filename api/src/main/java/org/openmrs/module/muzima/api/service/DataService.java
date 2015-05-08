@@ -449,4 +449,6 @@ public interface DataService extends OpenmrsService {
      */
     List<ErrorMessage> getPagedErrorMessage(final String search, final Integer pageNumber, final Integer pageSize);
 
+    List<ErrorMessage> validateData(String uuid, String formData);
+
 }

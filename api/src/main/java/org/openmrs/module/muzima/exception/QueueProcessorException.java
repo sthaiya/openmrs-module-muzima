@@ -83,6 +83,7 @@ public class QueueProcessorException extends RuntimeException {
     }
 
     public boolean anyExceptions() {
+
         return exceptions.size()>0;
     }
 }

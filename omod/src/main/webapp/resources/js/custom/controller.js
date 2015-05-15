@@ -172,7 +172,7 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
                    })
     });
 
-    #$( "#btnCancelQueue" ).click(function(){
+    $( "#btnCancelQueue" ).click(function(){
        $location.path("/errors");
     });
 

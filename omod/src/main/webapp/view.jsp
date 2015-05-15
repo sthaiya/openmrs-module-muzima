@@ -14,6 +14,7 @@
 <openmrs:htmlInclude file="/moduleResources/muzima/js/custom/truncate.js"/>
 
 <openmrs:htmlInclude file="/moduleResources/muzima/js/ui-bootstrap/ui-bootstrap-custom-tpls-0.4.0.js"/>
+<openmrs:htmlInclude file="/moduleResources/muzima/js/ui-bootstrap/bootstrap.min.js"/>
 
 <h3><spring:message code="muzima.view"/></h3>
 <div class="bootstrap-scope" ng-app="muzima">

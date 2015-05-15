@@ -48,7 +48,7 @@ public class ErrorController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
+    public Map<String, Object> saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
                                    final @RequestParam(value = "formData") String formData){
 
         DataService dataService = Context.getService(DataService.class);
@@ -56,7 +56,7 @@ public class ErrorController {
         errorDataEdited.setPayload(formData);
         List<ErrorMessage> errorMessages = dataService.validateData(uuid, formData);
         errorDataEdited.setErrorMessages(new HashSet(errorMessages));
-        dataService.saveErrorData(errorDataEdited);
-        System.out.println("Saved edited form data");
+        ErrorData errorData = dataService.saveErrorData(errorDataEdited);
+        return WebConverter.convertErrorData(errorData);
     }
 }

@@ -1,7 +1,7 @@
 function ErrorCtrl($scope, $routeParams, $location, $data) {
     // page parameter
     $scope.uuid = $routeParams.uuid;
-    $scope.hasError = true;
+
     // get the current notification
     $data.getError($scope.uuid).
         then(function (response) {
@@ -33,12 +33,6 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
         var jsonFormDataError = JSON.parse('{"Errors":'+$scope.error.Errors+'}');
         $scope.to_ul(jsonFormDataError,'treeError');
 
-        //TODO need to move this code
-        if(Object.keys(JSON.parse($scope.error.Errors)).length == 0){
-            $scope.hasError = false;
-        }else{
-            $scope.hasError = true;
-        }
     };
 
     $scope.to_ul_from_xml = function(xml, htmlElement){

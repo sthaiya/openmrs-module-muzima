@@ -21,6 +21,7 @@ import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,4 +94,16 @@ public class WebConverter {
         return map;
     }
 
+    public static  Map<String,Object> convertErrorMessages(List<ErrorMessage> errorMessages) {
+
+        Map<String,Object> outerMap = new HashMap<String, Object>();
+        Map<String, Object> innerMap = new HashMap<String, Object>();
+        int count =0;
+        for (ErrorMessage errorMessage : errorMessages) {
+            count++;
+            innerMap.put(new Integer(count).toString(), errorMessage.getMessage());
+        }
+        outerMap.put("Errors",innerMap);
+        return outerMap;
+    }
 }

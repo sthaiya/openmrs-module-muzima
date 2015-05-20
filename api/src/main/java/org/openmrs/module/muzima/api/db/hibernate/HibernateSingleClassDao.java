@@ -72,7 +72,7 @@ public class HibernateSingleClassDao<T> implements SingleClassDao<T> {
     @Override
     @Transactional
     public T saveOrUpdate(T object) {
-        sessionFactory.getCurrentSession().saveOrUpdate(object);
+            sessionFactory.getCurrentSession().saveOrUpdate(object);
         return object;
     }
 

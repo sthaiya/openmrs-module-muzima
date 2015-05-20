@@ -19,8 +19,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.muzima.api.db.*;
 import org.openmrs.module.muzima.api.service.DataService;
+import org.openmrs.module.muzima.exception.QueueProcessorException;
 import org.openmrs.module.muzima.model.*;
+import org.openmrs.module.muzima.model.handler.QueueDataHandler;
+import org.openmrs.util.HandlerUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -618,5 +622,37 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         return null;
     }
 
+    @Override
+    public List<ErrorMessage> validateData(String uuid, String formData) {
+        List<ErrorMessage> errorMessages = new ArrayList<ErrorMessage>();
+        ErrorData errorData = getErrorDataByUuid(uuid);
+        errorData.setPayload(formData);
 
+        QueueData queueData = new QueueData(errorData);
+
+        List<QueueDataHandler> queueDataHandlers =
+                HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
+        for(QueueDataHandler queueDataHandler : queueDataHandlers){
+
+            try {
+                if (queueDataHandler.accept(queueData)) {
+                    queueDataHandler.validate(queueData);
+                }
+            } catch (Exception ex) {
+                errorMessages = createErrorMessageList((QueueProcessorException)ex);
+            }
+        }
+
+        return errorMessages;
+    }
+
+    private List<ErrorMessage> createErrorMessageList(QueueProcessorException ex){
+        List<ErrorMessage> errorMessages = new ArrayList<ErrorMessage>();
+        for(Exception exception : ex.getAllException()){
+            ErrorMessage error = new ErrorMessage();
+            error.setMessage(exception.getMessage());
+            errorMessages.add(error);
+        }
+        return errorMessages;
+    }
 }

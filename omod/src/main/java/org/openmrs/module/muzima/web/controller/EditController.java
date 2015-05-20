@@ -29,7 +29,7 @@ import java.util.Map;
  * TODO: Write brief description about the class here.
  */
 @Controller
-@RequestMapping(value = "/module/muzima/edit.json")
+@RequestMapping(value = "/module/muzima/error-data/{uuid}.json")
 public class EditController {
 
     private static final Logger logger = LoggerFactory.getLogger(EditController.class.getSimpleName());
@@ -56,7 +56,15 @@ public class EditController {
         } catch (Exception e) {
             logger.error("Error parsing json file to create xml" + e.getMessage());
         }
-
-
     }
+
+    /*@RequestMapping(method = RequestMethod.POST)
+    public void saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
+                                   final @RequestParam(value = "formData") String formData){
+        DataService dataService = Context.getService(DataService.class);
+        ErrorData errorDataEdited = dataService.getErrorDataByUuid(uuid);
+        errorDataEdited.setPayload(formData);
+        dataService.saveErrorData(errorDataEdited);
+        System.out.println("Saved edited form data");
+    }*/
 }

@@ -1,9 +1,7 @@
 function ErrorCtrl($scope, $routeParams, $location, $data) {
     // page parameter
     $scope.uuid = $routeParams.uuid;
-    $scope.ul_li_Data = '';
-    $scope.ul_li_xml_Data = '';
-    $scope.string_xml_Data = '';
+
     // get the current notification
     $data.getError($scope.uuid).
         then(function (response) {
@@ -13,27 +11,31 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
             } else
                 document.getElementById('editData').style.display = 'inline';
         }).then(function(){
-
-            if($scope.error.discriminator =='xml-registration'){
-                var jsonFormData = $scope.error.payload;
-                $scope.to_ul_from_xml(jsonFormData,'treeul');
-                $scope.xml_to_string(jsonFormData);
-            }else{
-                var jsonFormData = JSON.parse($scope.error.payload);
-                $scope.to_ul(jsonFormData,'treeul');
-                $scope.json_to_string(jsonFormData);
-            }
-            $scope.ul_li_Data = '';
-            console.log($scope.error.Errors);
-            var jsonFormDataError = JSON.parse('{"Errors":'+$scope.error.Errors+'}');
-            console.log(jsonFormDataError);
-            $scope.to_ul(jsonFormDataError,'treeError');
+            $scope.bindData();
             $scope.setEvent();
             $scope.setControls();
         });
 
-    $scope.to_ul_from_xml = function(xml, htmlElement){
+    $scope.bindData = function(){
+        $scope.ul_li_Data = '';
+        $scope.ul_li_xml_Data = '';
+        $scope.string_xml_Data = '';
+        if($scope.error.discriminator =='xml-registration'){
+            var jsonFormData = $scope.error.payload;
+            $scope.to_ul_from_xml(jsonFormData,'treeul');
+            $scope.xml_to_string(jsonFormData);
+        }else{
+            var jsonFormData = JSON.parse($scope.error.payload);
+            $scope.to_ul(jsonFormData,'treeul');
+            $scope.json_to_string(jsonFormData);
+        }
+        $scope.ul_li_Data = '';
+        var jsonFormDataError = JSON.parse('{"Errors":'+$scope.error.Errors+'}');
+        $scope.to_ul(jsonFormDataError,'treeError');
 
+    };
+
+    $scope.to_ul_from_xml = function(xml, htmlElement){
        $(xml).contents().each(function (i, node)
        {
            if( $(this).children().length>0){
@@ -87,11 +89,12 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
     $scope.setControls = function(){
       	$('#editJsonSection').hide();
       	$( "#btnUpdate" ).prop( "disabled", true );
+        $('#wait').hide();
+        $('.messages').hide();
       }
 
     $scope.setEvent = function(){
       $('.icon-plus-sign, .icon-minus-sign').click(function(){
-
         $(this).parent().parent().find( "ul" ).toggle();
         if($(this).hasClass('icon-plus-sign')){
 
@@ -111,15 +114,61 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
         $('#editJsonSection').hide();
         $( "#btnQueue" ).prop( "disabled", false );
         $( "#btnCancelQueue" ).prop( "disabled", false );
+        $('.messages').hide();
       });
 
       $('.icon-edit').click(function(){
         $('#editJsonSection').show();
         $( "#btnQueue" ).prop( "disabled", true );
         $( "#btnCancelQueue" ).prop( "disabled", true );
+        if($scope.error.discriminator =='xml-registration'){
+            var jsonFormData = $scope.error.payload;
+            $scope.xml_to_string(jsonFormData);
+        }else{
+            var jsonFormData = JSON.parse($scope.error.payload);
+            $scope.json_to_string(jsonFormData);
+        }
+      });
+      };
+
+      $('#btnValidate').click(function(){
+            $('#wait').show();
+            $('.messages').hide();
+            var jsonDataToValidate = $('#editJson').val();
+            console.log(jsonDataToValidate);
+            $data.validateData($scope.uuid,jsonDataToValidate).
+            then(function (result) {
+                $scope.ul_li_Data = '';
+                $scope.to_ul(result.data,'treeError');
+                //IF THERE ARE NO VALIDATION ERRORS THEN ENABLE UPDATE BUTTON
+                if(Object.keys(result.data.Errors).length == 0){
+                    $( "#btnUpdate" ).prop( "disabled", false );
+                    $scope.isValid = true;
+                }
+                else{
+                    $scope.isValid = false;
+                    $('html,body').animate({scrollTop: $('#errorList').offset().top},1000);
+                }
+                $('.messages').show();
+                $('#wait').hide();
+            });
       });
 
-    };
+      $('#btnUpdate').click(function(){
+
+      });
+
+      $('#btnQueue').click(function(){
+       var uuidList = [$scope.uuid];
+               $data.reQueueErrors(uuidList).
+                   then(function () {
+                       $location.path("/queues");
+                   })
+    });
+
+    $( "#btnCancelQueue" ).click(function(){
+       $location.path("/errors");
+    });
 
     $scope.queue = function () {
         var uuidList = [$scope.uuid];
@@ -133,6 +182,27 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
     $scope.cancel = function () {
         $location.path('/errors');
     };
+
+    $('#btnYes').click(function(){
+      //SAVE THE EDITED DATA
+      $('#wait').show();
+      var formDataToSave = $('#editJson').val();
+      console.log(formDataToSave);
+      $data.saveEditedFormData($scope.uuid,formDataToSave).
+      then(function (response) {
+          $scope.error = response.data;
+          $scope.bindData();
+          $('#editJsonSection').hide();
+          $( "#btnQueue" ).prop( "disabled", false );
+          $( "#btnCancelQueue" ).prop( "disabled", false );
+          $('.messages').hide();
+          $('#wait').hide();
+          $('#myModal').modal('hide');
+      });
+    });
+    $('#btnNo').click(function(){
+
+    });
 }
 
 function ErrorsCtrl($scope, $location, $data) {

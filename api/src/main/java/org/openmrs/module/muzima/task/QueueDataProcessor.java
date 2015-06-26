@@ -88,7 +88,11 @@ public class QueueDataProcessor {
         Set errorMessage = new HashSet();
         for(Exception e : exception.getAllException()){
             ErrorMessage error = new ErrorMessage();
-            error.setMessage(e.getMessage());
+            String message = e.getMessage();
+            if (message == null) {
+                message = "Queue data was processed but the processor unable to determine the cause of the error.";
+            }
+            error.setMessage(message);
             errorMessage.add(error);
         }
         errorData.setMessage("Unable to process queue data");

@@ -209,8 +209,8 @@ function ErrorsCtrl($scope, $location, $data) {
     // initialize selected error data for re-queueing
     $scope.selected = {};
     // initialize the paging structure
-    $scope.maxSize = 5;
-    $scope.pageSize = 5;
+    $scope.maxSize = 10;
+    $scope.pageSize = 10;
     $scope.currentPage = 1;
     $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
         then(function (response) {
@@ -287,8 +287,8 @@ function QueuesCtrl($scope, $location, $data) {
     // initialize selected error data for re-queueing
     $scope.selected = {};
     // initialize the paging structure
-    $scope.maxSize = 5;
-    $scope.pageSize = 5;
+    $scope.maxSize = 10;
+    $scope.pageSize = 10;
     $scope.currentPage = 1;
     $data.getQueues($scope.search, $scope.currentPage, $scope.pageSize).
         then(function (response) {
@@ -387,8 +387,8 @@ function SourceCtrl($scope, $routeParams, $location, $data) {
 
 function SourcesCtrl($scope, $data) {
     // initialize the paging structure
-    $scope.maxSize = 5;
-    $scope.pageSize = 5;
+    $scope.maxSize = 10;
+    $scope.pageSize = 10;
     $scope.currentPage = 1;
     $data.getSources($scope.search, $scope.currentPage, $scope.pageSize).
         then(function (response) {

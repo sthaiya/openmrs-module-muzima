@@ -10,5 +10,6 @@
         <mapping resource="QueueData.hbm.xml"/>
         <mapping resource="NotificationData.hbm.xml"/>
         <mapping resource="DataSource.hbm.xml"/>
+        <mapping resource="MuzimaErrorMessage.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

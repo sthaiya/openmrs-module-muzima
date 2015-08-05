@@ -81,6 +81,7 @@ public class WebConverter {
         if (errorData != null) {
             map.put("uuid", errorData.getUuid());
             map.put("discriminator", errorData.getDiscriminator());
+            //map.put("form-template-name",errorData.)
             map.put("source", errorData.getDataSource().getName());
             map.put("message", errorData.getMessage());
             XmlJsonUtil.createPatientValuesFromPayload(map, errorData.getPayload());

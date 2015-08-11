@@ -646,6 +646,18 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
         return errorMessages;
     }
 
+    @Override
+    public List<String> getDiscriminatorTypes() {
+        List<String> discriminatorTypes = new ArrayList<String>();
+        List<QueueDataHandler> queueDataHandlers = HandlerUtil.getHandlersForType(QueueDataHandler.class, QueueData.class);
+        for (QueueDataHandler queueDataHandler : queueDataHandlers) {
+            String discriminator = queueDataHandler.getDiscriminator();
+            // collect all discriminator value and return it to the web interface
+            discriminatorTypes.add(discriminator);
+        }
+        return discriminatorTypes;
+    }
+
     private List<ErrorMessage> createErrorMessageList(QueueProcessorException ex){
         List<ErrorMessage> errorMessages = new ArrayList<ErrorMessage>();
         for(Exception exception : ex.getAllException()){

@@ -451,4 +451,6 @@ public interface DataService extends OpenmrsService {
 
     List<ErrorMessage> validateData(String uuid, String formData);
 
+    List<String> getDiscriminatorTypes();
+
 }

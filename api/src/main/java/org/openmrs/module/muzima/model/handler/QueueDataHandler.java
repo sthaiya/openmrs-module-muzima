@@ -42,4 +42,10 @@ public interface QueueDataHandler {
      */
     boolean validate(final QueueData queueData);
 
+    /**
+     * Get the discriminator for this handler
+     *
+     * @return String the discriminator type
+     */
+    String getDiscriminator();
 }

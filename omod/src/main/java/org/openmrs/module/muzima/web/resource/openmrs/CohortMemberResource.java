@@ -13,13 +13,14 @@
  */
 package org.openmrs.module.muzima.web.resource.openmrs;
 
+import org.apache.commons.beanutils.ConversionException;
 import org.openmrs.Cohort;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.CoreService;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
 import org.openmrs.module.muzima.web.resource.utils.ResourceUtils;
-import org.openmrs.module.muzima.web.resource.wrapper.CohortMember;
+import org.openmrs.module.muzima.web.resource.wrapper.FakeCohortMember;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -34,10 +35,8 @@ import org.openmrs.module.webservices.rest.web.resource.impl.AlreadyPaged;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-import org.openmrs.module.webservices.rest.web.v1_0.wrapper.openmrs1_8.CohortMember1_8;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -48,16 +47,16 @@ import java.util.List;
  * TODO: Write brief description about the class here.
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/member",
-        supportedClass = CohortMember.class,
+        supportedClass = FakeCohortMember.class,
         supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
-public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
+public class CohortMemberResource extends DelegatingCrudResource<FakeCohortMember> {
 
     @Override
     public PageableResult doSearch(final RequestContext context) throws ResponseException {
         HttpServletRequest request = context.getRequest();
         String uuidParameter = request.getParameter("uuid");
         String syncDateParameter = request.getParameter("syncDate");
-        List<CohortMember> members = new ArrayList<CohortMember>();
+        List<FakeCohortMember> members = new ArrayList<FakeCohortMember>();
         if (uuidParameter != null) {
             Date syncDate = ResourceUtils.parseDate(syncDateParameter);
             CoreService coreService = Context.getService(CoreService.class);
@@ -66,12 +65,12 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
                     context.getStartIndex(), context.getLimit());
             final Cohort cohort = Context.getCohortService().getCohortByUuid(uuidParameter);
             for (Patient cohortMember : patients) {
-                members.add(new CohortMember(cohortMember, cohort));
+                members.add(new FakeCohortMember(cohortMember, cohort));
             }
             boolean hasMore = patientCount > context.getStartIndex() + patients.size();
-            return new AlreadyPaged<CohortMember>(context, members, hasMore);
+            return new AlreadyPaged<FakeCohortMember>(context, members, hasMore);
         } else {
-            return new NeedsPaging<CohortMember>(members, context);
+            return new NeedsPaging<FakeCohortMember>(members, context);
         }
     }
 
@@ -84,8 +83,8 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @return the delegate for the given uniqueId
      */
     @Override
-    public CohortMember getByUniqueId(final String uniqueId) {
-        return new CohortMember(Context.getPatientService().getPatientByUuid(uniqueId), null);
+    public FakeCohortMember getByUniqueId(final String uniqueId) {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -99,8 +98,8 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @throws org.openmrs.module.webservices.rest.web.response.ResponseException
      */
     @Override
-    protected void delete(final CohortMember delegate, final String reason, final RequestContext context) throws ResponseException {
-        removeMemberFromCohort(delegate);
+    protected void delete(final FakeCohortMember delegate, final String reason, final RequestContext context) throws ResponseException {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -109,8 +108,8 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @return
      */
     @Override
-    public CohortMember newDelegate() {
-        return new CohortMember();
+    public FakeCohortMember newDelegate() {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -120,9 +119,8 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @return the saved instance
      */
     @Override
-    public CohortMember save(final CohortMember delegate) {
-        addMemberToCohort(delegate);
-        return delegate;
+    public FakeCohortMember save(final FakeCohortMember delegate) {
+        throw new ResourceDoesNotSupportOperationException();
     }
 
     /**
@@ -134,7 +132,7 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @throws org.openmrs.module.webservices.rest.web.response.ResponseException
      */
     @Override
-    public void purge(final CohortMember delegate, final RequestContext context) throws ResponseException {
+    public void purge(final FakeCohortMember delegate, final RequestContext context) throws ResponseException {
         throw new ResourceDoesNotSupportOperationException();
     }
 
@@ -166,32 +164,6 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
     }
 
     /**
-     * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getCreatableProperties()
-     */
-    @Override
-    public DelegatingResourceDescription getCreatableProperties() {
-        DelegatingResourceDescription description = new DelegatingResourceDescription();
-        description.addRequiredProperty("patient");
-        return description;
-    }
-
-    /**
-     * @param member the patient to be added to cohort
-     */
-    public void addMemberToCohort(CohortMember member) {
-        member.getCohort().addMember(member.getPatient().getId());
-        Context.getCohortService().saveCohort(member.getCohort());
-    }
-
-    /**
-     * @param member the patient to be removed from cohort
-     */
-    public void removeMemberFromCohort(CohortMember member) {
-        member.getCohort().removeMember(member.getPatient().getId());
-        Context.getCohortService().saveCohort(member.getCohort());
-    }
-
-    /**
      * Implementations should override this method if T is not uniquely identified by a "uuid"
      * property.
      *
@@ -199,25 +171,26 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
      * @return the uuid property of delegate
      */
     @Override
-    protected String getUniqueId(final CohortMember delegate) {
-        return delegate.getPatient().getUuid();
+    protected String getUniqueId(final FakeCohortMember delegate) {
+        return delegate.getCohort().getUuid();
     }
 
     /**
-     * @param member the patient
+     * @param fakeCohortMember the patient
      * @return string that contains cohort member's identifier and full name
      */
-    public String getDisplayString(CohortMember1_8 member) {
+    public String getDisplayString(FakeCohortMember fakeCohortMember) {
 
-        if (member.getPatient().getPatientIdentifier() == null)
+        if (fakeCohortMember.getPatient().getPatientIdentifier() == null) {
             return "";
+        }
 
-        return member.getPatient().getPatientIdentifier().getIdentifier() + " - "
-                + member.getPatient().getPersonName().getFullName();
+        return fakeCohortMember.getPatient().getPatientIdentifier().getIdentifier() + " - "
+                + fakeCohortMember.getPatient().getPersonName().getFullName();
     }
 
     @RepHandler(RefRepresentation.class)
-    public SimpleObject asRef(CohortMember delegate) throws ConversionException {
+    public SimpleObject asRef(FakeCohortMember delegate) throws ConversionException {
         DelegatingResourceDescription description = new DelegatingResourceDescription();
         description.addProperty("display", findMethod("getDisplayString"));
         description.addSelfLink();
@@ -225,7 +198,7 @@ public class CohortMemberResource extends DelegatingCrudResource<CohortMember> {
     }
 
     @RepHandler(DefaultRepresentation.class)
-    public SimpleObject asDefaultRep(CohortMember delegate) throws Exception {
+    public SimpleObject asDefaultRep(FakeCohortMember delegate) throws Exception {
         SimpleObject ret = new SimpleObject();
         ret.put("display", delegate.toString());
         ret.put("links", "[ All Data resources need to define their representations ]");

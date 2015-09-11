@@ -14,27 +14,26 @@
 package org.openmrs.module.muzima.web.resource.wrapper;
 
 import org.openmrs.Cohort;
-import org.openmrs.OpenmrsData;
 import org.openmrs.Patient;
 import org.openmrs.module.webservices.rest.web.v1_0.wrapper.openmrs1_8.CohortMember1_8;
 
 /**
  * TODO: Write brief description about the class here.
  */
-public class CohortMember extends CohortMember1_8 {
+public class FakeCohortMember extends CohortMember1_8 {
     /**
      * Copier constructor to set fields
      *
      * @param patient
      * @param cohort
      */
-    public CohortMember(final Patient patient, final Cohort cohort) {
+    public FakeCohortMember(final Patient patient, final Cohort cohort) {
         super(patient, cohort);
     }
 
     /**
      * Default constructor
      */
-    public CohortMember() {
+    public FakeCohortMember() {
     }
 }

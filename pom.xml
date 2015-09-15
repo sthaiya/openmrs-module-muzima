@@ -35,7 +35,7 @@
     </modules>
 
     <properties>
-        <openMRSVersion>1.8.2</openMRSVersion>
+        <openMRSVersion>1.9.7</openMRSVersion>
         <webservicesRestVersion>2.1</webservicesRestVersion>
         <muzimaFormsVersion>1.0.1-SNAPSHOT</muzimaFormsVersion>
         <jsonPathVersion>0.8.1</jsonPathVersion>
@@ -93,6 +93,15 @@
                 <version>${webservicesRestVersion}</version>
                 <scope>provided</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>muzimaforms-omod</artifactId>
+                <version>${muzimaFormsVersion}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- Begin OpenMRS core -->
 
             <dependency>

@@ -116,19 +116,6 @@ public class ObsResource extends DataDelegatingCrudResource<FakeObs> {
     }
 
     /**
-     * Display string for Obs
-     *
-     * @param obs
-     * @return String ConceptName = value
-     */
-    public String getDisplayString(FakeObs obs) {
-        if (obs.getConcept() == null)
-            return "";
-
-        return obs.getConcept().getName() + ": " + obs.getValueAsString(Context.getLocale());
-    }
-
-    /**
      * Gets the {@link DelegatingResourceDescription} for the given representation for this
      * resource, if it exists
      *
@@ -141,7 +128,6 @@ public class ObsResource extends DataDelegatingCrudResource<FakeObs> {
             // TODO how to handle valueCodedName?
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");
-            description.addProperty("display", findMethod("getDisplayString"));
             description.addProperty("person", Representation.REF);
             description.addProperty("concept", Representation.REF);
             description.addProperty("value");
@@ -163,7 +149,6 @@ public class ObsResource extends DataDelegatingCrudResource<FakeObs> {
             // TODO how to handle valueCodedName?
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");
-            description.addProperty("display", findMethod("getDisplayString"));
             description.addProperty("person", Representation.REF);
             description.addProperty("concept");
             description.addProperty("value");

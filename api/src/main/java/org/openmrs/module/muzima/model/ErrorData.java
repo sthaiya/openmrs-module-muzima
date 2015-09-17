@@ -25,7 +25,7 @@ public class ErrorData extends AuditableData {
 
     private Date dateProcessed;
 
-    private Set errorMessages;
+    private Set<ErrorMessage> errorMessages;
 
     public ErrorData() {
 
@@ -52,11 +52,11 @@ public class ErrorData extends AuditableData {
     }
 
 
-    public Set getErrorMessages() {
+    public Set<ErrorMessage> getErrorMessages() {
         return errorMessages;
     }
 
-    public void setErrorMessages(Set errorMessages) {
+    public void setErrorMessages(Set<ErrorMessage> errorMessages) {
         this.errorMessages = errorMessages;
     }
 }

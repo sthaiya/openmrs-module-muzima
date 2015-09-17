@@ -13,10 +13,13 @@
  */
 package org.openmrs.module.muzima.web.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.utils.WebConverter;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,8 @@ import java.util.Map;
 @RequestMapping(value = "/module/muzima/queues.json")
 public class QueuesController {
 
+    protected Log log = LogFactory.getLog(getClass());
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getQueues(final @RequestParam(value = "search") String search,
@@ -43,25 +48,33 @@ public class QueuesController {
                                          final @RequestParam(value = "pageSize") Integer pageSize) {
         Map<String, Object> response = new HashMap<String, Object>();
 
-        DataService dataService = Context.getService(DataService.class);
-        int pages = (dataService.countQueueData(search).intValue() + pageSize - 1) / pageSize;
-        List<Object> objects = new ArrayList<Object>();
-        for (QueueData queueData : dataService.getPagedQueueData(search, pageNumber, pageSize)) {
-            objects.add(WebConverter.convertQueueData(queueData));
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            int pages = (dataService.countQueueData(search).intValue() + pageSize - 1) / pageSize;
+            List<Object> objects = new ArrayList<Object>();
+            for (QueueData queueData : dataService.getPagedQueueData(search, pageNumber, pageSize)) {
+                objects.add(WebConverter.convertQueueData(queueData));
+            }
+
+            MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
+            log.info("Number of forms available are: " + muzimaFormService.getAll().size());
+
+            response.put("pages", pages);
+            response.put("objects", objects);
         }
-        response.put("pages", pages);
-        response.put("objects", objects);
         return response;
     }
 
     @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.POST)
     public void deleteQueue(final @RequestBody Map<String, Object> map) {
-        List<String> uuidList = (List<String>) map.get("uuidList");
-        DataService dataService = Context.getService(DataService.class);
-        for (String uuid : uuidList) {
-            QueueData queueData = dataService.getQueueDataByUuid(uuid);
-            dataService.purgeQueueData(queueData);
+        if (Context.isAuthenticated()) {
+            List<String> uuidList = (List<String>) map.get("uuidList");
+            DataService dataService = Context.getService(DataService.class);
+            for (String uuid : uuidList) {
+                QueueData queueData = dataService.getQueueDataByUuid(uuid);
+                dataService.purgeQueueData(queueData);
+            }
         }
     }
 }

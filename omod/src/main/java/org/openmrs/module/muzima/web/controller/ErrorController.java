@@ -38,21 +38,26 @@ public class ErrorController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getError(final @RequestParam(value = "uuid") String uuid) {
-        DataService dataService = Context.getService(DataService.class);
-        ErrorData errorData = dataService.getErrorDataByUuid(uuid);
+        ErrorData errorData = null;
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            errorData = dataService.getErrorDataByUuid(uuid);
+        }
         return WebConverter.convertErrorData(errorData);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public Map<String, Object> saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
                                    final @RequestParam(value = "formData") String formData){
-
-        DataService dataService = Context.getService(DataService.class);
-        ErrorData errorDataEdited = dataService.getErrorDataByUuid(uuid);
-        errorDataEdited.setPayload(formData);
-        List<ErrorMessage> errorMessages = dataService.validateData(uuid, formData);
-        errorDataEdited.setErrorMessages(new HashSet(errorMessages));
-        ErrorData errorData = dataService.saveErrorData(errorDataEdited);
+        ErrorData errorData = null;
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            ErrorData errorDataEdited = dataService.getErrorDataByUuid(uuid);
+            errorDataEdited.setPayload(formData);
+            List<ErrorMessage> errorMessages = dataService.validateData(uuid, formData);
+            errorDataEdited.setErrorMessages(new HashSet<ErrorMessage>(errorMessages));
+            errorData = dataService.saveErrorData(errorDataEdited);
+        }
         return WebConverter.convertErrorData(errorData);
     }
 }

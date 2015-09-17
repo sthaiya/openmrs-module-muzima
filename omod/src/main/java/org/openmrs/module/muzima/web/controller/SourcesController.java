@@ -41,15 +41,16 @@ public class SourcesController {
                                           final @RequestParam(value = "pageNumber") Integer pageNumber,
                                           final @RequestParam(value = "pageSize") Integer pageSize) {
         Map<String, Object> response = new HashMap<String, Object>();
-
-        DataService dataService = Context.getService(DataService.class);
-        int pages = (dataService.countDataSource(search).intValue() + pageSize - 1) / pageSize;
-        List<Object> objects = new ArrayList<Object>();
-        for (DataSource dataSource : dataService.getPagedDataSource(search, pageNumber, pageSize)) {
-            objects.add(WebConverter.convertDataSource(dataSource));
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            int pages = (dataService.countDataSource(search).intValue() + pageSize - 1) / pageSize;
+            List<Object> objects = new ArrayList<Object>();
+            for (DataSource dataSource : dataService.getPagedDataSource(search, pageNumber, pageSize)) {
+                objects.add(WebConverter.convertDataSource(dataSource));
+            }
+            response.put("pages", pages);
+            response.put("objects", objects);
         }
-        response.put("pages", pages);
-        response.put("objects", objects);
         return response;
     }
 }

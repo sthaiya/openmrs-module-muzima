@@ -16,7 +16,9 @@ package org.openmrs.module.muzima;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 
 /**
  * This class contains the logic that is run every time this module is either started or stopped.
@@ -51,6 +53,9 @@ public class MuzimaActivator implements ModuleActivator {
      */
     public void started() {
         log.info("Muzima Processor Module started");
+
+        MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
+        log.info("Accessing muzima form service: " + muzimaFormService.getAll().size());
     }
 
     /**

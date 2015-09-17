@@ -35,8 +35,11 @@ public class QueueController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getQueue(final @RequestParam(value = "uuid") String uuid) {
-        DataService dataService = Context.getService(DataService.class);
-        QueueData queueData = dataService.getQueueDataByUuid(uuid);
+        QueueData queueData = null;
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            queueData = dataService.getQueueDataByUuid(uuid);
+        }
         return WebConverter.convertQueueData(queueData);
     }
 }

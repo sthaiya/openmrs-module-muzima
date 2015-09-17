@@ -166,7 +166,6 @@ public class EncounterResource extends DataDelegatingCrudResource<FakeEncounter>
         if (rep instanceof DefaultRepresentation) {
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");
-            description.addProperty("display", findMethod("getDisplayString"));
             description.addProperty("encounterDatetime");
             description.addProperty("patient", Representation.REF);
             description.addProperty("location", Representation.REF);
@@ -180,7 +179,6 @@ public class EncounterResource extends DataDelegatingCrudResource<FakeEncounter>
         } else if (rep instanceof FullRepresentation) {
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");
-            description.addProperty("display", findMethod("getDisplayString"));
             description.addProperty("encounterDatetime");
             description.addProperty("patient", Representation.REF);
             description.addProperty("location");
@@ -193,17 +191,5 @@ public class EncounterResource extends DataDelegatingCrudResource<FakeEncounter>
             return description;
         }
         return null;
-    }
-
-    /**
-     * @param encounter
-     * @return encounter type and date
-     */
-    public String getDisplayString(final FakeEncounter encounter) {
-        String ret = encounter.getEncounterType() == null ? "?" : encounter.getEncounterType().getName();
-        ret += " ";
-        ret += encounter.getEncounterDatetime() == null ? "?" : Context.getDateFormat().format(
-                encounter.getEncounterDatetime());
-        return ret;
     }
 }

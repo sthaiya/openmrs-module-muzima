@@ -41,34 +41,28 @@ public class EditController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getEdits(final @RequestParam(value = "uuid") String uuid) {
-        DataService dataService = Context.getService(DataService.class);
-        ErrorData errorData = dataService.getErrorDataByUuid(uuid);
+        ErrorData errorData = null;
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            errorData = dataService.getErrorDataByUuid(uuid);
+        }
         return WebConverter.convertEditRegistrationData(errorData);
     }
 
     @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.POST)
     public void reQueue(final @RequestBody Map<String, Object> map) {
-
-        try {
-            String xmlPayload = XmlJsonUtil.createXmlFromJson(map.get("formData").toString());
-            String recordUuid = XmlJsonUtil.readAsString(map.get("formData").toString(), "record_uuid");
-            DataService dataService = Context.getService(DataService.class);
-            ErrorData errorData = dataService.getErrorDataByUuid(recordUuid);
-            errorData.setPayload(xmlPayload);
-            dataService.saveErrorData(errorData);
-        } catch (Exception e) {
-            logger.error("Error parsing json file to create xml" + e.getMessage());
+        if (Context.isAuthenticated()) {
+            try {
+                String xmlPayload = XmlJsonUtil.createXmlFromJson(map.get("formData").toString());
+                String recordUuid = XmlJsonUtil.readAsString(map.get("formData").toString(), "record_uuid");
+                DataService dataService = Context.getService(DataService.class);
+                ErrorData errorData = dataService.getErrorDataByUuid(recordUuid);
+                errorData.setPayload(xmlPayload);
+                dataService.saveErrorData(errorData);
+            } catch (Exception e) {
+                logger.error("Error parsing json file to create xml.", e);
+            }
         }
     }
-
-    /*@RequestMapping(method = RequestMethod.POST)
-    public void saveEditedFormData(final @RequestParam(value = "uuid") String uuid,
-                                   final @RequestParam(value = "formData") String formData){
-        DataService dataService = Context.getService(DataService.class);
-        ErrorData errorDataEdited = dataService.getErrorDataByUuid(uuid);
-        errorDataEdited.setPayload(formData);
-        dataService.saveErrorData(errorDataEdited);
-        System.out.println("Saved edited form data");
-    }*/
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,11 @@ public class ValidateController {
     @ResponseBody
     public Map<String, Object> validate(final @RequestParam(value = "uuid") String uuid,
                                        final @RequestParam(value = "formData") String formData){
-        DataService dataService = Context.getService(DataService.class);
-        List<ErrorMessage> errorMessages = dataService.validateData(uuid, formData);
+        List<ErrorMessage> errorMessages = new ArrayList<ErrorMessage>();
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            errorMessages = dataService.validateData(uuid, formData);
+        }
         return WebConverter.convertErrorMessages(errorMessages);
     }
 }

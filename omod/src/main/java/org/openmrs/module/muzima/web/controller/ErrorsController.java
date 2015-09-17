@@ -43,28 +43,31 @@ public class ErrorsController {
                                          final @RequestParam(value = "pageNumber") Integer pageNumber,
                                          final @RequestParam(value = "pageSize") Integer pageSize) {
         Map<String, Object> response = new HashMap<String, Object>();
-
-        DataService dataService = Context.getService(DataService.class);
-        int pages = (dataService.countErrorData(search).intValue() + pageSize - 1) / pageSize;
-        List<Object> objects = new ArrayList<Object>();
-        for (ErrorData errorData : dataService.getPagedErrorData(search, pageNumber, pageSize)) {
-            objects.add(WebConverter.convertErrorData(errorData));
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            int pages = (dataService.countErrorData(search).intValue() + pageSize - 1) / pageSize;
+            List<Object> objects = new ArrayList<Object>();
+            for (ErrorData errorData : dataService.getPagedErrorData(search, pageNumber, pageSize)) {
+                objects.add(WebConverter.convertErrorData(errorData));
+            }
+            response.put("pages", pages);
+            response.put("objects", objects);
         }
-        response.put("pages", pages);
-        response.put("objects", objects);
         return response;
     }
 
     @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.POST)
     public void reQueue(final @RequestBody Map<String, Object> map) {
-        List<String> uuidList = (List<String>) map.get("uuidList");
-        DataService dataService = Context.getService(DataService.class);
-        for (String uuid : uuidList) {
-            ErrorData errorData = dataService.getErrorDataByUuid(uuid);
-            QueueData queueData = new QueueData(errorData);
-            dataService.saveQueueData(queueData);
-            dataService.purgeErrorData(errorData);
+        if (Context.isAuthenticated()) {
+            List<String> uuidList = (List<String>) map.get("uuidList");
+            DataService dataService = Context.getService(DataService.class);
+            for (String uuid : uuidList) {
+                ErrorData errorData = dataService.getErrorDataByUuid(uuid);
+                QueueData queueData = new QueueData(errorData);
+                dataService.saveQueueData(queueData);
+                dataService.purgeErrorData(errorData);
+            }
         }
     }
 }

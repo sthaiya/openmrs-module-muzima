@@ -22,9 +22,12 @@ public class DiscriminatorController {
         @RequestMapping(method = RequestMethod.GET)
         @ResponseBody
         public List<String> getDiscriminatorTypes(){
-            DataService dataService = Context.getService(DataService.class);
-            List<String> discriminatorTypes = dataService.getDiscriminatorTypes();
-            Collections.sort(discriminatorTypes);
+            List<String> discriminatorTypes = null;
+            if (Context.isAuthenticated()) {
+                DataService dataService = Context.getService(DataService.class);
+                discriminatorTypes = dataService.getDiscriminatorTypes();
+                Collections.sort(discriminatorTypes);
+            }
             return discriminatorTypes;
         }
     }

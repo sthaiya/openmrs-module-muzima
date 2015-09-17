@@ -66,7 +66,7 @@ public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
     public SimpleObject asRef(FakeConcept delegate) throws ConversionException {
         DelegatingResourceDescription description = new DelegatingResourceDescription();
         description.addProperty("uuid");
-        description.addProperty("display", "displayString", Representation.DEFAULT);
+        description.addProperty("display", "displayConcept", Representation.DEFAULT);
         if (delegate.isRetired()) {
             description.addProperty("retired");
         }
@@ -78,7 +78,6 @@ public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
     public SimpleObject asFull(FakeConcept delegate) throws ConversionException {
         DelegatingResourceDescription description = new DelegatingResourceDescription();
         description.addProperty("uuid");
-        description.addProperty("display", findMethod("getDisplayName"));
         description.addProperty("datatype", Representation.DEFAULT);
 
         description.addProperty("retired");
@@ -86,7 +85,6 @@ public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
         description.addProperty("names", Representation.DEFAULT);
         description.addProperty("descriptions", Representation.DEFAULT);
 
-        //description.addProperty("conceptMappings", Representation.DEFAULT);  add as subresource
         description.addProperty("auditInfo", findMethod("getAuditInfo"));
         description.addSelfLink();
         if (delegate.isNumeric()) {
@@ -170,7 +168,6 @@ public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
         if (rep instanceof DefaultRepresentation) {
             DelegatingResourceDescription description = new DelegatingResourceDescription();
             description.addProperty("uuid");
-            description.addProperty("display", findMethod("getDisplayName"));
 
             description.addProperty("names", Representation.REF);
             description.addProperty("datatype", Representation.REF);
@@ -265,18 +262,13 @@ public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
      * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#doGetAll(org.openmrs.module.webservices.rest.web.RequestContext)
      */
     @Override
-    protected NeedsPaging<Concept> doGetAll(final RequestContext context) {
+    protected NeedsPaging<FakeConcept> doGetAll(final RequestContext context) {
         List<Concept> allConcepts = Context.getConceptService().getAllConcepts(null, true, context.getIncludeAll());
-        return new NeedsPaging<Concept>(allConcepts, context);
-    }
 
-    /**
-     * Gets the display name of the Concept delegate
-     *
-     * @param instance the delegate instance to get the display name off
-     */
-    public String getDisplayName(final FakeConcept instance) {
-        ConceptName cn = instance.getName();
-        return cn == null ? null : cn.getName();
+        List<FakeConcept> results = new ArrayList<FakeConcept>(allConcepts.size());
+        for (Concept concept : allConcepts) {
+            results.add(FakeConcept.copyConcept(concept));
+        }
+        return new NeedsPaging<FakeConcept>(results, context);
     }
 }

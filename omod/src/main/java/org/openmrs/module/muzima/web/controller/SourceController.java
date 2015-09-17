@@ -37,33 +37,38 @@ public class SourceController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getSource(final @RequestParam(value = "uuid") String uuid) {
-        DataService dataService = Context.getService(DataService.class);
-        DataSource dataSource = dataService.getDataSourceByUuid(uuid);
+        DataSource dataSource = null;
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            dataSource = dataService.getDataSourceByUuid(uuid);
+        }
         return WebConverter.convertDataSource(dataSource);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public void deleteSource(final @RequestBody Map<String, Object> map) {
-        String uuid = (String) map.get("uuid");
-        String name = (String) map.get("name");
-        String description = (String) map.get("description");
-        DataService dataService = Context.getService(DataService.class);
-        if (StringUtils.isNotBlank(uuid)) {
-            DataSource dataSource = dataService.getDataSourceByUuid(uuid);
-            if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(description)) {
+        if (Context.isAuthenticated()) {
+            String uuid = (String) map.get("uuid");
+            String name = (String) map.get("name");
+            String description = (String) map.get("description");
+            DataService dataService = Context.getService(DataService.class);
+            if (StringUtils.isNotBlank(uuid)) {
+                DataSource dataSource = dataService.getDataSourceByUuid(uuid);
+                if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(description)) {
+                    dataSource.setName(name);
+                    dataSource.setDescription(description);
+                    dataService.saveDataSource(dataSource);
+                } else {
+                    dataSource.setRetired(true);
+                    dataSource.setRetireReason("Deleting a data source object!");
+                    dataService.saveDataSource(dataSource);
+                }
+            } else {
+                DataSource dataSource = new DataSource();
                 dataSource.setName(name);
                 dataSource.setDescription(description);
                 dataService.saveDataSource(dataSource);
-            } else {
-                dataSource.setRetired(true);
-                dataSource.setRetireReason("Deleting a data source object!");
-                dataService.saveDataSource(dataSource);
             }
-        } else {
-            DataSource dataSource = new DataSource();
-            dataSource.setName(name);
-            dataSource.setDescription(description);
-            dataService.saveDataSource(dataSource);
         }
     }
 

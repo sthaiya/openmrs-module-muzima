@@ -64,17 +64,14 @@ public class WebConverter {
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
 
             Map<String, Object> errorMap = new HashMap<String, Object>();
-            for(Object e : errorData.getErrorMessages()){
-                ErrorMessage errorMessage = (ErrorMessage)e;
-                errorMap.put(errorMessage.getId().toString(), errorMessage.getMessage());
+            for(ErrorMessage e : errorData.getErrorMessages()){
+                errorMap.put(e.getId().toString(), e.getMessage());
             }
 
             map.put("Errors", JSONObject.toJSONString(errorMap));
         }
         return map;
     }
-
-
 
     public static Map<String, Object> convertEditRegistrationData(final ErrorData errorData) {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -96,15 +93,14 @@ public class WebConverter {
     }
 
     public static  Map<String,Object> convertErrorMessages(List<ErrorMessage> errorMessages) {
-
-        Map<String,Object> outerMap = new HashMap<String, Object>();
+        Map<String, Object> outerMap = new HashMap<String, Object>();
         Map<String, Object> innerMap = new HashMap<String, Object>();
-        int count =0;
+        int count = 0;
         for (ErrorMessage errorMessage : errorMessages) {
             count++;
             innerMap.put(new Integer(count).toString(), errorMessage.getMessage());
         }
-        outerMap.put("Errors",innerMap);
+        outerMap.put("Errors", innerMap);
         return outerMap;
     }
 }

@@ -14,11 +14,15 @@
 package org.openmrs.module.muzima.web.resource.wrapper;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Cohort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FakeCohort extends Cohort {
+import java.util.List;
+import java.util.Set;
+
+public class FakeCohort extends BaseOpenmrsData {
 
     private static final Logger log = LoggerFactory.getLogger(FakeCohort.class.getSimpleName());
 
@@ -26,6 +30,11 @@ public class FakeCohort extends Cohort {
             "uuid", "name", "description", "memberIds",
             "creator", "dateCreated", "changedBy", "dateChanged", "voidedBy", "dateVoided", "voidReason"
     };
+
+    private Integer id;
+    private String name;
+    private String description;
+    private Set<Integer> memberIds;
 
     private FakeCohort() {
     }
@@ -42,5 +51,39 @@ public class FakeCohort extends Cohort {
         }
         fakeCohort.setVoided(cohort.getVoided());
         return fakeCohort;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<Integer> getMemberIds() {
+        return memberIds;
+    }
+
+    public void setMemberIds(Set<Integer> memberIds) {
+        this.memberIds = memberIds;
     }
 }

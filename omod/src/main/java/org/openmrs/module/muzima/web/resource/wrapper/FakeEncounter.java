@@ -14,11 +14,19 @@
 package org.openmrs.module.muzima.web.resource.wrapper;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Form;
+import org.openmrs.Location;
+import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FakeEncounter extends Encounter {
+import java.util.Date;
+
+public class FakeEncounter extends BaseOpenmrsData {
 
     private static final Logger log = LoggerFactory.getLogger(FakeCohort.class.getSimpleName());
 
@@ -26,6 +34,15 @@ public class FakeEncounter extends Encounter {
             "uuid", "encounterDatetime", "patient", "location", "form", "encounterType",
             "creator", "dateCreated", "changedBy", "dateChanged", "voidedBy", "dateVoided", "voidReason"
     };
+
+    private Integer id;
+    private Date encounterDatetime;
+
+    private Patient patient;
+    private Location location;
+    private Form form;
+    private EncounterType encounterType;
+    private Person provider;
 
     private FakeEncounter() {
     }
@@ -43,5 +60,63 @@ public class FakeEncounter extends Encounter {
         fakeEncounter.setProvider(encounter.getProvider());
         fakeEncounter.setVoided(encounter.getVoided());
         return fakeEncounter;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getEncounterDatetime() {
+        return encounterDatetime;
+    }
+
+    public void setEncounterDatetime(Date encounterDatetime) {
+        this.encounterDatetime = encounterDatetime;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Form getForm() {
+        return form;
+    }
+
+    public void setForm(Form form) {
+        this.form = form;
+    }
+
+    public EncounterType getEncounterType() {
+        return encounterType;
+    }
+
+    public void setEncounterType(EncounterType encounterType) {
+        this.encounterType = encounterType;
+    }
+
+    public Person getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Person provider) {
+        this.provider = provider;
     }
 }

@@ -14,22 +14,34 @@
 package org.openmrs.module.muzima.web.resource.wrapper;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
+import org.openmrs.ConceptDatatype;
+import org.openmrs.ConceptDescription;
+import org.openmrs.ConceptName;
 import org.openmrs.ConceptNumeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FakeConcept extends Concept {
+import java.util.Collection;
+
+public class FakeConcept extends BaseOpenmrsMetadata {
 
     private static final Logger log = LoggerFactory.getLogger(FakeConcept.class.getSimpleName());
 
     private static final String[] properties = new String[]{
             "uuid", "descriptions", "datatype", "names",
-            "creator", "dateCreated", "changedBy", "dateChanged", "voidedBy", "dateVoided", "voidReason"
+            "creator", "dateCreated", "changedBy", "dateChanged", "retiredBy", "dateRetired", "retiredReason"
     };
 
+    private Integer id;
     private String units;
     private Boolean precise;
+    private Boolean numeric;
+
+    private ConceptDatatype datatype;
+    private Collection<ConceptName> names;
+    private Collection<ConceptDescription> descriptions;
 
     private FakeConcept() {
     }
@@ -49,10 +61,21 @@ public class FakeConcept extends Concept {
             ConceptNumeric numeric = (ConceptNumeric) concept;
             fakeConcept.setUnits(numeric.getUnits());
             fakeConcept.setPrecise(numeric.getPrecise());
+            fakeConcept.setNumeric(concept.isNumeric());
         }
 
         fakeConcept.setRetired(concept.isRetired());
         return fakeConcept;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUnits() {
@@ -69,5 +92,37 @@ public class FakeConcept extends Concept {
 
     public void setPrecise(Boolean precise) {
         this.precise = precise;
+    }
+
+    public Boolean isNumeric() {
+        return numeric;
+    }
+
+    public void setNumeric(Boolean numeric) {
+        this.numeric = numeric;
+    }
+
+    public ConceptDatatype getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(ConceptDatatype datatype) {
+        this.datatype = datatype;
+    }
+
+    public Collection<ConceptName> getNames() {
+        return names;
+    }
+
+    public void setNames(Collection<ConceptName> names) {
+        this.names = names;
+    }
+
+    public Collection<ConceptDescription> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(Collection<ConceptDescription> descriptions) {
+        this.descriptions = descriptions;
     }
 }

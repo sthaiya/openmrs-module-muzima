@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
+<openmrs:require privilege="Edit Patients" otherwise="/login.htm" redirect="/module/muzima/view.list"/>
+
 <openmrs:htmlInclude file="/moduleResources/muzima/styles/custom/custom.css"/>
 <openmrs:htmlInclude file="/moduleResources/muzima/styles/bootstrap/css/bootstrap.css"/>
 

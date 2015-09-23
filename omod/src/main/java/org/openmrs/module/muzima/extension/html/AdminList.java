@@ -13,7 +13,11 @@
  */
 package org.openmrs.module.muzima.extension.html;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.Extension;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 import java.util.LinkedHashMap;
@@ -24,6 +28,8 @@ import java.util.Map;
  * "muzima.title" heading.
  */
 public class AdminList extends AdministrationSectionExt {
+
+    protected Log log = LogFactory.getLog(getClass());
 
     /**
      * @see AdministrationSectionExt#getMediaType()
@@ -43,6 +49,9 @@ public class AdminList extends AdministrationSectionExt {
      * @see AdministrationSectionExt#getLinks()
      */
     public Map<String, String> getLinks() {
+        MuzimaFormService formService = Context.getService(MuzimaFormService.class);
+        log.info("Forms size: " + formService.getAll().size());
+
         LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         map.put("/module/muzima/view.list#/sources", "muzima.view.sources");
         map.put("/module/muzima/view.list#/queues", "muzima.view.queues");

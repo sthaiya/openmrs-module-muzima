@@ -99,32 +99,4 @@
             </list>
         </property>
     </bean>
-    <bean parent="serviceContext">
-        <property name="moduleService">
-            <list>
-                <value>org.openmrs.module.muzimaforms.api.MuzimaTagService</value>
-                <bean
-                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-                    <property name="transactionManager">
-                        <ref bean="transactionManager"/>
-                    </property>
-                    <property name="target">
-                        <bean class="org.openmrs.module.muzimaforms.api.impl.MuzimaTagServiceImpl">
-                            <constructor-arg>
-                                <bean class="org.openmrs.module.muzimaforms.api.db.hibernate.impl.TagDAOImpl">
-                                    <constructor-arg ref="sessionFactory"/>
-                                </bean>
-                            </constructor-arg>
-                        </bean>
-                    </property>
-                    <property name="preInterceptors">
-                        <ref bean="serviceInterceptors"/>
-                    </property>
-                    <property name="transactionAttributeSource">
-                        <ref bean="transactionAttributeSource"/>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
 </beans>

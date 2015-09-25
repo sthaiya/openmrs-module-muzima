@@ -16,26 +16,14 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td>Provider Id</td>
-                <td>{{error.providerId}}</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>Provider Name</td>
-                <td>{{error.providerName}}</td>
+                <td>Provider</td>
+                <td>{{error.providerId}} - {{error.providerName}}</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td>Location Id</td>
-                <td>{{error.locationId}}</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>Location Name</td>
-                <td>{{error.locationName}}</td>
+                <td>{{error.locationId}} - {{error.locationName}}</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
@@ -65,18 +53,15 @@
             </tr>
             <tr>
                 <td id = 'errorList' colspan="4">
+                    <h6>Error list</h6>
 
-
-
-                        <h6>Error list</h6>
-                        <div class="messages">
-                            <div ng-hide="isValid" class="alert alert-danger">Please correct the errors below.</div>
-                        </div>
-                        <div  class="tree well errorlist" >
-                            <ul id = 'treeError'>
-                            </ul>
-                        </div>
-
+                    <div class="messages">
+                        <div ng-hide="isValid" class="alert alert-danger">Please correct the errors below.</div>
+                    </div>
+                    <div class="tree well errorlist">
+                        <ul id='treeError'>
+                        </ul>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -115,7 +100,7 @@
             </tbody>
         </table>
 
-    <div id = 'wait' class = 'loader'>
+    <div id='wait' class='loader'>
         &nbsp;
     </div>
     <!-- Modal -->

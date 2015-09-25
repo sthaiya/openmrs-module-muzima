@@ -37,7 +37,6 @@ public class QueueDataProcessor {
 
     public void processQueueData() {
         if (!isRunning) {
-            log.info("Starting up queue data processor ...");
             processAllQueueData();
         } else {
             log.info("Queue data processor aborting (another processor already running)!");
@@ -47,6 +46,7 @@ public class QueueDataProcessor {
     private void processAllQueueData() {
         try {
             isRunning = true;
+            log.info("Starting up queue data processor ...");
             DataService dataService = Context.getService(DataService.class);
             List<QueueData> queueDataList = dataService.getAllQueueData();
             List<QueueDataHandler> queueDataHandlers =
@@ -72,6 +72,7 @@ public class QueueDataProcessor {
             }
         } finally {
             isRunning = false;
+            log.info("Stopping up queue data processor ...");
         }
     }
 

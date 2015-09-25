@@ -19,10 +19,8 @@
                     <tr>
                         <th>&nbsp;</th>
                         <th>#</th>
-                        <th>Provider Id</th>
-                        <th>Provider Name</th>
-                        <th>Location Id</th>
-                        <th>Location Name</th>
+                        <th>Provider</th>
+                        <th>Location</th>
                         <th>Form Name</th>
                         <th>Kind</th>
                         <th>Submitted On</th>
@@ -31,7 +29,7 @@
                     </thead>
                     <tbody>
                     <tr ng-hide="errors.length">
-                        <td colspan="5">No data in the database.</td>
+                        <td colspan="8">No data in the database.</td>
                     </tr>
                     <tr ng-repeat="error in errors | orderBy:'submitted':true">
                         <td>
@@ -39,10 +37,8 @@
                                    ng-checked="selected[error.uuid]" ng-model="selected[error.uuid]">
                         </td>
                         <td><a href="#/error/{{error.uuid}}"><i class=icon-edit></i></a></td>
-                        <td>{{error.providerId}}</td>
-                        <td>{{error.providerName}}</td>
-                        <td>{{error.locationId}}</td>
-                        <td>{{error.locationName}}</td>
+                        <td>{{error.providerId}} - {{error.providerName}}</td>
+                        <td>{{error.locationId}} - {{error.locationName}}</td>
                         <td>{{error.formName}}</td>
                         <td>{{error.discriminator}}</td>
                         <td>{{error.submitted}}</td>

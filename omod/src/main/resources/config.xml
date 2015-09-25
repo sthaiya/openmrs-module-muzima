@@ -16,7 +16,6 @@
     <!-- / Module Properties -->
 
     <require_modules>
-        <require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
         <require_module version="${muzimaFormsVersion}">org.openmrs.module.muzimaforms</require_module>
     </require_modules>
 

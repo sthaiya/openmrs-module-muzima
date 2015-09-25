@@ -49,9 +49,9 @@ public class WebConverter {
             map.put("payload", queueData.getPayload());
             map.put("submitted", Context.getDateFormat().format(queueData.getDateCreated()));
             map.put("locationId", queueData.getLocation().getLocationId());
-            map.put("locationName", queueData.getLocation().toString());
+            map.put("locationName", queueData.getLocation().getName());
             map.put("providerId", queueData.getProvider().getSystemId());
-            map.put("providerName", queueData.getProvider().getGivenName());
+            map.put("providerName", queueData.getProvider().getDisplayString());
             map.put("formName", queueData.getFormName());
         }
         return map;
@@ -66,9 +66,9 @@ public class WebConverter {
             map.put("message", errorData.getMessage());
             map.put("payload", errorData.getPayload());
             map.put("locationId", errorData.getLocation().getLocationId());
-            map.put("locationName", errorData.getLocation().toString());
+            map.put("locationName", errorData.getLocation().getName());
             map.put("providerId", errorData.getProvider().getSystemId());
-            map.put("providerName", errorData.getProvider().getGivenName());
+            map.put("providerName", errorData.getProvider().getDisplayString());
             map.put("formName", errorData.getFormName());
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
@@ -108,7 +108,7 @@ public class WebConverter {
         int count = 0;
         for (ErrorMessage errorMessage : errorMessages) {
             count++;
-            innerMap.put(new Integer(count).toString(), errorMessage.getMessage());
+            innerMap.put(Integer.toString(count), errorMessage.getMessage());
         }
         outerMap.put("Errors", innerMap);
         return outerMap;

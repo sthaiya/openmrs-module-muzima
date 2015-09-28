@@ -13,12 +13,18 @@
  */
 package org.openmrs.module.muzima.web.utils;
 
+import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONObject;
+import org.apache.commons.lang.math.NumberUtils;
+import org.openmrs.Location;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
+import org.openmrs.module.muzimaforms.MuzimaForm;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,28 +54,38 @@ public class WebConverter {
             map.put("source", queueData.getDataSource().getName());
             map.put("payload", queueData.getPayload());
             map.put("submitted", Context.getDateFormat().format(queueData.getDateCreated()));
-            map.put("locationId", queueData.getLocation().getLocationId());
-            map.put("locationName", queueData.getLocation().getName());
-            map.put("providerId", queueData.getProvider().getSystemId());
-            map.put("providerName", queueData.getProvider().getDisplayString());
-            map.put("formName", queueData.getFormName());
         }
         return map;
     }
 
     public static Map<String, Object> convertErrorData(final ErrorData errorData) {
         Map<String, Object> map = new HashMap<String, Object>();
+        String emptyString = "";
         if (errorData != null) {
             map.put("uuid", errorData.getUuid());
             map.put("discriminator", errorData.getDiscriminator());
             map.put("source", errorData.getDataSource().getName());
             map.put("message", errorData.getMessage());
             map.put("payload", errorData.getPayload());
-            map.put("locationId", errorData.getLocation().getLocationId());
-            map.put("locationName", errorData.getLocation().getName());
-            map.put("providerId", errorData.getProvider().getSystemId());
-            map.put("providerName", errorData.getProvider().getDisplayString());
-            map.put("formName", errorData.getFormName());
+            if(errorData.getLocation() == null){
+                map.put("locationId", emptyString);
+                map.put("locationName", emptyString);
+            }else{
+                map.put("locationId", errorData.getLocation().getLocationId());
+                map.put("locationName", errorData.getLocation().getName());
+            }
+            if(errorData.getProvider() == null){
+                map.put("providerId", emptyString);
+                map.put("providerName", emptyString);
+            }else{
+                map.put("providerId", errorData.getProvider().getSystemId());
+                map.put("providerName", errorData.getProvider().getDisplayString());
+            }
+            if(errorData.getFormName() == null){
+                map.put("formName", emptyString);
+            }else{
+                map.put("formName", errorData.getFormName());
+            }
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
 
@@ -112,5 +128,42 @@ public class WebConverter {
         }
         outerMap.put("Errors", innerMap);
         return outerMap;
+    }
+
+    private static User extractProviderFromPayload(String payload) {
+        String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
+        User user = Context.getUserService().getUserByUsername(providerString);
+        return user;
+    }
+
+    private static Location extractLocationFromPayload(String payload) {
+        String locationString = readAsString(payload, "$['encounter']['encounter.location_id']");
+        int locationId = NumberUtils.toInt(locationString, -999);
+        Location location = Context.getLocationService().getLocation(locationId);
+        return location;
+    }
+
+    private static String extractFormNameFromPayload(String payload) {
+        String formUuid = readAsString(payload, "$['encounter']['encounter.form_uuid']");
+        MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
+        MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
+        return muzimaForm.getName();
+    }
+
+    /**
+     * Read string value from the json object.
+     *
+     * @param jsonObject the json object.
+     * @param path       the path inside the json object.
+     * @return the string value in the json object. When the path is invalid, by default will return null.
+     */
+    private static String readAsString(final String jsonObject, final String path) {
+        String returnedString = null;
+        try {
+            returnedString = JsonPath.read(jsonObject, path);
+        } catch (Exception e) {
+            System.out.println("Unable to read string value with path: " + path + " from: " + String.valueOf(jsonObject));
+        }
+        return returnedString;
     }
 }

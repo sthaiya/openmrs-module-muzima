@@ -14,12 +14,19 @@
 package org.openmrs.module.muzima.web.resource.muzima;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openmrs.Form;
+import org.openmrs.Location;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.web.controller.MuzimaRestController;
+import org.openmrs.module.muzima.web.resource.utils.JsonUtils;
+import org.openmrs.module.muzimaforms.MuzimaForm;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -157,6 +164,9 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         delegatingResourceDescription.addRequiredProperty("dataSource");
         delegatingResourceDescription.addRequiredProperty("payload");
         delegatingResourceDescription.addRequiredProperty("discriminator");
+        delegatingResourceDescription.addRequiredProperty("location");
+        delegatingResourceDescription.addRequiredProperty("provider");
+        delegatingResourceDescription.addRequiredProperty("formName");
         return delegatingResourceDescription;
     }
 
@@ -235,11 +245,42 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         }
 
         QueueData queueData = new QueueData();
+        Location location = extractLocationFromPayload(payload);
+        User provider = extractProviderFromPayload(payload);
+        String formName = extractFormNameFromPayload(payload);
+
         queueData.setDataSource(dataSource);
         queueData.setPayload(payload);
+        queueData.setFormName(formName);
+        queueData.setLocation(location);
+        queueData.setProvider(provider);
+
+        propertiesToCreate.put("location",location);
+        propertiesToCreate.put("provider",provider);
+        propertiesToCreate.put("formName",formName);
 
         setConvertedProperties(queueData, propertiesToCreate, getCreatableProperties(), true);
         queueData = save(queueData);
         return ConversionUtil.convertToRepresentation(queueData, Representation.DEFAULT);
+    }
+
+    private User extractProviderFromPayload(String payload) {
+        String providerString = JsonUtils.readAsString(payload, "$['encounter']['encounter.provider_id']");
+        User user = Context.getUserService().getUserByUsername(providerString);
+        return user;
+    }
+
+    private Location extractLocationFromPayload(String payload) {
+        String locationString = JsonUtils.readAsString(payload, "$['encounter']['encounter.location_id']");
+        int locationId = NumberUtils.toInt(locationString, -999);
+        Location location = Context.getLocationService().getLocation(locationId);
+        return location;
+    }
+
+    private String extractFormNameFromPayload(String payload) {
+        String formUuid = JsonUtils.readAsString(payload, "$['encounter']['encounter.form_uuid']");
+        MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
+        MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
+        return muzimaForm.getName();
     }
 }

@@ -33,6 +33,15 @@
             <one-to-many class="ErrorMessage"/>
         </set>
 
+        <many-to-one name="location" class="org.openmrs.Location" not-null="true">
+            <column name="location"/>
+        </many-to-one>
+
+        <many-to-one name="provider" class="org.openmrs.User" not-null="true">
+            <column name="provider"/>
+        </many-to-one>
+
+        <property name="formName" type="java.lang.String" column="form_name" not-null="false"/>
     </class>
 
 </hibernate-mapping>

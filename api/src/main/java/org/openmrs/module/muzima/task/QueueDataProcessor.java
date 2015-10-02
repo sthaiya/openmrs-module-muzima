@@ -13,8 +13,12 @@
  */
 package org.openmrs.module.muzima.task;
 
+import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.exception.QueueProcessorException;
@@ -23,6 +27,8 @@ import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.model.ErrorMessage;
 import org.openmrs.module.muzima.model.QueueData;
 import org.openmrs.module.muzima.model.handler.QueueDataHandler;
+import org.openmrs.module.muzimaforms.MuzimaForm;
+import org.openmrs.module.muzimaforms.api.MuzimaFormService;
 import org.openmrs.util.HandlerUtil;
 
 import java.util.*;
@@ -37,7 +43,6 @@ public class QueueDataProcessor {
 
     public void processQueueData() {
         if (!isRunning) {
-            log.info("Starting up queue data processor ...");
             processAllQueueData();
         } else {
             log.info("Queue data processor aborting (another processor already running)!");
@@ -47,6 +52,7 @@ public class QueueDataProcessor {
     private void processAllQueueData() {
         try {
             isRunning = true;
+            log.info("Starting up queue data processor ...");
             DataService dataService = Context.getService(DataService.class);
             List<QueueData> queueDataList = dataService.getAllQueueData();
             List<QueueDataHandler> queueDataHandlers =
@@ -65,13 +71,26 @@ public class QueueDataProcessor {
                         }
                     } catch (Exception e) {
                         log.error("Unable to process queue data due to: " + e.getMessage(), e);
-                        createErrorData(queueData, (QueueProcessorException)e);
+                        if(queueData.getLocation() == null){
+                            Location location = extractLocationFromPayload(queueData.getPayload());
+                            queueData.setLocation(location);
+                        }
+                        if(queueData.getProvider() == null){
+                            User provider = extractProviderFromPayload(queueData.getPayload());
+                            queueData.setProvider(provider);
+                        }
+                        if(queueData.getFormName() == null){
+                            String formName = extractFormNameFromPayload(queueData.getPayload());
+                            queueData.setFormName(formName);
+                        }
+                        createErrorData(queueData,(QueueProcessorException)e);
                         dataService.purgeQueueData(queueData);
                     }
                 }
             }
         } finally {
             isRunning = false;
+            log.info("Stopping up queue data processor ...");
         }
     }
 
@@ -98,5 +117,42 @@ public class QueueDataProcessor {
         errorData.setMessage("Unable to process queue data");
         errorData.setErrorMessages(errorMessage);
         Context.getService(DataService.class).saveErrorData(errorData);
+    }
+
+    private User extractProviderFromPayload(String payload) {
+        String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
+        User user = Context.getUserService().getUserByUsername(providerString);
+        return user;
+    }
+
+    private Location extractLocationFromPayload(String payload) {
+        String locationString = readAsString(payload, "$['encounter']['encounter.location_id']");
+        int locationId = NumberUtils.toInt(locationString, -999);
+        Location location = Context.getLocationService().getLocation(locationId);
+        return location;
+    }
+
+    private String extractFormNameFromPayload(String payload) {
+        String formUuid = readAsString(payload, "$['encounter']['encounter.form_uuid']");
+        MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
+        MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
+        return muzimaForm.getName();
+    }
+
+    /**
+     * Read string value from the json object.
+     *
+     * @param jsonObject the json object.
+     * @param path       the path inside the json object.
+     * @return the string value in the json object. When the path is invalid, by default will return null.
+     */
+    private String readAsString(final String jsonObject, final String path) {
+        String returnedString = null;
+        try {
+            returnedString = JsonPath.read(jsonObject, path);
+        } catch (Exception e) {
+            log.info("Unable to read string value with path: " + path + " from: " + String.valueOf(jsonObject));
+        }
+        return returnedString;
     }
 }

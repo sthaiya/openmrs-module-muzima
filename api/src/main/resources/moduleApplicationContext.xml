@@ -8,7 +8,7 @@
     <!-- Services accessible via Context.getService() -->
     <bean parent="serviceContext">
         <property name="moduleService">
-            <list>
+            <list merge="true">
                 <value>org.openmrs.module.muzima.api.service.DataService</value>
                 <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
                     <property name="transactionManager">
@@ -72,7 +72,7 @@
     </bean>
     <bean parent="serviceContext">
         <property name="moduleService">
-            <list>
+            <list merge="true">
                 <value>org.openmrs.module.muzima.api.service.CoreService</value>
                 <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
                     <property name="transactionManager">
@@ -99,5 +99,4 @@
             </list>
         </property>
     </bean>
-
 </beans>

@@ -526,4 +526,29 @@
                                  referencedTableName="provider" referencedColumnNames="identifier"/>
     </changeSet>
 
+    <changeSet id="muzima-2015-10-05-11:45am" author="VNAGARAJAN">
+        <addColumn tableName="muzima_error_data">
+            <column name="patientUuid" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="muzima-2015-10-05-12:00pm" author="VNAGARAJAN">
+        <addColumn tableName="muzima_queue_data">
+            <column name="patientUuid" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="muzima-2015-10-05-11:31am" author="VNAGARAJAN">
+        <addColumn tableName="muzima_archive_data">
+            <column name="patientUuid" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

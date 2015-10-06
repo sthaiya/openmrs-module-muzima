@@ -167,6 +167,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         delegatingResourceDescription.addRequiredProperty("location");
         delegatingResourceDescription.addRequiredProperty("provider");
         delegatingResourceDescription.addRequiredProperty("formName");
+        delegatingResourceDescription.addRequiredProperty("patientUuid");
         return delegatingResourceDescription;
     }
 
@@ -248,16 +249,19 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         Location location = extractLocationFromPayload(payload);
         User provider = extractProviderFromPayload(payload);
         String formName = extractFormNameFromPayload(payload);
+        String patientUuid = extractPatientUuidFromPayload(payload);
 
         queueData.setDataSource(dataSource);
         queueData.setPayload(payload);
         queueData.setFormName(formName);
         queueData.setLocation(location);
         queueData.setProvider(provider);
+        queueData.setPatientUuid(patientUuid);
 
         propertiesToCreate.put("location",location);
         propertiesToCreate.put("provider",provider);
         propertiesToCreate.put("formName",formName);
+        propertiesToCreate.put("patientUuid", patientUuid);
 
         setConvertedProperties(queueData, propertiesToCreate, getCreatableProperties(), true);
         queueData = save(queueData);
@@ -282,5 +286,10 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
         MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
         return muzimaForm.getName();
+    }
+
+    private String extractPatientUuidFromPayload(String payload){
+        String patientUuid = JsonUtils.readAsString(payload, "$['patient']['patient.uuid']");
+        return patientUuid;
     }
 }

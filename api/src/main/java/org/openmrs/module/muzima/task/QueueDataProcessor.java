@@ -83,6 +83,13 @@ public class QueueDataProcessor {
                             String formName = extractFormNameFromPayload(queueData.getPayload());
                             queueData.setFormName(formName);
                         }
+                        if(queueData.getPatientUuid() == null){
+                            String patientUuid = extractPatientUuidFromPayload(queueData.getPayload());
+                            if(patientUuid == null){
+                                queueData.setPatientUuid("");
+                            }
+                            queueData.setPatientUuid(patientUuid);
+                        }
                         createErrorData(queueData,(QueueProcessorException)e);
                         dataService.purgeQueueData(queueData);
                     }
@@ -137,6 +144,11 @@ public class QueueDataProcessor {
         MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
         MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
         return muzimaForm.getName();
+    }
+
+    private String extractPatientUuidFromPayload(String payload){
+        String patientUuid = readAsString(payload, "$['patient']['patient.uuid']");
+        return patientUuid;
     }
 
     /**

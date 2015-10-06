@@ -23,6 +23,7 @@
                         <th>Sender</th>
                         <th>Kind</th>
                         <th>Submitted On</th>
+                        <th>Patient Uuid</th>
                         <th>Form Data</th>
                     </tr>
                     </thead>
@@ -39,6 +40,7 @@
                         <td>{{queue.source}}</td>
                         <td>{{queue.discriminator}}</td>
                         <td>{{queue.submitted}}</td>
+                        <td>{{queue.patientUuid}}</td>
                         <td><pre>{{queue.payload | truncate:45 }}</pre></td>
                     </tr>
                     </tbody>

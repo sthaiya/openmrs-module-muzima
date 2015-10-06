@@ -33,6 +33,8 @@
         </many-to-one>
 
         <property name="formName" type="java.lang.String" column="form_name" not-null="false"/>
+
+        <property name="patientUuid" type="java.lang.String" column="patientUuid" not-null="false"/>
     </class>
 
 </hibernate-mapping>

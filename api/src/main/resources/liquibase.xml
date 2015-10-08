@@ -523,7 +523,7 @@
         </addColumn>
         <addForeignKeyConstraint constraintName="muzima_error_data_provider"
                                  baseTableName="muzima_error_data" baseColumnNames="provider"
-                                 referencedTableName="provider" referencedColumnNames="identifier"/>
+                                 referencedTableName="provider" referencedColumnNames="provider_id"/>
     </changeSet>
 
 </databaseChangeLog>

@@ -174,11 +174,23 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @SuppressWarnings("unchecked")
     public List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
+        criteria.createAlias("location", "location");
+        criteria.createAlias("provider", "provider");
+
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("discriminator", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("location.name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("patientUuid", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("formName", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.systemId", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.username", search, MatchMode.ANYWHERE));
+            if(StringUtils.isNumeric(search)) {
+                disjunction.add(Restrictions.eq("location.locationId", Integer.parseInt(search)));
+            }
             criteria.add(disjunction);
+
         }
         if (pageNumber != null) {
             criteria.setFirstResult((pageNumber - 1) * pageSize);
@@ -200,10 +212,21 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @Override
     public Number countData(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
+        criteria.createAlias("location", "location");
+        criteria.createAlias("provider", "provider");
+
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.ilike("payload", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("discriminator", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("location.name", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("patientUuid", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("formName", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.systemId", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.username", search, MatchMode.ANYWHERE));
+            if(StringUtils.isNumeric(search)) {
+                disjunction.add(Restrictions.eq("location.locationId", Integer.parseInt(search)));
+            }
             criteria.add(disjunction);
         }
         criteria.setProjection(Projections.rowCount());

@@ -35,6 +35,8 @@ import java.util.Map;
  */
 public class WebConverter {
 
+    public static String emptyString = "";
+
     public static Map<String, Object> convertDataSource(final DataSource dataSource) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (dataSource != null) {
@@ -54,13 +56,18 @@ public class WebConverter {
             map.put("source", queueData.getDataSource().getName());
             map.put("payload", queueData.getPayload());
             map.put("submitted", Context.getDateFormat().format(queueData.getDateCreated()));
+
+            if(queueData.getPatientUuid() == null){
+                map.put("patientUuid", emptyString);
+            } else {
+                map.put("patientUuid", queueData.getPatientUuid());
+            }
         }
         return map;
     }
 
     public static Map<String, Object> convertErrorData(final ErrorData errorData) {
         Map<String, Object> map = new HashMap<String, Object>();
-        String emptyString = "";
         if (errorData != null) {
             map.put("uuid", errorData.getUuid());
             map.put("discriminator", errorData.getDiscriminator());
@@ -88,6 +95,12 @@ public class WebConverter {
             }
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
+
+            if(errorData.getPatientUuid() == null){
+                map.put("patientUuid", emptyString);
+            } else {
+                map.put("patientUuid", errorData.getPatientUuid());
+            }
 
             Map<String, Object> errorMap = new HashMap<String, Object>();
             for(ErrorMessage e : errorData.getErrorMessages()){

@@ -45,6 +45,12 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
+            <tr ng-hide = "error.discriminator == 'json-registration'">
+                <td>Registration Error</td>
+                <td><a href="#/error/{{error.regErrorUuid}}">Registration Error</a></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
             <tr>
                 <td>Submitted On</td>
                 <td>{{error.submitted}}</td>

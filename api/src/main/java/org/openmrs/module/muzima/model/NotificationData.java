@@ -14,6 +14,7 @@
 package org.openmrs.module.muzima.model;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.Role;
 
@@ -39,6 +40,8 @@ public class NotificationData extends BaseOpenmrsData implements Data {
     private String payload;
 
     private Role role;
+
+    private Patient patient;
 
     /**
      * @return id - The unique Identifier for the object
@@ -179,5 +182,13 @@ public class NotificationData extends BaseOpenmrsData implements Data {
      */
     public void setRole(final Role role) {
         this.role = role;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

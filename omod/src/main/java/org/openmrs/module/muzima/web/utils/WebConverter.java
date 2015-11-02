@@ -17,7 +17,7 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
 import org.openmrs.Location;
-import org.openmrs.User;
+import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
@@ -85,8 +85,8 @@ public class WebConverter {
                 map.put("providerId", emptyString);
                 map.put("providerName", emptyString);
             }else{
-                map.put("providerId", errorData.getProvider().getSystemId());
-                map.put("providerName", errorData.getProvider().getDisplayString());
+                map.put("providerId", errorData.getProvider().getIdentifier());
+                map.put("providerName", errorData.getProvider().getName());
             }
             if(errorData.getFormName() == null){
                 map.put("formName", emptyString);
@@ -143,10 +143,10 @@ public class WebConverter {
         return outerMap;
     }
 
-    private static User extractProviderFromPayload(String payload) {
+    private static Provider extractProviderFromPayload(String payload) {
         String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
-        User user = Context.getUserService().getUserByUsername(providerString);
-        return user;
+        Provider provider = Context.getProviderService().getProviderByIdentifier(providerString);
+        return provider;
     }
 
     private static Location extractLocationFromPayload(String payload) {

@@ -18,7 +18,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
-import org.openmrs.User;
+import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.exception.QueueProcessorException;
@@ -76,7 +76,7 @@ public class QueueDataProcessor {
                             queueData.setLocation(location);
                         }
                         if(queueData.getProvider() == null){
-                            User provider = extractProviderFromPayload(queueData.getPayload());
+                            Provider provider = extractProviderFromPayload(queueData.getPayload());
                             queueData.setProvider(provider);
                         }
                         if(queueData.getFormName() == null){
@@ -126,9 +126,9 @@ public class QueueDataProcessor {
         Context.getService(DataService.class).saveErrorData(errorData);
     }
 
-    private User extractProviderFromPayload(String payload) {
+    private Provider extractProviderFromPayload(String payload) {
         String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
-        User user = Context.getUserService().getUserByUsername(providerString);
+        Provider user = Context.getProviderService().getProviderByIdentifier(providerString);
         return user;
     }
 

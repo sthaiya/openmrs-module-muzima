@@ -90,7 +90,7 @@ public class QueueDataProcessor {
                             }
                             queueData.setPatientUuid(patientUuid);
                         }
-                        createErrorData(queueData,(QueueProcessorException)e);
+                        createErrorData(queueData, (QueueProcessorException)e);
                         dataService.purgeQueueData(queueData);
                     }
                 }
@@ -128,15 +128,13 @@ public class QueueDataProcessor {
 
     private User extractProviderFromPayload(String payload) {
         String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
-        User user = Context.getUserService().getUserByUsername(providerString);
-        return user;
+        return Context.getUserService().getUserByUsername(providerString);
     }
 
     private Location extractLocationFromPayload(String payload) {
         String locationString = readAsString(payload, "$['encounter']['encounter.location_id']");
         int locationId = NumberUtils.toInt(locationString, -999);
-        Location location = Context.getLocationService().getLocation(locationId);
-        return location;
+        return Context.getLocationService().getLocation(locationId);
     }
 
     private String extractFormNameFromPayload(String payload) {
@@ -147,8 +145,7 @@ public class QueueDataProcessor {
     }
 
     private String extractPatientUuidFromPayload(String payload){
-        String patientUuid = readAsString(payload, "$['patient']['patient.uuid']");
-        return patientUuid;
+        return readAsString(payload, "$['patient']['patient.uuid']");
     }
 
     /**

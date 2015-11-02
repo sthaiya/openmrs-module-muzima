@@ -44,7 +44,7 @@ import java.util.List;
  * TODO: Write brief description about the class here.
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/obs",
-        supportedClass = Obs.class,
+        supportedClass = FakeObs.class,
         supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
 public class ObsResource extends DataDelegatingCrudResource<FakeObs> {
 

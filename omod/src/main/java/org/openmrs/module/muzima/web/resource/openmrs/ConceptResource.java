@@ -53,7 +53,7 @@ import java.util.Locale;
  * TODO: Write brief description about the class here.
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/concept",
-        supportedClass = Cohort.class,
+        supportedClass = FakeConcept.class,
         supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
 public class ConceptResource extends DelegatingCrudResource<FakeConcept> {
 

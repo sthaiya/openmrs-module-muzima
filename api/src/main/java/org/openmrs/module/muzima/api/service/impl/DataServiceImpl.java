@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.muzima.api.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Person;
 import org.openmrs.Role;
 import org.openmrs.api.context.Context;
@@ -201,6 +202,26 @@ public class DataServiceImpl extends BaseOpenmrsService implements DataService {
     @Override
     public ErrorData getErrorDataByUuid(final String uuid) {
         return getErrorDataDao().getDataByUuid(uuid);
+    }
+
+    /**
+     * Return the registration error data with the given patientUuid.
+     *
+     * @param patientUuid the error data uuid.
+     * @return the registration error data with the matching patientUuid.
+     * @should return registration error data with matching patientUuid.
+     * @should return null when no registration error data with matching patientUuid.
+     */
+    @Override
+    public ErrorData getRegistrationErrorDataByPatientUuid(String patientUuid) {
+
+        List<ErrorData> errors = getErrorDataDao().getPagedData(patientUuid, null, null);
+        for(ErrorData errorData : errors){
+            if(StringUtils.equals("json-registration", errorData.getDiscriminator())){
+                return errorData;
+            }
+        }
+        return null;
     }
 
     /**

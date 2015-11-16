@@ -97,6 +97,16 @@ public interface DataService extends OpenmrsService {
     ErrorData getErrorDataByUuid(final String uuid);
 
     /**
+     * Return the registration error data with the given patientUuid.
+     *
+     * @param patientUuid the error data patientUuid.
+     * @return the error data with the matching uuid.
+     * @should return error data with matching uuid.
+     * @should return null when no error data with matching uuid.
+     */
+    ErrorData getRegistrationErrorDataByPatientUuid(final String patientUuid);
+
+    /**
      * Return all saved error data.
      *
      * @return all saved error data.

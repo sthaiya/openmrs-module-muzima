@@ -41,7 +41,7 @@ import java.util.List;
  * TODO: Write brief description about the class here.
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/cohort",
-        supportedClass = Cohort.class,
+        supportedClass = FakeCohort.class,
         supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
 public class CohortResource extends DataDelegatingCrudResource<FakeCohort> {
     /**

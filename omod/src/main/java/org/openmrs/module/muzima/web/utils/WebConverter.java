@@ -15,10 +15,12 @@ package org.openmrs.module.muzima.web.utils;
 
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.openmrs.Location;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
 import org.openmrs.module.muzima.model.ErrorData;
 import org.openmrs.module.muzima.model.ErrorMessage;
@@ -95,11 +97,18 @@ public class WebConverter {
             }
             map.put("submitted", Context.getDateFormat().format(errorData.getDateCreated()));
             map.put("processed", Context.getDateFormat().format(errorData.getDateProcessed()));
-
+            map.put("regErrorUuid", emptyString);
             if(errorData.getPatientUuid() == null){
                 map.put("patientUuid", emptyString);
             } else {
                 map.put("patientUuid", errorData.getPatientUuid());
+                //get the registration errordata uuid if any for this patient
+                if(!StringUtils.equals("json-registration",errorData.getDiscriminator())){
+                    ErrorData regErrorData = getRegErrorData(errorData.getPatientUuid());
+                    if(regErrorData != null){
+                        map.put("regErrorUuid", regErrorData.getUuid());
+                    }
+                }
             }
 
             Map<String, Object> errorMap = new HashMap<String, Object>();
@@ -110,6 +119,14 @@ public class WebConverter {
             map.put("Errors", JSONObject.toJSONString(errorMap));
         }
         return map;
+    }
+
+    private static ErrorData getRegErrorData(String patientUuid) {
+        if (Context.isAuthenticated()) {
+            DataService dataService = Context.getService(DataService.class);
+            return dataService.getRegistrationErrorDataByPatientUuid(patientUuid);
+        }
+        return null;
     }
 
     public static Map<String, Object> convertEditRegistrationData(final ErrorData errorData) {

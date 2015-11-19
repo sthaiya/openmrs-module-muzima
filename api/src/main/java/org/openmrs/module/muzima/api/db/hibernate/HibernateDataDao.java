@@ -184,8 +184,8 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
             disjunction.add(Restrictions.ilike("location.name", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("patientUuid", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("formName", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("provider.systemId", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("provider.username", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.identifier", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.name", search, MatchMode.ANYWHERE));
             if(StringUtils.isNumeric(search)) {
                 disjunction.add(Restrictions.eq("location.locationId", Integer.parseInt(search)));
             }
@@ -222,8 +222,8 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
             disjunction.add(Restrictions.ilike("location.name", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("patientUuid", search, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.ilike("formName", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("provider.systemId", search, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.ilike("provider.username", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.identifier", search, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("provider.name", search, MatchMode.ANYWHERE));
             if(StringUtils.isNumeric(search)) {
                 disjunction.add(Restrictions.eq("location.locationId", Integer.parseInt(search)));
             }

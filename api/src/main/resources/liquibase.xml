@@ -504,7 +504,7 @@
         </addColumn>
         <addForeignKeyConstraint constraintName="muzima_queue_data_provider"
                                  baseTableName="muzima_queue_data" baseColumnNames="provider"
-                                 referencedTableName="provider" referencedColumnNames="identifier"/>
+                                 referencedTableName="provider" referencedColumnNames="provider_id"/>
     </changeSet>
 
     <changeSet id="muzima-20150910-114000" author="shwetha">
@@ -527,6 +527,11 @@
     </changeSet>
 
     <changeSet id="muzima-2015-10-05-11:45am" author="VNAGARAJAN">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="muzima_error_data" columnName="patientUuid"/>
+            </not>
+        </preConditions>
         <addColumn tableName="muzima_error_data">
             <column name="patientUuid" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -535,6 +540,11 @@
     </changeSet>
 
     <changeSet id="muzima-2015-10-05-12:00pm" author="VNAGARAJAN">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="muzima_queue_data" columnName="patientUuid"/>
+            </not>
+        </preConditions>
         <addColumn tableName="muzima_queue_data">
             <column name="patientUuid" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -544,11 +554,65 @@
     </changeSet>
 
     <changeSet id="muzima-2015-10-05-11:31am" author="VNAGARAJAN">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="muzima_archive_data" columnName="patientUuid"/>
+            </not>
+        </preConditions>
         <addColumn tableName="muzima_archive_data">
             <column name="patientUuid" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+    <changeSet author="mssavai" id="muzima-20151102-105200">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="muzima_error_data" columnName="patientUuid"/>
+            </and>
+        </preConditions>
+        <renameColumn columnDataType="varchar(255)"
+                newColumnName="patient_uuid"
+                oldColumnName="patientUuid"
+                tableName="muzima_error_data"/>
+    </changeSet>
+    <changeSet author="mssavai" id="muzima-20151102-105300">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="muzima_queue_data" columnName="patientUuid"/>
+            </and>
+        </preConditions>
+        <renameColumn columnDataType="varchar(255)"
+                newColumnName="patient_uuid"
+                oldColumnName="patientUuid"
+                tableName="muzima_queue_data"/>
+    </changeSet>
+    <changeSet author="mssavai" id="muzima-20151102-105400">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="muzima_archive_data" columnName="patientUuid"/>
+            </and>
+        </preConditions>
+        <renameColumn columnDataType="varchar(255)"
+                newColumnName="patient_uuid"
+                oldColumnName="patientUuid"
+                tableName="muzima_archive_data"/>
+    </changeSet>
+
+    <changeSet id="smbugua" author="muzima-2015-10-15-20-13-12">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="muzima_notification_data" columnName="patient" />
+            </not>
+        </preConditions>
+        <addColumn tableName="muzima_notification_data">
+            <column name="patient" type="int">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="muzima_notification_patient"
+                                 baseTableName="muzima_notification_data" baseColumnNames="patient"
+                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
     </changeSet>
 
     <changeSet id="smbugua" author="muzima-2015-10-15-20-13-12">

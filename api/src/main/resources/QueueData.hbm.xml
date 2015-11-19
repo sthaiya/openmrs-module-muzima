@@ -28,13 +28,13 @@
             <column name="location"/>
         </many-to-one>
 
-        <many-to-one name="provider" class="org.openmrs.User" not-null="true">
+        <many-to-one name="provider" class="org.openmrs.Provider" not-null="true">
             <column name="provider"/>
         </many-to-one>
 
         <property name="formName" type="java.lang.String" column="form_name" not-null="false"/>
 
-        <property name="patientUuid" type="java.lang.String" column="patientUuid" not-null="false"/>
+        <property name="patientUuid" type="java.lang.String" column="patient_uuid" not-null="false"/>
     </class>
 
 </hibernate-mapping>

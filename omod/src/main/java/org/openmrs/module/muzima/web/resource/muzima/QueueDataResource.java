@@ -16,9 +16,8 @@ package org.openmrs.module.muzima.web.resource.muzima;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.openmrs.Form;
 import org.openmrs.Location;
-import org.openmrs.User;
+import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.muzima.api.service.DataService;
 import org.openmrs.module.muzima.model.DataSource;
@@ -247,7 +246,7 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
 
         QueueData queueData = new QueueData();
         Location location = extractLocationFromPayload(payload);
-        User provider = extractProviderFromPayload(payload);
+        Provider provider = extractProviderFromPayload(payload);
         String formName = extractFormNameFromPayload(payload);
         String patientUuid = extractPatientUuidFromPayload(payload);
 
@@ -268,10 +267,10 @@ public class QueueDataResource extends DataDelegatingCrudResource<QueueData> {
         return ConversionUtil.convertToRepresentation(queueData, Representation.DEFAULT);
     }
 
-    private User extractProviderFromPayload(String payload) {
+    private Provider extractProviderFromPayload(String payload) {
         String providerString = JsonUtils.readAsString(payload, "$['encounter']['encounter.provider_id']");
-        User user = Context.getUserService().getUserByUsername(providerString);
-        return user;
+        Provider provider = Context.getProviderService().getProviderByIdentifier(providerString);
+        return provider;
     }
 
     private Location extractLocationFromPayload(String payload) {

@@ -128,7 +128,7 @@ public class QueueDataProcessor {
 
     private Provider extractProviderFromPayload(String payload) {
         String providerString = readAsString(payload, "$['encounter']['encounter.provider_id']");
-        return Context.getUserService().getUserByUsername(providerString);
+        return Context.getProviderService().getProviderByIdentifier(providerString);
     }
 
     private Location extractLocationFromPayload(String payload) {

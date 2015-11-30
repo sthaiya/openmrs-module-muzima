@@ -615,20 +615,4 @@
                                  referencedTableName="patient" referencedColumnNames="patient_id"/>
     </changeSet>
 
-    <changeSet id="smbugua" author="muzima-2015-10-15-20-13-12">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <columnExists tableName="muzima_notification_data" columnName="patient" />
-            </not>
-        </preConditions>
-        <addColumn tableName="muzima_notification_data">
-            <column name="patient" type="int">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="muzima_notification_patient"
-                                 baseTableName="muzima_notification_data" baseColumnNames="patient"
-                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
-    </changeSet>
-
 </databaseChangeLog>

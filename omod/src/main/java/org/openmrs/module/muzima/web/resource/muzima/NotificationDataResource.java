@@ -42,7 +42,7 @@ import java.util.List;
  * TODO: Write brief description about the class here.
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/notificationdata",
-        supportedClass = NotificationData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
+        supportedClass = NotificationData.class, supportedOpenmrsVersions = {"1.8.*", "1.9.*","1.10.*","1.11.*"})
 public class NotificationDataResource extends DataDelegatingCrudResource<NotificationData> {
 
     /**

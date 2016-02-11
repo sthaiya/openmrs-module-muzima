@@ -48,7 +48,7 @@ import java.util.List;
  */
 @Resource(name = RestConstants.VERSION_1 + MuzimaRestController.MUZIMA_NAMESPACE + "/member",
         supportedClass = FakeCohortMember.class,
-        supportedOpenmrsVersions = {"1.8.*", "1.9.*"})
+        supportedOpenmrsVersions = {"1.8.*", "1.9.*","1.10.*","1.11.*"})
 public class CohortMemberResource extends DelegatingCrudResource<FakeCohortMember> {
 
     @Override

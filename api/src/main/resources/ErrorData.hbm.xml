@@ -33,11 +33,11 @@
             <one-to-many class="ErrorMessage"/>
         </set>
 
-        <many-to-one name="location" class="org.openmrs.Location" not-null="true">
+        <many-to-one name="location" class="org.openmrs.Location" not-null="false">
             <column name="location"/>
         </many-to-one>
 
-        <many-to-one name="provider" class="org.openmrs.Provider" not-null="true">
+        <many-to-one name="provider" class="org.openmrs.Provider" not-null="false">
             <column name="provider"/>
         </many-to-one>
 

@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -174,8 +175,8 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @SuppressWarnings("unchecked")
     public List<T> getPagedData(final String search, final Integer pageNumber, final Integer pageSize) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(mappedClass);
-        criteria.createAlias("location", "location");
-        criteria.createAlias("provider", "provider");
+        criteria.createAlias("location", "location", CriteriaSpecification.LEFT_JOIN);
+        criteria.createAlias("provider", "provider", CriteriaSpecification.LEFT_JOIN);
 
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -212,8 +213,8 @@ public abstract class HibernateDataDao<T extends Data> extends HibernateSingleCl
     @Override
     public Number countData(final String search) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(mappedClass);
-        criteria.createAlias("location", "location");
-        criteria.createAlias("provider", "provider");
+        criteria.createAlias("location", "location", CriteriaSpecification.LEFT_JOIN);
+        criteria.createAlias("provider", "provider", CriteriaSpecification.LEFT_JOIN);
 
         if (StringUtils.isNotEmpty(search)) {
             Disjunction disjunction = Restrictions.disjunction();

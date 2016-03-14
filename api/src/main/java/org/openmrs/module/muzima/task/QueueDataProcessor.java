@@ -141,7 +141,11 @@ public class QueueDataProcessor {
         String formUuid = readAsString(payload, "$['encounter']['encounter.form_uuid']");
         MuzimaFormService muzimaFormService = Context.getService(MuzimaFormService.class);
         MuzimaForm muzimaForm = muzimaFormService.findByUniqueId(formUuid);
-        return muzimaForm.getName();
+        if(muzimaForm != null) {
+            return muzimaForm.getName();
+        } else {
+            return null;
+        }
     }
 
     private String extractPatientUuidFromPayload(String payload){
